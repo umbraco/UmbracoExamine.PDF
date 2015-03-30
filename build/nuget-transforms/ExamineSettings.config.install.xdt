@@ -1,39 +1,37 @@
-<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+<?xml version="1.0"?>
+<Examine xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
 
-  <appSettings xdt:Transform="InsertIfMissing">
-    <add key="UmbracoIdentity:UseAsyncActionInvokerFix" xdt:Transform="Remove" xdt:Locator="Match(key)"/>
-    <add key="UmbracoIdentity:UseAsyncActionInvokerFix" value="true" xdt:Transform="Insert" xdt:Locator="Match(key)"/>
-  </appSettings>
-  
-  <system.web xdt:Transform="InsertIfMissing">
+  <ExamineIndexProviders>
 
-    <authentication xdt:Transform="Remove" />
-    <authentication mode="None" xdt:Transform="Insert" />
+    <!--
+      Used to index PDF content in Umbraco's media section.
 
-    <membership xdt:Transform="InsertIfMissing">
-      <providers xdt:Transform="InsertIfMissing">
-        <add name="UmbracoMembershipProvider"
-             type="UmbracoIdentity.IdentityEnabledMembersMembershipProvider"
-             xdt:Locator="Match(name)"
-             xdt:Transform="SetAttributes"/>
-      </providers>
-    </membership>
+      **** NOTE: Not all PDFs can have text read from them!!! ****
 
-    <httpModules xdt:Transform="InsertIfMissing">
+      This shows the PDF specific configuration and the default values applied when 
+      they are not specified.
 
-      <add name="FormsAuthenticationModule" xdt:Transform="Remove" xdt:Locator="Match(name)"/>
-      <remove name="FormsAuthenticationModule" xdt:Transform="Remove" xdt:Locator="Match(name)"/>
-      <remove name="FormsAuthenticationModule" xdt:Transform="Insert" />
+      *   extensions = comma seperated list of file extensions that our PDFs have
+          the default is just .pdf
+      *   umbracoFileProperty = the property of the media type that contains files
+      -->
+    <add name="PDFIndexer"
+         type="UmbracoExamine.PDF.PDFIndexer, UmbracoExamine.PDF"
+         extensions=".pdf"
+         umbracoFileProperty="umbracoFile"
+         xdt:Locator="Match(name)"
+         xdt:Transform="InsertIfMissing"/>
 
-    </httpModules>
-  </system.web>
-  <system.webServer xdt:Transform="InsertIfMissing">
-    <modules xdt:Transform="InsertIfMissing">
+  </ExamineIndexProviders>
 
-      <add name="FormsAuthentication" xdt:Transform="Remove" xdt:Locator="Match(name)"/>
-      <remove name="FormsAuthentication" xdt:Transform="Remove" xdt:Locator="Match(name)"/>
-      <remove name="FormsAuthentication" xdt:Transform="Insert" />
+  <ExamineSearchProviders>
 
-    </modules>
-  </system.webServer>
-</configuration>
+    <!-- This search provider is used to search the PDFIndexSet. -->
+    <add name="PDFSearcher"
+         type="UmbracoExamine.UmbracoExamineSearcher, UmbracoExamine"
+         xdt:Locator="Match(name)"
+         xdt:Transform="InsertIfMissing"/>
+
+  </ExamineSearchProviders>
+
+</Examine>

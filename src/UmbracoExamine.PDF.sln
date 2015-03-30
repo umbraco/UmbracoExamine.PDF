@@ -20,10 +20,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{173B37A6
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget-transforms", "Nuget-transforms", "{14031853-41E8-4EC4-80C2-FB7521A861DF}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\..\UmbracoIdentity\build\nuget-transforms\ExamineIndex.config.install.xdt = ..\..\..\UmbracoIdentity\build\nuget-transforms\ExamineIndex.config.install.xdt
-		..\..\..\UmbracoIdentity\build\nuget-transforms\ExamineIndex.config.uninstall.xdt = ..\..\..\UmbracoIdentity\build\nuget-transforms\ExamineIndex.config.uninstall.xdt
-		..\..\..\UmbracoIdentity\build\nuget-transforms\ExamineSettings.config.install.xdt = ..\..\..\UmbracoIdentity\build\nuget-transforms\ExamineSettings.config.install.xdt
-		..\..\..\UmbracoIdentity\build\nuget-transforms\ExamineSettings.config.uninstall.xdt = ..\..\..\UmbracoIdentity\build\nuget-transforms\ExamineSettings.config.uninstall.xdt
+		..\build\nuget-transforms\ExamineIndex.config.install.xdt = ..\build\nuget-transforms\ExamineIndex.config.install.xdt
+		..\build\nuget-transforms\ExamineIndex.config.uninstall.xdt = ..\build\nuget-transforms\ExamineIndex.config.uninstall.xdt
+		..\build\nuget-transforms\ExamineSettings.config.install.xdt = ..\build\nuget-transforms\ExamineSettings.config.install.xdt
+		..\build\nuget-transforms\ExamineSettings.config.uninstall.xdt = ..\build\nuget-transforms\ExamineSettings.config.uninstall.xdt
 	EndProjectSection
 EndProject
 Global
