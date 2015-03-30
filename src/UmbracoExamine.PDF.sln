@@ -1,0 +1,47 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UmbracoExamine.PDF", "UmbracoExamine.PDF\UmbracoExamine.PDF.csproj", "{8BD4C31D-000A-4FEF-B1D6-6E1C21AE3A4D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CFE8E9DE-BA15-464B-B127-7662DF99D42A}"
+	ProjectSection(SolutionItems) = preProject
+		..\LICENSE = ..\LICENSE
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{173B37A6-24BD-441E-94B9-6AE6A8ACC975}"
+	ProjectSection(SolutionItems) = preProject
+		..\build\Build-Release.ps1 = ..\build\Build-Release.ps1
+		..\build\Readme.txt = ..\build\Readme.txt
+		..\build\UmbracoCms.UmbracoExamine.PDF.nuspec = ..\build\UmbracoCms.UmbracoExamine.PDF.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget-transforms", "Nuget-transforms", "{14031853-41E8-4EC4-80C2-FB7521A861DF}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\UmbracoIdentity\build\nuget-transforms\ExamineIndex.config.install.xdt = ..\..\..\UmbracoIdentity\build\nuget-transforms\ExamineIndex.config.install.xdt
+		..\..\..\UmbracoIdentity\build\nuget-transforms\ExamineIndex.config.uninstall.xdt = ..\..\..\UmbracoIdentity\build\nuget-transforms\ExamineIndex.config.uninstall.xdt
+		..\..\..\UmbracoIdentity\build\nuget-transforms\ExamineSettings.config.install.xdt = ..\..\..\UmbracoIdentity\build\nuget-transforms\ExamineSettings.config.install.xdt
+		..\..\..\UmbracoIdentity\build\nuget-transforms\ExamineSettings.config.uninstall.xdt = ..\..\..\UmbracoIdentity\build\nuget-transforms\ExamineSettings.config.uninstall.xdt
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8BD4C31D-000A-4FEF-B1D6-6E1C21AE3A4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BD4C31D-000A-4FEF-B1D6-6E1C21AE3A4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BD4C31D-000A-4FEF-B1D6-6E1C21AE3A4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BD4C31D-000A-4FEF-B1D6-6E1C21AE3A4D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{173B37A6-24BD-441E-94B9-6AE6A8ACC975} = {CFE8E9DE-BA15-464B-B127-7662DF99D42A}
+		{14031853-41E8-4EC4-80C2-FB7521A861DF} = {173B37A6-24BD-441E-94B9-6AE6A8ACC975}
+	EndGlobalSection
+EndGlobal

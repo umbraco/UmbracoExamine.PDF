@@ -1,0 +1,39 @@
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+
+  <appSettings xdt:Transform="InsertIfMissing">
+    <add key="UmbracoIdentity:UseAsyncActionInvokerFix" xdt:Transform="Remove" xdt:Locator="Match(key)"/>
+    <add key="UmbracoIdentity:UseAsyncActionInvokerFix" value="true" xdt:Transform="Insert" xdt:Locator="Match(key)"/>
+  </appSettings>
+  
+  <system.web xdt:Transform="InsertIfMissing">
+
+    <authentication xdt:Transform="Remove" />
+    <authentication mode="None" xdt:Transform="Insert" />
+
+    <membership xdt:Transform="InsertIfMissing">
+      <providers xdt:Transform="InsertIfMissing">
+        <add name="UmbracoMembershipProvider"
+             type="UmbracoIdentity.IdentityEnabledMembersMembershipProvider"
+             xdt:Locator="Match(name)"
+             xdt:Transform="SetAttributes"/>
+      </providers>
+    </membership>
+
+    <httpModules xdt:Transform="InsertIfMissing">
+
+      <add name="FormsAuthenticationModule" xdt:Transform="Remove" xdt:Locator="Match(name)"/>
+      <remove name="FormsAuthenticationModule" xdt:Transform="Remove" xdt:Locator="Match(name)"/>
+      <remove name="FormsAuthenticationModule" xdt:Transform="Insert" />
+
+    </httpModules>
+  </system.web>
+  <system.webServer xdt:Transform="InsertIfMissing">
+    <modules xdt:Transform="InsertIfMissing">
+
+      <add name="FormsAuthentication" xdt:Transform="Remove" xdt:Locator="Match(name)"/>
+      <remove name="FormsAuthentication" xdt:Transform="Remove" xdt:Locator="Match(name)"/>
+      <remove name="FormsAuthentication" xdt:Transform="Insert" />
+
+    </modules>
+  </system.webServer>
+</configuration>
