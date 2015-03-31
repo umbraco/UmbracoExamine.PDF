@@ -24,6 +24,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget-transforms", "Nuget-t
 		..\build\nuget-transforms\ExamineIndex.config.uninstall.xdt = ..\build\nuget-transforms\ExamineIndex.config.uninstall.xdt
 		..\build\nuget-transforms\ExamineSettings.config.install.xdt = ..\build\nuget-transforms\ExamineSettings.config.install.xdt
 		..\build\nuget-transforms\ExamineSettings.config.uninstall.xdt = ..\build\nuget-transforms\ExamineSettings.config.uninstall.xdt
+		..\build\nuget-transforms\web.config.install.xdt = ..\build\nuget-transforms\web.config.install.xdt
+		..\build\nuget-transforms\web.config.uninstall.xdt = ..\build\nuget-transforms\web.config.uninstall.xdt
 	EndProjectSection
 EndProject
 Global

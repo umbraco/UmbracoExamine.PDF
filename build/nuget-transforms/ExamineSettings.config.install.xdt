@@ -2,36 +2,23 @@
 <Examine xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
 
   <ExamineIndexProviders>
-
-    <!--
-      Used to index PDF content in Umbraco's media section.
-
-      **** NOTE: Not all PDFs can have text read from them!!! ****
-
-      This shows the PDF specific configuration and the default values applied when 
-      they are not specified.
-
-      *   extensions = comma seperated list of file extensions that our PDFs have
-          the default is just .pdf
-      *   umbracoFileProperty = the property of the media type that contains files
-      -->
-    <add name="PDFIndexer"
-         type="UmbracoExamine.PDF.PDFIndexer, UmbracoExamine.PDF"
-         extensions=".pdf"
-         umbracoFileProperty="umbracoFile"
-         xdt:Locator="Match(name)"
-         xdt:Transform="InsertIfMissing"/>
-
+    <providers>
+      <add name="PDFIndexer"
+           type="UmbracoExamine.PDF.PDFIndexer, UmbracoExamine.PDF"
+           extensions=".pdf"
+           umbracoFileProperty="umbracoFile"
+           xdt:Locator="Match(name)"
+           xdt:Transform="InsertIfMissing"/>
+    </providers>
   </ExamineIndexProviders>
 
   <ExamineSearchProviders>
-
-    <!-- This search provider is used to search the PDFIndexSet. -->
-    <add name="PDFSearcher"
+    <providers>
+      <add name="PDFSearcher"
          type="UmbracoExamine.UmbracoExamineSearcher, UmbracoExamine"
          xdt:Locator="Match(name)"
          xdt:Transform="InsertIfMissing"/>
-
+    </providers>
   </ExamineSearchProviders>
 
 </Examine>

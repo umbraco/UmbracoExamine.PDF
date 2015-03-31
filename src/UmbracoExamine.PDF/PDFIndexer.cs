@@ -13,10 +13,13 @@ using System.Text;
 using Lucene.Net.Analysis;
 using UmbracoExamine.DataServices;
 using iTextSharp.text.pdf.parser;
+using Umbraco.Core;
 
 
 namespace UmbracoExamine.PDF
 {
+
+
     /// <summary>
     /// An Umbraco Lucene.Net indexer which will index the text content of a file
     /// </summary>
@@ -173,7 +176,11 @@ namespace UmbracoExamine.PDF
                     catch (NotSupportedException)
                     {
                         //log that we couldn't index the file found
-                        DataService.LogService.AddErrorLog((int)node.Attribute("id"), "UmbracoExamine.FileIndexer: Extension '" + fi.Extension + "' is not supported at this time");
+                        DataService.LogService.AddErrorLog((int) node.Attribute("id"), "UmbracoExamine.FileIndexer: Extension '" + fi.Extension + "' is not supported at this time");
+                    }
+                    catch (Exception ex)
+                    {
+                        DataService.LogService.AddErrorLog((int)node.Attribute("id"), "An error occurred: " + ex);
                     }
                 }
                 else
@@ -184,108 +191,5 @@ namespace UmbracoExamine.PDF
 
             return fields;
         }
-        
-        #region Internal PDFParser Class
-
-        /// <summary>
-        /// Parses a PDF file and extracts the text from it.
-        /// </summary>
-        internal class PDFParser
-        {
-
-            static PDFParser()
-            {
-                lock (Locker)
-                {
-                    UnsupportedRange = new HashSet<char>();
-                    foreach (var c in Enumerable.Range(0x0000, 0x001F))
-                    {
-                        UnsupportedRange.Add((char) c);
-                    }
-                    UnsupportedRange.Add((char)0x1F);
-
-                    //replace line breaks with space
-                    ReplaceWithSpace = new HashSet<char> {'\r', '\n'};
-                }
-            }
-
-            private static readonly object Locker = new object();
-
-            /// <summary>
-            /// Stores the unsupported range of character
-            /// </summary>
-            /// <remarks>
-            /// used as a reference:
-            /// http://www.tamasoft.co.jp/en/general-info/unicode.html
-            /// http://en.wikipedia.org/wiki/Summary_of_Unicode_character_assignments
-            /// http://en.wikipedia.org/wiki/Unicode
-            /// http://en.wikipedia.org/wiki/Basic_Multilingual_Plane
-            /// </remarks>
-            private static HashSet<char> UnsupportedRange;
-
-            private static HashSet<char> ReplaceWithSpace;
-
-            
-            public string GetTextFromAllPages(string pdfPath, Action<Exception> onError)
-            {
-                var output = new StringWriter();
-
-                try
-                {
-                    using (var reader = new PdfReader(pdfPath))
-                    {
-                        for (int i = 1; i <= reader.NumberOfPages; i++)
-                        {
-                            var result =
-                                ExceptChars(
-                                    PdfTextExtractor.GetTextFromPage(reader, i, new SimpleTextExtractionStrategy()),
-                                    UnsupportedRange,
-                                    ReplaceWithSpace);
-                            output.Write(result);
-                        }
-                    }
-                    
-                }
-                catch (Exception ex)
-                {
-                    onError(ex);
-                }
-
-                return output.ToString();
-            }
-
-
-        }
-
-        /// <summary>
-        /// remove all toExclude chars from string
-        /// </summary>
-        /// <param name="str"></param>
-        /// <param name="toExclude"></param>
-        /// <param name="replaceWithSpace"></param>
-        /// <returns></returns>
-        private static string ExceptChars(string str, HashSet<char> toExclude, HashSet<char> replaceWithSpace)
-        {
-            var sb = new StringBuilder(str.Length);
-            for (var i = 0; i < str.Length; i++)
-            {
-                var c = str[i];
-                if (toExclude.Contains(c) == false)
-                {
-                    if (replaceWithSpace.Contains(c))
-                    {
-                        sb.Append(" ");
-                    }
-                    else
-                    {
-                        sb.Append(c);
-                    }
-                }
-                    
-            }
-            return sb.ToString();
-        }
-        
-        #endregion
     }
 }

@@ -1,10 +1,7 @@
 <?xml version="1.0"?>
 <ExamineLuceneIndexSets xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
-  <!--
-    This is all that is needed to index Umbraco PDFs, the PDFIndexer
-    will only index media and the PDFs it contains.
-    -->
-  <IndexSet SetName="PDFIndexSet" IndexPath="~/App_Data/TEMP/PDFIndexSet"
+  
+  <IndexSet SetName="PDFIndexSet" IndexPath="~/App_Data/TEMP/ExamineIndexes/PDFs"
             xdt:Locator="Match(SetName)"
-            xdt:Transform="InsertIfMissing"/>/>
+            xdt:Transform="InsertIfMissing"/>
 </ExamineLuceneIndexSets>

@@ -71,6 +71,8 @@ Copy-Item "$BuildFolder\nuget-transforms\ExamineIndex.config.install.xdt" -Desti
 Copy-Item "$BuildFolder\nuget-transforms\ExamineIndex.config.uninstall.xdt" -Destination (Join-Path -Path $ReleaseFolder -ChildPath "nuget-transforms");
 Copy-Item "$BuildFolder\nuget-transforms\ExamineSettings.config.install.xdt" -Destination (Join-Path -Path $ReleaseFolder -ChildPath "nuget-transforms");
 Copy-Item "$BuildFolder\nuget-transforms\ExamineSettings.config.uninstall.xdt" -Destination (Join-Path -Path $ReleaseFolder -ChildPath "nuget-transforms");
+Copy-Item "$BuildFolder\nuget-transforms\web.config.install.xdt" -Destination (Join-Path -Path $ReleaseFolder -ChildPath "nuget-transforms");
+Copy-Item "$BuildFolder\nuget-transforms\web.config.uninstall.xdt" -Destination (Join-Path -Path $ReleaseFolder -ChildPath "nuget-transforms");
 
 # COPY THE README OVER
 Copy-Item "$BuildFolder\Readme.txt" -Destination $ReleaseFolder
