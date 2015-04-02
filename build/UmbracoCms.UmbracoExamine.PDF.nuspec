@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>UmbracoCms.UmbracoExamine.PDF</id>
-    <title>ASP.Net Identity for Umbraco Members</title>
+    <title>Umbraco indexing for PDF files using UmbracoExamine</title>
     <version>0.0.0.0</version>
     <authors>Umbraco HQ</authors>
     <owners>Umbraco HQ</owners>
