@@ -12,11 +12,16 @@ param (
 $PSScriptFilePath = (Get-Item $MyInvocation.MyCommand.Path);
 $RepoRoot = (get-item $PSScriptFilePath).Directory.Parent.FullName;
 $SolutionRoot = Join-Path -Path $RepoRoot "src";
+$NuGetPackagesPath = Join-Path -Path $SolutionRoot "packages"
 
 #trace
 "Solution Root: $SolutionRoot"
 
 $MSBuild = "$Env:SYSTEMROOT\Microsoft.NET\Framework\v4.0.30319\msbuild.exe";
+
+# Restore NuGet packages
+New-Item -ItemType Directory -Force -Path $NuGetPackagesPath
+.\NuGet.exe install $SolutionRoot\UmbracoExamine.PDF\packages.config -OutputDirectory  $NuGetPackagesPath
 
 # Make sure we don't have a release folder for this version already
 $BuildFolder = Join-Path -Path $RepoRoot -ChildPath "build";
@@ -88,3 +93,14 @@ Write-Output "DEBUGGING: " $CoreNuSpec -OutputDirectory $ReleaseFolder -Version 
 "Build $ReleaseVersionNumber$PreReleaseName is done!"
 "NuGet packages also created, so if you want to push them just run:"
 "  nuget push $CoreNuSpec"
+
+# COPY THE MAANUAL INSTALL README OVER
+Copy-Item "$BuildFolder\ReadmeManual.txt" -Destination $ReleaseFolder
+
+# COPY ITEXTSHARP FILES
+$iTextSharpPackage = Get-ChildItem $NuGetPackagesPath -Recurse | ?{ $_.PSIsContainer -and $_.Name.StartsWith("iTextSharp", "CurrentCultureIgnoreCase") } | Select-Object -Last 1
+$iTextSharpLibPath = Join-Path $iTextSharpPackage.FullName "lib"
+Copy-Item $iTextSharpLibPath\*.* $ReleaseFolder
+
+# ZIP UP FOR MANUAL INSTALL
+.\7za.exe a -tzip $ReleaseFolder\UmbracoCms.UmbracoExamine.PDF.$ReleaseVersionNumber$PreReleaseName.zip $ReleaseFolder\UmbracoExamine.PDF.pdb  $ReleaseFolder\UmbracoExamine.PDF.dll $ReleaseFolder\iTextSharp.* $ReleaseFolder\ReadmeManual.txt

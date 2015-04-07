@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+  <runtime>
+    <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
+      <dependentAssembly 
+          xdt:Transform="InsertIfMissing"
+          xdt:Locator="Condition(_defaultNamespace:assemblyIdentity[@name='itextsharp']])"  >
+        <assemblyIdentity name="itextsharp" publicKeyToken="8354ae6d2174ddca" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-5.5.5.0" newVersion="5.5.5.0" />
+      </dependentAssembly>      
+    </assemblyBinding>
+  </runtime>
+</configuration>
