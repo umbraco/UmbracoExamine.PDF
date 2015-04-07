@@ -97,5 +97,10 @@ Write-Output "DEBUGGING: " $CoreNuSpec -OutputDirectory $ReleaseFolder -Version 
 # COPY THE MAANUAL INSTALL README OVER
 Copy-Item "$BuildFolder\ReadmeManual.txt" -Destination $ReleaseFolder
 
+# COPY ITEXTSHARP FILES
+$iTextSharpPackage = Get-ChildItem $NuGetPackagesPath -Recurse | ?{ $_.PSIsContainer -and $_.Name.StartsWith("iTextSharp", "CurrentCultureIgnoreCase") } | Select-Object -Last 1
+$iTextSharpLibPath = Join-Path $iTextSharpPackage.FullName "lib"
+Copy-Item $iTextSharpLibPath\*.* $ReleaseFolder
+
 # ZIP UP FOR MANUAL INSTALL
-.\7za.exe a -tzip $ReleaseFolder\UmbracoCms.UmbracoExamine.PDF.$ReleaseVersionNumber$PreReleaseName.zip $ReleaseFolder\UmbracoExamine.PDF.pdb  $ReleaseFolder\UmbracoExamine.PDF.dll $ReleaseFolder\ReadmeManual.txt
+.\7za.exe a -tzip $ReleaseFolder\UmbracoCms.UmbracoExamine.PDF.$ReleaseVersionNumber$PreReleaseName.zip $ReleaseFolder\UmbracoExamine.PDF.pdb  $ReleaseFolder\UmbracoExamine.PDF.dll $ReleaseFolder\iTextSharp.* $ReleaseFolder\ReadmeManual.txt

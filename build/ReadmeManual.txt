@@ -8,7 +8,7 @@
                                                    
 ----------------------------------------------------
 
-To add this to your site, drop this dll in the bin folder.
+To add this to your site, drop the files from this zip file in the bin folder.
 
 You'll need to add a new Indexer & Searcher to ~/Config/ExamineSettings.config
 called: "PDFIndexer" & "PDFSearcher"
