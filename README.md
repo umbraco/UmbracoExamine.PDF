@@ -12,7 +12,7 @@ Follow the instructions in the readme.txt file that is launched once installed
 
 ## License
 
-The source code for UmbracoExamine.PDF is licensed under the MIT license. The license to use iTextSharp is licensed under the AGPL license. See their license information for more details: https://github.com/itext/itextsharp/blob/master/LICENSE.md
+The source code for UmbracoExamine.PDF is licensed under the MIT license. The license to use iTextSharp is licensed under the AGPL license. See their license information for full details: https://github.com/itext/itextsharp/blob/master/LICENSE.md
 
 According to iText if you use this software in a closed source scenario, you will need to procure a commercial license of iText:
 
