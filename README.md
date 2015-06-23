@@ -1,6 +1,6 @@
 # UmbracoExamine.PDF
 
-PDF indexing support in UmbracoExamine
+PDF indexing support in UmbracoExamine using [iTextSharp](https://github.com/itext/itextsharp)
 
 ## Installation
 
