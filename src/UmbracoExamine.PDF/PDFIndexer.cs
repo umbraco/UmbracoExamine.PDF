@@ -14,6 +14,7 @@ using Lucene.Net.Analysis;
 using UmbracoExamine.DataServices;
 using iTextSharp.text.pdf.parser;
 using Umbraco.Core;
+using Newtonsoft.Json.Linq;
 
 
 namespace UmbracoExamine.PDF
@@ -154,18 +155,25 @@ namespace UmbracoExamine.PDF
             var fields = base.GetDataToIndex(node, type);
 
             //find the field which contains the file
-            var filePath = node.Elements().FirstOrDefault(x =>
+            XElement fileElement = node.Elements().FirstOrDefault(x =>
             {
                 if (x.Attribute("alias") != null)
                     return (string)x.Attribute("alias") == this.UmbracoFileProperty;
                 else
                     return x.Name == this.UmbracoFileProperty;
             });
+
             //make sure the file exists
-            if (filePath != default(XElement) && !string.IsNullOrEmpty((string)filePath))
+            if( fileElement != default(XElement) && !string.IsNullOrEmpty( fileElement.Value ) )
             {
+                // Parse the current value
+                string filePath = fileElement.Value;
+                if ((filePath ).StartsWith( "{" ))
+                {
+                    filePath = JObject.Parse(filePath).Value<string>("src");
+                }
                 //get the file path from the data service
-                var fullPath = this.DataService.MapPath((string)filePath);
+                var fullPath = this.DataService.MapPath(filePath);
                 var fi = new FileInfo(fullPath);
                 if (fi.Exists)
                 {
