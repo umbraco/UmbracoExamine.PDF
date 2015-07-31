@@ -172,10 +172,10 @@ namespace UmbracoExamine.PDF
                 {
                     filePath = JObject.Parse(filePath).Value<string>("src");
                 }
-                //get the file path from the data service
-                var fullPath = this.DataService.MapPath(filePath);
+                // Get the file path from the data service
+                string fullPath = this.DataService.MapPath(filePath);
                 var fi = new FileInfo(fullPath);
-                if (fi.Exists)
+                if( fi.Exists)
                 {
                     try
                     {
