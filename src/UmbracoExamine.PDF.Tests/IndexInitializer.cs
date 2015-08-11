@@ -21,7 +21,7 @@
 //    /// </summary>
 //    internal static class IndexInitializer
 //    {
-        
+
 //        public static LuceneSearcher GetLuceneSearcher(Lucene.Net.Store.Directory luceneDir)
 //        {
 //            return new LuceneSearcher(luceneDir, new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_29));
@@ -38,7 +38,7 @@
 
 //            return i;
 //        }
-        
+
 //        internal static void IndexingError(object sender, IndexingErrorEventArgs e)
 //        {
 //            throw new ApplicationException(e.Message, e.InnerException);

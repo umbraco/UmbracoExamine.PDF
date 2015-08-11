@@ -10,9 +10,9 @@
 
 //namespace UmbracoExamine.PDF.Tests
 //{
-   
+
 //    [TestFixture]
-//    public class PdfIndexerTests 
+//    public class PdfIndexerTests
 //    {
 
 //        private readonly TestMediaService _mediaService = new TestMediaService();
@@ -53,8 +53,9 @@
 //        [TearDown]
 //        public void TestTearDown()
 //        {
-//            UmbracoExamineSearcher.DisableInitializationCheck = null;
-//            BaseUmbracoIndexer.DisableInitializationCheck = null;
+//            typeof(UmbracoExamineSearcher).SetStaticProperty("DisableInitializationCheck", null);
+//            typeof(BaseUmbracoIndexer).SetStaticProperty("DisableInitializationCheck", null);
+            
 //            _luceneDir.Dispose();
 //        }
 
