@@ -27,11 +27,17 @@ namespace UmbracoExamine.PDF
         private static readonly Lazy<HashSet<char>> UnsupportedRange = new Lazy<HashSet<char>>(() =>
         {
             var unsupportedRange = new HashSet<char>();
+            // Create collection with chars to skip
             foreach (var c in Enumerable.Range(0x0000, 0x001F))
             {
                 unsupportedRange.Add((char)c);
             }
             unsupportedRange.Add((char)0x1F);
+            // Remove replace chars from collection
+            foreach( var c in ReplaceWithSpace )
+            {
+                unsupportedRange.Remove(c);
+            }
             return unsupportedRange;
         });
 
@@ -53,7 +59,7 @@ namespace UmbracoExamine.PDF
                                 PdfTextExtractor.GetTextFromPage(reader, i, new SimpleTextExtractionStrategy()),
                                 UnsupportedRange.Value,
                                 ReplaceWithSpace);
-                        output.Write(result);
+                        output.Write(result + " ");
                     }
                 }
 
@@ -68,7 +74,7 @@ namespace UmbracoExamine.PDF
 
 
         /// <summary>
-        /// remove all toExclude chars from string
+        /// Remove all toExclude chars from string
         /// </summary>
         /// <param name="str"></param>
         /// <param name="toExclude"></param>

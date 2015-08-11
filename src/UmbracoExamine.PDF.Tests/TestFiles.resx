@@ -121,6 +121,9 @@
   <data name="Converting_file_to_PDF" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>testfiles\converting_file_to_pdf.pdf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="managecookies" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>testfiles\managecookies.pdf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="PDFStandards" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>testfiles\pdfstandards.pdf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
