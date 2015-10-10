@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using iTextSharp.text.pdf;
-using iTextSharp.text.pdf.parser;
+using org.apache.pdfbox.pdmodel;
+using org.apache.pdfbox.util;
 
 namespace UmbracoExamine.PDF
 {
     /// <summary>
     /// Parses a PDF file and extracts the text from it.
     /// </summary>
-    internal class PDFParser
+    internal class PDFParserPdfBox
     {
         /// <summary>
         /// Stores the unsupported range of character
@@ -34,44 +33,37 @@ namespace UmbracoExamine.PDF
             }
             unsupportedRange.Add((char)0x1F);
             // Remove replace chars from collection
-            foreach( var c in ReplaceWithSpace )
+            foreach (var c in ReplaceWithSpace)
             {
                 unsupportedRange.Remove(c);
             }
             return unsupportedRange;
         });
 
-        private static readonly HashSet<char> ReplaceWithSpace = new HashSet<char> {'\r', '\n'};
-
+        private static readonly HashSet<char> ReplaceWithSpace = new HashSet<char> { '\r', '\n' };
 
         public string GetTextFromAllPages(string pdfPath, Action<Exception> onError)
         {
-            var output = new StringWriter();
-
+            var result = String.Empty;
+            PDDocument doc = null;
             try
             {
-                using (var reader = new PdfReader(pdfPath))
-                {
-                    for (int i = 1; i <= reader.NumberOfPages; i++)
-                    {
-                        var result =
-                            ExceptChars(
-                                PdfTextExtractor.GetTextFromPage(reader, i, new SimpleTextExtractionStrategy()),
-                                UnsupportedRange.Value,
-                                ReplaceWithSpace);
-                        output.Write(result + " ");
-                    }
-                }
-
+                doc = PDDocument.load(pdfPath);
+                result = ExceptChars(new PDFTextStripper().getText(doc), UnsupportedRange.Value, ReplaceWithSpace);
             }
             catch (Exception ex)
             {
                 onError(ex);
             }
-
-            return output.ToString();
+            finally
+            {
+                if (doc != null)
+                {
+                    doc.close();
+                }
+            }
+            return result.ToString();
         }
-
 
         /// <summary>
         /// Remove all toExclude chars from string
@@ -101,8 +93,5 @@ namespace UmbracoExamine.PDF
             }
             return sb.ToString();
         }
-
     }
-
-
 }

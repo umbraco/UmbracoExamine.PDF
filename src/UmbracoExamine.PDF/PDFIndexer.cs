@@ -3,24 +3,14 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
-using System.Security;
-using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Examine;
-using iTextSharp.text.exceptions;
-using iTextSharp.text.pdf;
-using System.Text;
 using Lucene.Net.Analysis;
 using UmbracoExamine.DataServices;
-using iTextSharp.text.pdf.parser;
-using Umbraco.Core;
 using Newtonsoft.Json.Linq;
-
 
 namespace UmbracoExamine.PDF
 {
-
-
     /// <summary>
     /// An Umbraco Lucene.Net indexer which will index the text content of a file
     /// </summary>
@@ -72,7 +62,6 @@ namespace UmbracoExamine.PDF
 		}
 
         #endregion
-
 
         #region Properties
         /// <summary>
@@ -135,7 +124,7 @@ namespace UmbracoExamine.PDF
                 throw new NotSupportedException("The file with the extension specified is not supported");
             }
 
-            var pdf = new PDFParser();
+            var pdf = new PDFParserPdfBox();
 
             Action<Exception> onError = (e) => OnIndexingError(new IndexingErrorEventArgs("Could not read PDF", -1, e));
 
