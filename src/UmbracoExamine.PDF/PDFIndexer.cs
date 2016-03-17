@@ -172,29 +172,34 @@ namespace UmbracoExamine.PDF
                 {
                     filePath = JObject.Parse(filePath).Value<string>("src");
                 }
-                // Get the file path from the data service
-                string fullPath = this.DataService.MapPath(filePath);
-                var fi = new FileInfo(fullPath);
-                if( fi.Exists)
+
+                if (!filePath.IsNullOrWhiteSpace())
                 {
-                    try
+                    // Get the file path from the data service
+                    string fullPath = this.DataService.MapPath(filePath);
+                    var fi = new FileInfo(fullPath);
+                    if (fi.Exists)
                     {
-                        fields.Add(TextContentFieldName, ExtractTextFromFile(fi));
+                        try
+                        {
+                            fields.Add(TextContentFieldName, ExtractTextFromFile(fi));
+                        }
+                        catch (NotSupportedException)
+                        {
+                            //log that we couldn't index the file found
+                            DataService.LogService.AddErrorLog((int)node.Attribute("id"), "UmbracoExamine.FileIndexer: Extension '" + fi.Extension + "' is not supported at this time");
+                        }
+                        catch (Exception ex)
+                        {
+                            DataService.LogService.AddErrorLog((int)node.Attribute("id"), "An error occurred: " + ex);
+                        }
                     }
-                    catch (NotSupportedException)
+                    else
                     {
-                        //log that we couldn't index the file found
-                        DataService.LogService.AddErrorLog((int) node.Attribute("id"), "UmbracoExamine.FileIndexer: Extension '" + fi.Extension + "' is not supported at this time");
-                    }
-                    catch (Exception ex)
-                    {
-                        DataService.LogService.AddErrorLog((int)node.Attribute("id"), "An error occurred: " + ex);
+                        DataService.LogService.AddInfoLog((int)node.Attribute("id"), "UmbracoExamine.FileIndexer: No file found at path " + filePath);
                     }
                 }
-                else
-                {
-                    DataService.LogService.AddInfoLog((int)node.Attribute("id"), "UmbracoExamine.FileIndexer: No file found at path " + filePath);
-                }
+                
             }
 
             return fields;
