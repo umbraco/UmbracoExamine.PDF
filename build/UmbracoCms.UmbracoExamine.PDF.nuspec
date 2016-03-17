@@ -21,6 +21,9 @@
   </metadata>
   <files>
 
+    <file src="*.dll" target="lib\net40" />
+    <file src="*.pdb" target="lib\net40" />
+    
     <file src="*.dll" target="lib\net45" />
     <file src="*.pdb" target="lib\net45" />
 
