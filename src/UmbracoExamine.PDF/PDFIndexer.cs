@@ -1,21 +1,14 @@
-﻿using System;
+﻿using Examine;
+using Lucene.Net.Analysis;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
-using System.Security;
-using System.Text.RegularExpressions;
 using System.Xml.Linq;
-using Examine;
-using iTextSharp.text.exceptions;
-using iTextSharp.text.pdf;
-using System.Text;
-using Lucene.Net.Analysis;
-using UmbracoExamine.DataServices;
-using iTextSharp.text.pdf.parser;
 using Umbraco.Core;
-using Newtonsoft.Json.Linq;
-using Umbraco.Core.Logging;
+using UmbracoExamine.DataServices;
 
 namespace UmbracoExamine.PDF
 {
