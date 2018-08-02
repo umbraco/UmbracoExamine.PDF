@@ -15,12 +15,10 @@ using UmbracoExamine.DataServices;
 using iTextSharp.text.pdf.parser;
 using Umbraco.Core;
 using Newtonsoft.Json.Linq;
-
+using Umbraco.Core.Logging;
 
 namespace UmbracoExamine.PDF
 {
-
-
     /// <summary>
     /// An Umbraco Lucene.Net indexer which will index the text content of a file
     /// </summary>
@@ -44,8 +42,8 @@ namespace UmbracoExamine.PDF
         /// <param name="dataService"></param>
         /// <param name="analyzer"></param>
         /// <param name="async"></param>
-		
-		public PDFIndexer(DirectoryInfo indexPath, IDataService dataService, Analyzer analyzer, bool async)
+
+        public PDFIndexer(DirectoryInfo indexPath, IDataService dataService, Analyzer analyzer, bool async)
             : base(
                 new IndexCriteria(Enumerable.Empty<IIndexField>(), Enumerable.Empty<IIndexField>(), Enumerable.Empty<string>(), Enumerable.Empty<string>(), null),
                 indexPath, dataService, analyzer, async)
@@ -54,27 +52,27 @@ namespace UmbracoExamine.PDF
             UmbracoFileProperty = "umbracoFile";
         }
 
-		/// <summary>
-		/// Constructor to allow for creating an indexer at runtime
-		/// </summary>
-		/// <param name="luceneDirectory"></param>
-		/// <param name="dataService"></param>
-		/// <param name="analyzer"></param>
-		/// <param name="async"></param>
-		
-		public PDFIndexer(Lucene.Net.Store.Directory luceneDirectory, IDataService dataService, Analyzer analyzer, bool async)
-			: base(
-				new IndexCriteria(Enumerable.Empty<IIndexField>(), Enumerable.Empty<IIndexField>(), Enumerable.Empty<string>(), Enumerable.Empty<string>(), null),
-				luceneDirectory, dataService, analyzer, async)
-		{
-			SupportedExtensions = new[] { ".pdf" };
-			UmbracoFileProperty = "umbracoFile";
-		}
+        /// <summary>
+        /// Constructor to allow for creating an indexer at runtime
+        /// </summary>
+        /// <param name="luceneDirectory"></param>
+        /// <param name="dataService"></param>
+        /// <param name="analyzer"></param>
+        /// <param name="async"></param>
 
-        #endregion
+        public PDFIndexer(Lucene.Net.Store.Directory luceneDirectory, IDataService dataService, Analyzer analyzer, bool async)
+            : base(
+                new IndexCriteria(Enumerable.Empty<IIndexField>(), Enumerable.Empty<IIndexField>(), Enumerable.Empty<string>(), Enumerable.Empty<string>(), null),
+                luceneDirectory, dataService, analyzer, async)
+        {
+            SupportedExtensions = new[] { ".pdf" };
+            UmbracoFileProperty = "umbracoFile";
+        }
 
+        #endregion Constructors
 
         #region Properties
+
         /// <summary>
         /// Gets or sets the supported extensions for files, currently the system will only
         /// process PDF files.
@@ -102,15 +100,15 @@ namespace UmbracoExamine.PDF
             }
         }
 
-        #endregion
+        #endregion Properties
 
         /// <summary>
         /// Set up all properties for the indexer based on configuration information specified. This will ensure that
-        /// all of the folders required by the indexer are created and exist. 
+        /// all of the folders required by the indexer are created and exist.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="config"></param>
-        
+
         public override void Initialize(string name, NameValueCollection config)
         {
             base.Initialize(name, config);
@@ -119,7 +117,7 @@ namespace UmbracoExamine.PDF
                 SupportedExtensions = config["extensions"].Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
             //checks if a custom field alias is specified
-            if (!string.IsNullOrEmpty(config["umbracoFileProperty"]))                
+            if (!string.IsNullOrEmpty(config["umbracoFileProperty"]))
                 UmbracoFileProperty = config["umbracoFileProperty"];
         }
 
@@ -130,18 +128,12 @@ namespace UmbracoExamine.PDF
         /// <returns></returns>
         protected virtual string ExtractTextFromFile(FileInfo file)
         {
-            if (!SupportedExtensions.Select(x => x.ToUpper()).Contains(file.Extension.ToUpper()))
-            {
-                throw new NotSupportedException("The file with the extension specified is not supported");
-            }
-
             var pdf = new PDFParser();
 
             Action<Exception> onError = (e) => OnIndexingError(new IndexingErrorEventArgs("Could not read PDF", -1, e));
 
             var txt = pdf.GetTextFromAllPages(file.FullName, onError);
             return txt;
-
         }
 
         /// <summary>
@@ -164,11 +156,11 @@ namespace UmbracoExamine.PDF
             });
 
             //make sure the file exists
-            if( fileElement != default(XElement) && !string.IsNullOrEmpty( fileElement.Value ) )
+            if (fileElement != default(XElement) && !string.IsNullOrEmpty(fileElement.Value))
             {
                 // Parse the current value
                 string filePath = fileElement.Value;
-                if ((filePath ).StartsWith( "{" ))
+                if ((filePath).StartsWith("{"))
                 {
                     filePath = JObject.Parse(filePath).Value<string>("src");
                 }
@@ -182,12 +174,14 @@ namespace UmbracoExamine.PDF
                     {
                         try
                         {
-                            fields.Add(TextContentFieldName, ExtractTextFromFile(fi));
-                        }
-                        catch (NotSupportedException)
-                        {
-                            //log that we couldn't index the file found
-                            DataService.LogService.AddErrorLog((int)node.Attribute("id"), "UmbracoExamine.FileIndexer: Extension '" + fi.Extension + "' is not supported at this time");
+                            if (!SupportedExtensions.Select(x => x.ToUpper()).Contains(fi.Extension.ToUpper()))
+                            {
+                                DataService.LogService.AddInfoLog((int)node.Attribute("id"), "UmbracoExamine.FileIndexer: Extension '" + fi.Extension + "' is not supported at this time");
+                            }
+                            else
+                            {
+                                fields.Add(TextContentFieldName, ExtractTextFromFile(fi));
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -199,7 +193,6 @@ namespace UmbracoExamine.PDF
                         DataService.LogService.AddInfoLog((int)node.Attribute("id"), "UmbracoExamine.FileIndexer: No file found at path " + filePath);
                     }
                 }
-                
             }
 
             return fields;
