@@ -19,7 +19,7 @@ using Newtonsoft.Json.Linq;
 
 namespace UmbracoExamine.PDF
 {
-
+    using Umbraco.Core.IO;
 
     /// <summary>
     /// An Umbraco Lucene.Net indexer which will index the text content of a file
@@ -126,11 +126,13 @@ namespace UmbracoExamine.PDF
         /// <summary>
         /// Provides the means to extract the text to be indexed from the file specified
         /// </summary>
-        /// <param name="file"></param>
+        /// <param name="filePath"></param>
+        /// <param name="mediaFileSystem"></param>
         /// <returns></returns>
-        protected virtual string ExtractTextFromFile(FileInfo file)
+        protected virtual string ExtractTextFromFile(string filePath, MediaFileSystem mediaFileSystem)
         {
-            if (!SupportedExtensions.Select(x => x.ToUpper()).Contains(file.Extension.ToUpper()))
+            var fileExtension = mediaFileSystem.GetExtension(filePath);
+            if (!SupportedExtensions.Select(x => x.ToUpper()).Contains(fileExtension.ToUpper()))
             {
                 throw new NotSupportedException("The file with the extension specified is not supported");
             }
@@ -139,7 +141,7 @@ namespace UmbracoExamine.PDF
 
             Action<Exception> onError = (e) => OnIndexingError(new IndexingErrorEventArgs("Could not read PDF", -1, e));
 
-            var txt = pdf.GetTextFromAllPages(file.FullName, onError);
+            var txt = pdf.GetTextFromAllPages(filePath, mediaFileSystem, onError);
             return txt;
 
         }
@@ -176,18 +178,20 @@ namespace UmbracoExamine.PDF
                 if (!filePath.IsNullOrWhiteSpace())
                 {
                     // Get the file path from the data service
-                    string fullPath = this.DataService.MapPath(filePath);
-                    var fi = new FileInfo(fullPath);
-                    if (fi.Exists)
+                    var mediaFileSystem = FileSystemProviderManager.Current.GetFileSystemProvider<MediaFileSystem>();
+                    var fullPath = mediaFileSystem.GetFullPath(mediaFileSystem.GetRelativePath(filePath));
+
+                    if (mediaFileSystem.FileExists(fullPath))
                     {
                         try
                         {
-                            fields.Add(TextContentFieldName, ExtractTextFromFile(fi));
+                            fields.Add(TextContentFieldName, ExtractTextFromFile(fullPath, mediaFileSystem));
                         }
                         catch (NotSupportedException)
                         {
                             //log that we couldn't index the file found
-                            DataService.LogService.AddErrorLog((int)node.Attribute("id"), "UmbracoExamine.FileIndexer: Extension '" + fi.Extension + "' is not supported at this time");
+                            var fileExtension = mediaFileSystem.GetExtension(filePath);
+                            DataService.LogService.AddErrorLog((int)node.Attribute("id"), "UmbracoExamine.FileIndexer: Extension '" + fileExtension + "' is not supported at this time");
                         }
                         catch (Exception ex)
                         {

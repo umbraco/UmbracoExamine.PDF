@@ -9,6 +9,8 @@ using iTextSharp.text.pdf.parser;
 
 namespace UmbracoExamine.PDF
 {
+    using Umbraco.Core.IO;
+
     /// <summary>
     /// Parses a PDF file and extracts the text from it.
     /// </summary>
@@ -44,13 +46,14 @@ namespace UmbracoExamine.PDF
         private static readonly HashSet<char> ReplaceWithSpace = new HashSet<char> {'\r', '\n'};
 
 
-        public string GetTextFromAllPages(string pdfPath, Action<Exception> onError)
+        public string GetTextFromAllPages(string pdfPath, MediaFileSystem mediaFileSystem, Action<Exception> onError)
         {
             var output = new StringWriter();
 
             try
             {
-                using (var reader = new PdfReader(pdfPath))
+                using (var stream = mediaFileSystem.OpenFile(pdfPath))
+                using (var reader = new PdfReader(stream))
                 {
                     for (int i = 1; i <= reader.NumberOfPages; i++)
                     {
