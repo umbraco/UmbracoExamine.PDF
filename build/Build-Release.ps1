@@ -54,18 +54,18 @@ $Copyright = "Copyright © Umbraco ".(Get-Date).year
 $SolutionPath = Join-Path -Path $SolutionRoot -ChildPath "UmbracoExamine.PDF.sln";
 
 # clean sln for all deploys
-& $MSBuild "$SolutionPath" /p:Configuration=Release /maxcpucount /t:Clean
-if (-not $?)
-{
-	throw "The MSBuild process returned an error code."
-}
+#& $MSBuild "$SolutionPath" /p:Configuration=Release /maxcpucount /t:Clean
+#if (-not $?)
+#{
+#	throw "The MSBuild process returned an error code."
+#}
 
 #build
-& $MSBuild "$SolutionPath" /p:Configuration=Release /maxcpucount
-if (-not $?)
-{
-	throw "The MSBuild process returned an error code."
-}
+#& $MSBuild "$SolutionPath" /p:Configuration=Release /maxcpucount
+#if (-not $?)
+#{
+#	throw "The MSBuild process returned an error code."
+#}
 
 $include = @('UmbracoExamine.PDF.dll','UmbracoExamine.PDF.pdb')
 $CoreBinFolder = Join-Path -Path $SolutionRoot -ChildPath "UmbracoExamine.PDF\bin\Release";

@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<ExamineLuceneIndexSets xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
-  
-  <IndexSet SetName="PDFIndexSet" IndexPath="~/App_Data/TEMP/ExamineIndexes/PDFs"
-            xdt:Locator="Match(SetName)"
-            xdt:Transform="InsertIfMissing"/>
-</ExamineLuceneIndexSets>
