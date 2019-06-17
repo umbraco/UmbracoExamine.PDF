@@ -4,7 +4,7 @@ using Umbraco.Core.Composing;
 namespace UmbracoExamine.PDF
 {
     [RuntimeLevel(MinLevel = RuntimeLevel.Run)]
-    public class PDFIndexerComposer : ComponentComposer<ExaminePDFComponent>, IUserComposer
+    public class ExaminePDFComposer : ComponentComposer<ExaminePDFComponent>, IUserComposer
     {
         public override void Compose(Composition composition)
         {

@@ -252,7 +252,7 @@
     <Compile Include="PDFExtractor.cs" />
     <Compile Include="PDFIndexCreator.cs" />
     <Compile Include="ExaminePDFComponent.cs" />
-    <Compile Include="PDFIndexerComposer.cs" />
+    <Compile Include="ExaminePDFComposer.cs" />
     <Compile Include="PDFIndexPopulator.cs" />
     <Compile Include="PDFIndexValueSetBuilder.cs" />
     <Compile Include="PDFTextService.cs" />
