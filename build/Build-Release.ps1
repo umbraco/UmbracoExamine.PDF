@@ -71,14 +71,6 @@ $include = @('UmbracoExamine.PDF.dll','UmbracoExamine.PDF.pdb')
 $CoreBinFolder = Join-Path -Path $SolutionRoot -ChildPath "UmbracoExamine.PDF\bin\Release";
 Copy-Item "$CoreBinFolder\*.*" -Destination $ReleaseFolder -Include $include
 
-# COPY THE TRANSFORMS OVER
-Copy-Item "$BuildFolder\nuget-transforms\ExamineIndex.config.install.xdt" -Destination (New-Item (Join-Path -Path $ReleaseFolder -ChildPath "nuget-transforms") -Type directory);
-Copy-Item "$BuildFolder\nuget-transforms\ExamineIndex.config.uninstall.xdt" -Destination (Join-Path -Path $ReleaseFolder -ChildPath "nuget-transforms");
-Copy-Item "$BuildFolder\nuget-transforms\ExamineSettings.config.install.xdt" -Destination (Join-Path -Path $ReleaseFolder -ChildPath "nuget-transforms");
-Copy-Item "$BuildFolder\nuget-transforms\ExamineSettings.config.uninstall.xdt" -Destination (Join-Path -Path $ReleaseFolder -ChildPath "nuget-transforms");
-Copy-Item "$BuildFolder\nuget-transforms\web.config.install.xdt" -Destination (Join-Path -Path $ReleaseFolder -ChildPath "nuget-transforms");
-Copy-Item "$BuildFolder\nuget-transforms\web.config.uninstall.xdt" -Destination (Join-Path -Path $ReleaseFolder -ChildPath "nuget-transforms");
-
 # COPY THE README OVER
 Copy-Item "$BuildFolder\Readme.txt" -Destination $ReleaseFolder
 
@@ -97,10 +89,10 @@ Write-Output "DEBUGGING: " $CoreNuSpec -OutputDirectory $ReleaseFolder -Version 
 # COPY THE MAANUAL INSTALL README OVER
 Copy-Item "$BuildFolder\ReadmeManual.txt" -Destination $ReleaseFolder
 
-# COPY ITEXTSHARP FILES
-$iTextSharpPackage = Get-ChildItem $NuGetPackagesPath -Recurse | ?{ $_.PSIsContainer -and $_.Name.StartsWith("iTextSharp", "CurrentCultureIgnoreCase") } | Select-Object -Last 1
-$iTextSharpLibPath = Join-Path $iTextSharpPackage.FullName "lib"
-Copy-Item $iTextSharpLibPath\*.* $ReleaseFolder
+# COPY PDFSHARP FILES
+$pdfSharpPackage = Get-ChildItem $NuGetPackagesPath -Recurse | ?{ $_.PSIsContainer -and $_.Name.StartsWith("PdfSharp", "CurrentCultureIgnoreCase") } | Select-Object -Last 1
+$pdfSharpLibPath = Join-Path $pdfSharpPackage.FullName "lib"
+Copy-Item $pdfSharpLibPath\*.* $ReleaseFolder
 
 # ZIP UP FOR MANUAL INSTALL
-.\7za.exe a -tzip $ReleaseFolder\UmbracoCms.UmbracoExamine.PDF.$ReleaseVersionNumber$PreReleaseName.zip $ReleaseFolder\UmbracoExamine.PDF.pdb  $ReleaseFolder\UmbracoExamine.PDF.dll $ReleaseFolder\iTextSharp.* $ReleaseFolder\ReadmeManual.txt
+.\7za.exe a -tzip $ReleaseFolder\UmbracoCms.UmbracoExamine.PDF.$ReleaseVersionNumber$PreReleaseName.zip $ReleaseFolder\UmbracoExamine.PDF.pdb  $ReleaseFolder\UmbracoExamine.PDF.dll $ReleaseFolder\pdfSharp.* $ReleaseFolder\ReadmeManual.txt
