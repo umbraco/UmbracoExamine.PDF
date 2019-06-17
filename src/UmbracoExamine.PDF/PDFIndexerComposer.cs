@@ -4,12 +4,11 @@ using Umbraco.Core.Composing;
 namespace UmbracoExamine.PDF
 {
     [RuntimeLevel(MinLevel = RuntimeLevel.Run)]
-    public class PDFIndexerComposer : IUserComposer
+    public class PDFIndexerComposer : ComponentComposer<ExaminePDFComponent>, IUserComposer
     {
-        public void Compose(Composition composition)
+        public override void Compose(Composition composition)
         {
-            //Compose the Address Indexer & register services it will need
-            composition.Components().Append<PDFIndexerComponent>();
+            base.Compose(composition);
 
             //Register our address service and other services used to make this all work
             composition.Register<PDFTextService>(Lifetime.Singleton);
