@@ -1,19 +1,23 @@
-﻿using System;
+﻿using PdfSharp.Pdf;
+using PdfSharp.Pdf.Content;
+using PdfSharp.Pdf.Content.Objects;
+using PdfSharp.Pdf.IO;
+using PdfTextract;
+using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using iTextSharp.text.pdf;
-using iTextSharp.text.pdf.parser;
+using System.Web;
 
 namespace UmbracoExamine.PDF
 {
-    /// <summary>
-    /// Parses a PDF file and extracts the text from it.
-    /// </summary>
-    internal class PDFParser
+    public class PDFTextService
     {
+        public string ExtractText(string filePath)
+        {
+            return ExceptChars(PdfTextExtractor.GetText(filePath), UnsupportedRange.Value, ReplaceWithSpace);
+        }
+
         /// <summary>
         /// Stores the unsupported range of character
         /// </summary>
@@ -34,44 +38,14 @@ namespace UmbracoExamine.PDF
             }
             unsupportedRange.Add((char)0x1F);
             // Remove replace chars from collection
-            foreach( var c in ReplaceWithSpace )
+            foreach (var c in ReplaceWithSpace)
             {
                 unsupportedRange.Remove(c);
             }
             return unsupportedRange;
         });
 
-        private static readonly HashSet<char> ReplaceWithSpace = new HashSet<char> {'\r', '\n'};
-
-
-        public string GetTextFromAllPages(string pdfPath, Action<Exception> onError)
-        {
-            var output = new StringWriter();
-
-            try
-            {
-                using (var reader = new PdfReader(pdfPath))
-                {
-                    for (int i = 1; i <= reader.NumberOfPages; i++)
-                    {
-                        var result =
-                            ExceptChars(
-                                PdfTextExtractor.GetTextFromPage(reader, i, new SimpleTextExtractionStrategy()),
-                                UnsupportedRange.Value,
-                                ReplaceWithSpace);
-                        output.Write(result + " ");
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                onError(ex);
-            }
-
-            return output.ToString();
-        }
-
+        private static readonly HashSet<char> ReplaceWithSpace = new HashSet<char> { '\r', '\n' };
 
         /// <summary>
         /// Remove all toExclude chars from string
@@ -101,8 +75,5 @@ namespace UmbracoExamine.PDF
             }
             return sb.ToString();
         }
-
     }
-
-
 }
