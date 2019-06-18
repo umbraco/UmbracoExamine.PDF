@@ -10,42 +10,23 @@
 
 UmbracoExamine PDF indexer has been installed. 
 
-The installer has added a new Indexer & Searcher to ~/Config/ExamineSettings.config
-called: "PDFIndexer" & "PDFSearcher"
-and added a new Index Set to ~/Config/ExamineIndex.config called "PDFIndexSet"
-
+The installer has added a new Indexer to Examine called PDFIndex.
 
 **** NOTE: Not all PDFs can have text read from them! ****
 
-
-This shows the specific configuration options for the "PDFIndexer" and the 
-default values applied when they are not specified:
-
-*   extensions = comma seperated list of file extensions that our PDFs have
-    the default is ".pdf"
-*   umbracoFileProperty = the property of the media type that contains files
-	the default is "umbracoFile"
-
 *****************************************************************************
-MANUAL INSTALLATION
+Umbraco V8
 *****************************************************************************
+New in Umbraco V8, Examine is setup in code rather than by config files.
 
-To add this to your site, drop the files from this zip file in the bin folder.
+To use the MultiSearcher in V8, you can instantiate it when needed rather than
+configure it as was done in V7. 
 
-You'll need to add a new Indexer & Searcher to ~/Config/ExamineSettings.config
-called: "PDFIndexer" & "PDFSearcher"
+var multiSearcher = new MultiIndexSearcher("MultiSearcher", new IIndex[] { 
+    externalIndex, 
+	pdfIndex 
+});
 
-	<add name="PDFIndexer"
-           type="UmbracoExamine.PDF.PDFIndexer, UmbracoExamine.PDF"
-           extensions=".pdf"
-           umbracoFileProperty="umbracoFile" />
-  
-	<add name="PDFSearcher"
-         type="UmbracoExamine.UmbracoExamineSearcher, UmbracoExamine" />
-
-and add a new Index Set to ~/Config/ExamineIndex.config called "PDFIndexSet":
-
-	<IndexSet SetName="PDFIndexSet" IndexPath="~/App_Data/TEMP/ExamineIndexes/PDFs" />
 
 *****************************************************************************
 LICENSE
