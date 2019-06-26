@@ -16,6 +16,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <dependencies>
       <dependency id="UmbracoCms.Core" version="[8.0.0, 9.0.0)" />
+      <dependency id="UmbracoCms.Web" version="[8.0.0, 9.0.0)" />
       <dependency id="pdfSharp" version="[1.50.5147, 1.60.0)" />
     </dependencies>
   </metadata>
