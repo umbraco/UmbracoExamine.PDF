@@ -29,7 +29,7 @@ namespace UmbracoExamine.PDF
                     var dir = luceneIndex.GetLuceneDirectory();
                     if (IndexWriter.IsLocked(dir))
                     {
-                        _logger.Info(typeof(ExamineExtensions), "Forcing index {IndexerName} to be unlocked since it was left in a locked state", luceneIndex.Name);
+                        _logger.Info(typeof(ExaminePDFComponent), "Forcing index {IndexerName} to be unlocked since it was left in a locked state", luceneIndex.Name);
                         IndexWriter.Unlock(dir);
                     }
                 }
