@@ -19,6 +19,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+//A PDF Text Extractor that uses PdfSharp
+//https://github.com/DavidS/PdfTextract/blob/master/PdfTextract/PdfTextExtractor.cs
+
 namespace PdfTextract
 {
     using System;
