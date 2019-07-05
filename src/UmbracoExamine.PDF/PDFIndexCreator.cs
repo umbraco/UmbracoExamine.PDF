@@ -7,6 +7,9 @@ using Umbraco.Examine;
 
 namespace UmbracoExamine.PDF
 {
+    /// <summary>
+    /// Create the Lucene index for PDF documents
+    /// </summary>
     public class PDFIndexCreator : LuceneIndexCreator
     {
         public override IEnumerable<IIndex> Create()

@@ -8,6 +8,9 @@ namespace UmbracoExamine.PDF
 {
     public interface IPDFIndexValueSetBuilder : IValueSetBuilder<IMedia> { }
 
+    /// <summary>
+    /// Builds a ValueSet for PDF Documents
+    /// </summary>
     public class PDFIndexValueSetBuilder : IPDFIndexValueSetBuilder
     {
         private PDFTextService _pdfTextService;
@@ -23,8 +26,6 @@ namespace UmbracoExamine.PDF
                 var umbracoFile = item.GetValue<string>("umbracoFile");
                 if (string.IsNullOrWhiteSpace(umbracoFile)) continue;
                 var filepath = IOHelper.MapPath(umbracoFile);
-                //var fileInfo = new FileInfo(filepath);
-                //if (fileInfo == null) continue;
                 var fileTextContent = ExtractTextFromFile(filepath);
                 var indexValues = new Dictionary<string, object>
                 {

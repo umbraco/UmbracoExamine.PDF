@@ -3,6 +3,9 @@ using Umbraco.Core.Composing;
 
 namespace UmbracoExamine.PDF
 {
+    /// <summary>
+    /// Registers the ExaminePDFComponent and all of it's injected dependencies
+    /// </summary>
     [RuntimeLevel(MinLevel = RuntimeLevel.Run)]
     public class ExaminePDFComposer : ComponentComposer<ExaminePDFComponent>, IUserComposer
     {

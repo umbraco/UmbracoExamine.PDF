@@ -11,6 +11,9 @@ using System.Web;
 
 namespace UmbracoExamine.PDF
 {
+    /// <summary>
+    /// Extracts the text from a PDF document
+    /// </summary>
     public class PDFTextService
     {
         public string ExtractText(string filePath)

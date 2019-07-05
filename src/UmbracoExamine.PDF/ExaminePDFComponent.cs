@@ -6,6 +6,9 @@ using Umbraco.Core.Logging;
 
 namespace UmbracoExamine.PDF
 {
+    /// <summary>
+    /// Component to index PDF documents in the media library
+    /// </summary>
     public class ExaminePDFComponent : IComponent
     {
         private readonly IExamineManager _examineManager;

@@ -7,6 +7,9 @@ using Umbraco.Examine;
 
 namespace UmbracoExamine.PDF
 {
+    /// <summary>
+    /// Performs the data lookups required to rebuild a PDF index
+    /// </summary>
     public class PDFIndexPopulator : IndexPopulator
     {
         private readonly int? _parentId;
@@ -37,6 +40,10 @@ namespace UmbracoExamine.PDF
             RegisterIndex("PDFIndex");
         }
 
+        /// <summary>
+        /// Crawl all media content and index any documents with the .pdf extension
+        /// </summary>
+        /// <param name="indexes"></param>
         protected override void PopulateIndexes(IReadOnlyList<IIndex> indexes)
         {
             if (indexes.Count == 0) return;
