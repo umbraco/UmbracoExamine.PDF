@@ -1,24 +1,25 @@
-﻿using PdfSharp.Pdf;
-using PdfSharp.Pdf.Content;
-using PdfSharp.Pdf.Content.Objects;
-using PdfSharp.Pdf.IO;
-using PdfTextract;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Web;
 
 namespace UmbracoExamine.PDF
 {
     /// <summary>
     /// Extracts the text from a PDF document
     /// </summary>
-    public class PDFTextService
+    public class PdfTextService
     {
+        private readonly IPdfTextExtractor _pdfTextExtractor;
+
+        public PdfTextService(IPdfTextExtractor pdfTextExtractor)
+        {
+            _pdfTextExtractor = pdfTextExtractor;
+        }
+
         public string ExtractText(string filePath)
         {
-            return ExceptChars(PdfTextExtractor.GetText(filePath), UnsupportedRange.Value, ReplaceWithSpace);
+            return ExceptChars(_pdfTextExtractor.GetTextFromPdf(filePath), UnsupportedRange.Value, ReplaceWithSpace);
         }
 
         /// <summary>
@@ -48,7 +49,7 @@ namespace UmbracoExamine.PDF
             return unsupportedRange;
         });
 
-        private static readonly HashSet<char> ReplaceWithSpace = new HashSet<char> { '\r', '\n' };
+        private static readonly HashSet<char> ReplaceWithSpace = new HashSet<char>(Environment.NewLine);
 
         /// <summary>
         /// Remove all toExclude chars from string
@@ -60,9 +61,9 @@ namespace UmbracoExamine.PDF
         private static string ExceptChars(string str, HashSet<char> toExclude, HashSet<char> replaceWithSpace)
         {
             var sb = new StringBuilder(str.Length);
-            for (var i = 0; i < str.Length; i++)
+            foreach (var c in str)
             {
-                var c = str[i];
+                
                 if (toExclude.Contains(c) == false)
                 {
                     if (replaceWithSpace.Contains(c))
@@ -74,7 +75,6 @@ namespace UmbracoExamine.PDF
                         sb.Append(c);
                     }
                 }
-
             }
             return sb.ToString();
         }

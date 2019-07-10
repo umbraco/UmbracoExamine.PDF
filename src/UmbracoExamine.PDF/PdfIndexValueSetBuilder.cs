@@ -1,21 +1,22 @@
 ﻿using Examine;
 using System.Collections.Generic;
+using Umbraco.Core;
 using Umbraco.Core.IO;
 using Umbraco.Core.Models;
 using Umbraco.Examine;
 
 namespace UmbracoExamine.PDF
 {
-    public interface IPDFIndexValueSetBuilder : IValueSetBuilder<IMedia> { }
+    public interface IPdfIndexValueSetBuilder : IValueSetBuilder<IMedia> { }
 
     /// <summary>
     /// Builds a ValueSet for PDF Documents
     /// </summary>
-    public class PDFIndexValueSetBuilder : IPDFIndexValueSetBuilder
+    public class PdfIndexValueSetBuilder : IPdfIndexValueSetBuilder
     {
-        private PDFTextService _pdfTextService;
+        private PdfTextService _pdfTextService;
 
-        public PDFIndexValueSetBuilder(PDFTextService pdfTextService)
+        public PdfIndexValueSetBuilder(PdfTextService pdfTextService)
         {
             _pdfTextService = pdfTextService;
         }
@@ -23,18 +24,18 @@ namespace UmbracoExamine.PDF
         {
             foreach (var item in content)
             {
-                var umbracoFile = item.GetValue<string>("umbracoFile");
+                var umbracoFile = item.GetValue<string>(Constants.Conventions.Media.File);
                 if (string.IsNullOrWhiteSpace(umbracoFile)) continue;
                 var filepath = IOHelper.MapPath(umbracoFile);
                 var fileTextContent = ExtractTextFromFile(filepath);
                 var indexValues = new Dictionary<string, object>
                 {
                     ["fileTextContent"] = fileTextContent,
-                    ["__IndexType"] = "media",
+                    ["__IndexType"] = IndexTypes.Media,
                     ["__NodeId"] = item.Id
                 };
 
-                var valueSet = new ValueSet(item.Id.ToString(), "media", indexValues);
+                var valueSet = new ValueSet(item.Id.ToString(), IndexTypes.Media, indexValues);
 
                 yield return valueSet;
             }

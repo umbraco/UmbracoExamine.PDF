@@ -10,18 +10,18 @@ namespace UmbracoExamine.PDF
     /// <summary>
     /// Performs the data lookups required to rebuild a PDF index
     /// </summary>
-    public class PDFIndexPopulator : IndexPopulator
+    public class PdfIndexPopulator : IndexPopulator
     {
         private readonly int? _parentId;
         private readonly IMediaService _mediaService;
-        private readonly IPDFIndexValueSetBuilder _mediaValueSetBuilder;
+        private readonly IPdfIndexValueSetBuilder _mediaValueSetBuilder;
 
         /// <summary>
         /// Default constructor to lookup all content data
         /// </summary>
         /// <param name="mediaService"></param>
         /// <param name="mediaValueSetBuilder"></param>
-        public PDFIndexPopulator(IMediaService mediaService, IPDFIndexValueSetBuilder mediaValueSetBuilder)
+        public PdfIndexPopulator(IMediaService mediaService, IPdfIndexValueSetBuilder mediaValueSetBuilder)
             : this(null, mediaService, mediaValueSetBuilder)
         {
         }
@@ -32,7 +32,7 @@ namespace UmbracoExamine.PDF
         /// <param name="parentId"></param>
         /// <param name="mediaService"></param>
         /// <param name="mediaValueSetBuilder"></param>
-        public PDFIndexPopulator(int? parentId, IMediaService mediaService, IPDFIndexValueSetBuilder mediaValueSetBuilder)
+        public PdfIndexPopulator(int? parentId, IMediaService mediaService, IPdfIndexValueSetBuilder mediaValueSetBuilder)
         {
             _parentId = parentId;
             _mediaService = mediaService;
@@ -62,7 +62,7 @@ namespace UmbracoExamine.PDF
 
             do
             {
-                media = _mediaService.GetPagedDescendants(mediaParentId, pageIndex, pageSize, out var total)
+                media = _mediaService.GetPagedDescendants(mediaParentId, pageIndex, pageSize, out _)
                     .Where(m => m.GetValue<string>("umbracoExtension") == "pdf")
                     .ToArray();
 

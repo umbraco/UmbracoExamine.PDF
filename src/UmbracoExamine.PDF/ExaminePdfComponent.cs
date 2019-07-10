@@ -9,30 +9,29 @@ namespace UmbracoExamine.PDF
     /// <summary>
     /// Component to index PDF documents in the media library
     /// </summary>
-    public class ExaminePDFComponent : IComponent
+    public class ExaminePdfComponent : IComponent
     {
         private readonly IExamineManager _examineManager;
-        private readonly PDFIndexCreator _PDFIndexCreator;
-        private readonly IProfilingLogger _logger;
+        private readonly PdfIndexCreator _pdfIndexCreator;
+        private readonly ILogger _logger;
 
-        public ExaminePDFComponent(IExamineManager examineManager, PDFIndexCreator pdfIndexCreator, IProfilingLogger profilingLogger)
+        public ExaminePdfComponent(IExamineManager examineManager, PdfIndexCreator pdfIndexCreator, ILogger logger)
         {
             _examineManager = examineManager;
-            _PDFIndexCreator = pdfIndexCreator;
-            _logger = profilingLogger;
+            _pdfIndexCreator = pdfIndexCreator;
+            _logger = logger;
         }
 
         public void Initialize()
         {
-            foreach (var index in _PDFIndexCreator.Create()) {
+            foreach (var index in _pdfIndexCreator.Create()) {
                 // ensure the index is unlocked 
-                if (index is LuceneIndex)
+                if (index is LuceneIndex luceneIndex)
                 {
-                    var luceneIndex = index as LuceneIndex;
                     var dir = luceneIndex.GetLuceneDirectory();
                     if (IndexWriter.IsLocked(dir))
                     {
-                        _logger.Info(typeof(ExaminePDFComponent), "Forcing index {IndexerName} to be unlocked since it was left in a locked state", luceneIndex.Name);
+                        _logger.Info(typeof(ExaminePdfComponent), "Forcing index {IndexerName} to be unlocked since it was left in a locked state", luceneIndex.Name);
                         IndexWriter.Unlock(dir);
                     }
                 }
