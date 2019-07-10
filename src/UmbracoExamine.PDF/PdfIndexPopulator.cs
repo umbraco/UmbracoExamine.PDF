@@ -15,14 +15,15 @@ namespace UmbracoExamine.PDF
         private readonly int? _parentId;
         private readonly IMediaService _mediaService;
         private readonly IPdfIndexValueSetBuilder _mediaValueSetBuilder;
+        private readonly IExamineManager _examineManager;
 
         /// <summary>
         /// Default constructor to lookup all content data
         /// </summary>
         /// <param name="mediaService"></param>
         /// <param name="mediaValueSetBuilder"></param>
-        public PdfIndexPopulator(IMediaService mediaService, IPdfIndexValueSetBuilder mediaValueSetBuilder)
-            : this(null, mediaService, mediaValueSetBuilder)
+        public PdfIndexPopulator(IMediaService mediaService, IPdfIndexValueSetBuilder mediaValueSetBuilder, IExamineManager examineManager)
+            : this(null, mediaService, mediaValueSetBuilder, examineManager)
         {
         }
 
@@ -32,12 +33,99 @@ namespace UmbracoExamine.PDF
         /// <param name="parentId"></param>
         /// <param name="mediaService"></param>
         /// <param name="mediaValueSetBuilder"></param>
-        public PdfIndexPopulator(int? parentId, IMediaService mediaService, IPdfIndexValueSetBuilder mediaValueSetBuilder)
+        public PdfIndexPopulator(int? parentId, IMediaService mediaService, IPdfIndexValueSetBuilder mediaValueSetBuilder, IExamineManager examineManager)
         {
             _parentId = parentId;
             _mediaService = mediaService;
             _mediaValueSetBuilder = mediaValueSetBuilder;
+            _examineManager = examineManager;
             RegisterIndex("PDFIndex");
+
+            //Tie into various events one media saved/trashed/deleted/restored
+            Umbraco.Core.Services.Implement.MediaService.Saved += MediaService_Saved;
+            Umbraco.Core.Services.Implement.MediaService.Deleted += MediaService_Deleted;
+            Umbraco.Core.Services.Implement.MediaService.Trashed += MediaService_Trashed;
+            Umbraco.Core.Services.Implement.MediaService.Moved += MediaService_Moved;
+        }
+
+
+        /// <summary>
+        /// If pdfs were restored form recycle bin, re-index them
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MediaService_Moved(IMediaService sender, Umbraco.Core.Events.MoveEventArgs<IMedia> e)
+        {
+            var restored = e.MoveInfoCollection
+                .Where(m => m.OriginalPath.StartsWith("-1")) //recyclebin
+                .Select(m => m.Entity);
+            if (restored.Any())
+            {
+                AddToIndex(restored);
+            }
+        }
+
+        /// <summary>
+        /// Remove any pdfs that have been trashed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MediaService_Trashed(IMediaService sender, Umbraco.Core.Events.MoveEventArgs<IMedia> e)
+        {
+            RemoveFromIndex(e.MoveInfoCollection.Select(m => m.Entity));
+        }
+
+        /// <summary>
+        /// Remvoe any pdfs that have been deleted
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MediaService_Deleted(IMediaService sender, Umbraco.Core.Events.DeleteEventArgs<IMedia> e)
+        {
+            RemoveFromIndex(e.DeletedEntities);
+        }
+
+        /// <summary>
+        /// if any of the media is a pdf remove it from the PDFIndex
+        /// </summary>
+        /// <param name="media"></param>
+        private void RemoveFromIndex(IEnumerable<IMedia> media)
+        {
+            if (_examineManager.TryGetIndex("PDFIndex", out var index))
+            {
+                var ids = media.Where(m => m.GetValue<string>("umbracoExtension") == "pdf").Select(m => m.Id.ToString());
+                if (ids.Any())
+                {
+                    index.DeleteFromIndex(ids);
+                }
+            }
+
+        }
+
+        /// <summary>
+        /// Index any saved pdfs
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MediaService_Saved(IMediaService sender, Umbraco.Core.Events.SaveEventArgs<Umbraco.Core.Models.IMedia> e)
+        {
+            AddToIndex(e.SavedEntities);
+        }
+
+        /// <summary>
+        /// Add any media that is a pdf to the PDFIndex
+        /// </summary>
+        /// <param name="media"></param>
+        private void AddToIndex(IEnumerable<IMedia> media)
+        {
+            if (_examineManager.TryGetIndex("PDFIndex", out var index))
+            {
+                var mediaToIndex = media.Where(m => m.GetValue<string>("umbracoExtension") == "pdf").ToArray();
+                if (mediaToIndex.Any())
+                {
+                    index.IndexItems(_mediaValueSetBuilder.GetValueSets(mediaToIndex));
+                }
+            }
         }
 
         /// <summary>
