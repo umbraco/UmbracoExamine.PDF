@@ -1,10 +1,11 @@
 ﻿using Umbraco.Core;
 using Umbraco.Core.Composing;
+using Umbraco.Examine;
 
 namespace UmbracoExamine.PDF
 {
     /// <summary>
-    /// Registers the ExaminePDFComponent and all of it's injected dependencies
+    ///     Registers the ExaminePDFComponent and all of it's injected dependencies
     /// </summary>
     [RuntimeLevel(MinLevel = RuntimeLevel.Run)]
     public class ExaminePdfComposer : ComponentComposer<ExaminePdfComponent>, IUserComposer
@@ -17,6 +18,7 @@ namespace UmbracoExamine.PDF
             composition.Register<PdfTextService>(Lifetime.Singleton);
             composition.RegisterUnique<IPdfIndexValueSetBuilder, PdfIndexValueSetBuilder>();
             composition.RegisterUnique<IPdfTextExtractor, PdfSharpTextExtractor>();
+            composition.Register<IIndexPopulator, PdfIndexPopulator>(Lifetime.Singleton);
             composition.Register<PdfIndexPopulator>(Lifetime.Singleton);
             composition.RegisterUnique<PdfIndexCreator>();
         }

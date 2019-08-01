@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Examine;
 using Umbraco.Core.Models;
@@ -8,133 +9,94 @@ using Umbraco.Examine;
 namespace UmbracoExamine.PDF
 {
     /// <summary>
-    /// Performs the data lookups required to rebuild a PDF index
+    ///     Performs the data lookups required to rebuild a PDF index
     /// </summary>
     public class PdfIndexPopulator : IndexPopulator
     {
-        private readonly int? _parentId;
+        private const string PdfFileExtension = "pdf";
+        private readonly IExamineManager _examineManager;
         private readonly IMediaService _mediaService;
         private readonly IPdfIndexValueSetBuilder _mediaValueSetBuilder;
-        private readonly IExamineManager _examineManager;
+        private readonly int? _parentId;
 
         /// <summary>
-        /// Default constructor to lookup all content data
+        ///     Default constructor to lookup all content data
         /// </summary>
         /// <param name="mediaService"></param>
         /// <param name="mediaValueSetBuilder"></param>
-        public PdfIndexPopulator(IMediaService mediaService, IPdfIndexValueSetBuilder mediaValueSetBuilder, IExamineManager examineManager)
+        public PdfIndexPopulator(IMediaService mediaService, IPdfIndexValueSetBuilder mediaValueSetBuilder,
+            IExamineManager examineManager)
             : this(null, mediaService, mediaValueSetBuilder, examineManager)
         {
         }
 
         /// <summary>
-        /// Optional constructor allowing specifying custom query parameters
+        ///     Optional constructor allowing specifying custom query parameters
         /// </summary>
         /// <param name="parentId"></param>
         /// <param name="mediaService"></param>
         /// <param name="mediaValueSetBuilder"></param>
-        public PdfIndexPopulator(int? parentId, IMediaService mediaService, IPdfIndexValueSetBuilder mediaValueSetBuilder, IExamineManager examineManager)
+        public PdfIndexPopulator(int? parentId, IMediaService mediaService,
+            IPdfIndexValueSetBuilder mediaValueSetBuilder, IExamineManager examineManager)
         {
             _parentId = parentId;
             _mediaService = mediaService;
             _mediaValueSetBuilder = mediaValueSetBuilder;
             _examineManager = examineManager;
-            RegisterIndex("PDFIndex");
-
-            //Tie into various events one media saved/trashed/deleted/restored
-            Umbraco.Core.Services.Implement.MediaService.Saved += MediaService_Saved;
-            Umbraco.Core.Services.Implement.MediaService.Deleted += MediaService_Deleted;
-            Umbraco.Core.Services.Implement.MediaService.Trashed += MediaService_Trashed;
-            Umbraco.Core.Services.Implement.MediaService.Moved += MediaService_Moved;
+            RegisterIndex(PdfIndexCreator.PdfIndexName);
         }
 
 
         /// <summary>
-        /// If pdfs were restored form recycle bin, re-index them
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MediaService_Moved(IMediaService sender, Umbraco.Core.Events.MoveEventArgs<IMedia> e)
-        {
-            var restored = e.MoveInfoCollection
-                .Where(m => m.OriginalPath.StartsWith("-1")) //recyclebin
-                .Select(m => m.Entity);
-            if (restored.Any())
-            {
-                AddToIndex(restored);
-            }
-        }
-
-        /// <summary>
-        /// Remove any pdfs that have been trashed
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MediaService_Trashed(IMediaService sender, Umbraco.Core.Events.MoveEventArgs<IMedia> e)
-        {
-            RemoveFromIndex(e.MoveInfoCollection.Select(m => m.Entity));
-        }
-
-        /// <summary>
-        /// Remvoe any pdfs that have been deleted
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MediaService_Deleted(IMediaService sender, Umbraco.Core.Events.DeleteEventArgs<IMedia> e)
-        {
-            RemoveFromIndex(e.DeletedEntities);
-        }
-
-        /// <summary>
-        /// if any of the media is a pdf remove it from the PDFIndex
+        ///     if any of the media is a pdf remove it from the PDFIndex
         /// </summary>
         /// <param name="media"></param>
-        private void RemoveFromIndex(IEnumerable<IMedia> media)
+        public void RemoveFromIndex(IEnumerable<IMedia> media)
         {
-            if (_examineManager.TryGetIndex("PDFIndex", out var index))
+            HandleMediaItemsInIndex(media, (items, index) =>
             {
-                var ids = media.Where(m => m.GetValue<string>("umbracoExtension") == "pdf").Select(m => m.Id.ToString());
+                var ids = items.Select(m => m.Id.ToString());
                 if (ids.Any())
                 {
                     index.DeleteFromIndex(ids);
                 }
-            }
-
+            });
         }
 
-        /// <summary>
-        /// Index any saved pdfs
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MediaService_Saved(IMediaService sender, Umbraco.Core.Events.SaveEventArgs<Umbraco.Core.Models.IMedia> e)
+        private void HandleMediaItemsInIndex(IEnumerable<IMedia> media, Action<IMedia[], IIndex> action)
         {
-            AddToIndex(e.SavedEntities);
-        }
-
-        /// <summary>
-        /// Add any media that is a pdf to the PDFIndex
-        /// </summary>
-        /// <param name="media"></param>
-        private void AddToIndex(IEnumerable<IMedia> media)
-        {
-            if (_examineManager.TryGetIndex("PDFIndex", out var index))
+            if (_examineManager.TryGetIndex(PdfIndexCreator.PdfIndexName, out var index))
             {
-                var mediaToIndex = media.Where(m => m.GetValue<string>("umbracoExtension") == "pdf").ToArray();
+                var mediaToIndex = media.Where(m => m.GetValue<string>("umbracoExtension") == PdfFileExtension)
+                    .ToArray();
                 if (mediaToIndex.Any())
                 {
-                    index.IndexItems(_mediaValueSetBuilder.GetValueSets(mediaToIndex));
+                    action(mediaToIndex, index);
                 }
             }
         }
 
+
         /// <summary>
-        /// Crawl all media content and index any documents with the .pdf extension
+        ///     Add any media that is a pdf to the PDFIndex
+        /// </summary>
+        /// <param name="media"></param>
+        public void AddToIndex(IEnumerable<IMedia> media)
+        {
+            HandleMediaItemsInIndex(media,
+                (items, index) => { index.IndexItems(_mediaValueSetBuilder.GetValueSets(items)); });
+        }
+
+        /// <summary>
+        ///     Crawl all media content and index any documents with the .pdf extension
         /// </summary>
         /// <param name="indexes"></param>
         protected override void PopulateIndexes(IReadOnlyList<IIndex> indexes)
         {
-            if (indexes.Count == 0) return;
+            if (indexes.Count == 0)
+            {
+                return;
+            }
 
             const int pageSize = 10000;
             var pageIndex = 0;
@@ -151,13 +113,13 @@ namespace UmbracoExamine.PDF
             do
             {
                 media = _mediaService.GetPagedDescendants(mediaParentId, pageIndex, pageSize, out _)
-                    .Where(m => m.GetValue<string>("umbracoExtension") == "pdf")
+                    .Where(m => m.GetValue<string>("umbracoExtension") == PdfFileExtension)
                     .ToArray();
 
                 if (media.Length > 0)
                 {
                     foreach (var index in indexes)
-                    { 
+                    {
                         index.IndexItems(_mediaValueSetBuilder.GetValueSets(media));
                     }
                 }
@@ -165,6 +127,5 @@ namespace UmbracoExamine.PDF
                 pageIndex++;
             } while (media.Length == pageSize);
         }
-
     }
 }
