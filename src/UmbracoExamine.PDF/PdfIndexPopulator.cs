@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Examine;
+using Umbraco.Core;
 using Umbraco.Core.Models;
 using Umbraco.Core.Services;
 using Umbraco.Examine;
@@ -48,47 +49,41 @@ namespace UmbracoExamine.PDF
 
 
         /// <summary>
-        ///     if any of the media is a pdf remove it from the PDFIndex
+        /// Remove the media from the PDF index
         /// </summary>
         /// <param name="media"></param>
-        public void RemoveFromIndex(IEnumerable<IMedia> media)
+        public void RemoveFromIndex(params IMedia[] media)
         {
-            HandleMediaItemsInIndex(media, (items, index) =>
-            {
-                var ids = items.Select(m => m.Id.ToString());
-                if (ids.Any())
-                {
-                    index.DeleteFromIndex(ids);
-                }
-            });
-        }
-
-        private void HandleMediaItemsInIndex(IEnumerable<IMedia> media, Action<IMedia[], IIndex> action)
-        {
-            if (_examineManager.TryGetIndex(PdfIndexCreator.PdfIndexName, out var index))
-            {
-                var mediaToIndex = media.Where(m => m.GetValue<string>("umbracoExtension") == PdfFileExtension)
-                    .ToArray();
-                if (mediaToIndex.Any())
-                {
-                    action(mediaToIndex, index);
-                }
-            }
-        }
-
-
-        /// <summary>
-        ///     Add any media that is a pdf to the PDFIndex
-        /// </summary>
-        /// <param name="media"></param>
-        public void AddToIndex(IEnumerable<IMedia> media)
-        {
-            HandleMediaItemsInIndex(media,
-                (items, index) => { index.IndexItems(_mediaValueSetBuilder.GetValueSets(items)); });
+            if (!_examineManager.TryGetIndex(PdfIndexCreator.PdfIndexName, out var index)) return;
+            var ids = media.Select(m => m.Id.ToInvariantString());
+            index.DeleteFromIndex(ids);
         }
 
         /// <summary>
-        ///     Crawl all media content and index any documents with the .pdf extension
+        /// Remove the media from the PDF index
+        /// </summary>
+        /// <param name="mediaIds"></param>
+        public void RemoveFromIndex(params int[] mediaIds)
+        {
+            if (!_examineManager.TryGetIndex(PdfIndexCreator.PdfIndexName, out var index)) return;
+            var ids = mediaIds.Select(m => m.ToInvariantString());
+            index.DeleteFromIndex(ids);
+        }
+        
+        /// <summary>
+        /// Add any media that is a pdf to the PDFIndex
+        /// </summary>
+        /// <param name="media"></param>
+        public void AddToIndex(params IMedia[] media)
+        {
+            if (!_examineManager.TryGetIndex(PdfIndexCreator.PdfIndexName, out var index)) return;
+            var mediaToIndex = media.Where(m => m.GetValue<string>("umbracoExtension") == PdfFileExtension).ToArray();
+            if (mediaToIndex.Length > 0)
+                index.IndexItems(_mediaValueSetBuilder.GetValueSets(mediaToIndex));
+        }
+
+        /// <summary>
+        /// Crawl all media content and index any documents with the .pdf extension
         /// </summary>
         /// <param name="indexes"></param>
         protected override void PopulateIndexes(IReadOnlyList<IIndex> indexes)

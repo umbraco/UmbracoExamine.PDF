@@ -1,9 +1,11 @@
 ﻿using Examine;
 using System.Collections.Generic;
 using Umbraco.Core;
+using Umbraco.Core.Logging;
 using Umbraco.Core.IO;
 using Umbraco.Core.Models;
 using Umbraco.Examine;
+using System;
 
 namespace UmbracoExamine.PDF
 {
@@ -15,10 +17,12 @@ namespace UmbracoExamine.PDF
     public class PdfIndexValueSetBuilder : IPdfIndexValueSetBuilder
     {
         private PdfTextService _pdfTextService;
+        private readonly ILogger _logger;
 
-        public PdfIndexValueSetBuilder(PdfTextService pdfTextService)
+        public PdfIndexValueSetBuilder(PdfTextService pdfTextService, ILogger logger)
         {
             _pdfTextService = pdfTextService;
+            _logger = logger;
         }
         public IEnumerable<ValueSet> GetValueSets(params IMedia[] content)
         {
@@ -41,7 +45,15 @@ namespace UmbracoExamine.PDF
 
         private string ExtractTextFromFile(string filePath)
         {
-            return _pdfTextService.ExtractText(filePath);
+            try
+            {
+                return _pdfTextService.ExtractText(filePath);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error<PdfIndexValueSetBuilder>(ex, "Could not extract text from PDF {PdfFilePath}", filePath);
+                return string.Empty;
+            }
         }
     }
 }
