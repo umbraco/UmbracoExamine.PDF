@@ -6,6 +6,7 @@ using Umbraco.Core.IO;
 using Umbraco.Core.Models;
 using Umbraco.Examine;
 using System;
+using System.Linq;
 
 namespace UmbracoExamine.PDF
 {
@@ -34,6 +35,7 @@ namespace UmbracoExamine.PDF
                 var fileTextContent = ExtractTextFromFile(filepath);
                 var indexValues = new Dictionary<string, object>
                 {
+                    ["path"] =  item.Path,
                     ["fileTextContent"] = fileTextContent
                 };
 
