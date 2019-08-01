@@ -195,3 +195,5 @@ FakesAssemblies/
 *.opt
 build/NuGet.exe
 src/.UmbracoExamine.PDF.boltdata/*
+/build/tmp/*
+/build/vswhere.exe

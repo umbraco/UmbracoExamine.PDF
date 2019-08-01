@@ -15,18 +15,17 @@
     <tags>Umbraco Examine Lucene PDF UmbracoExamine</tags>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <dependencies>
-      <dependency id="UmbracoCms.Core" version="[8.0.0, 9.0.0)" />
-      <dependency id="UmbracoCms.Web" version="[8.0.0, 9.0.0)" />
-      <dependency id="PDFsharpNetStandard2" version="[1.51.4845, 1.60.0)" />
+      <group targetFramework="net472">
+        <dependency id="UmbracoCms.Core" version="[8.0.0, 9.0.0)" />
+        <dependency id="UmbracoCms.Web" version="[8.0.0, 9.0.0)" />
+        <dependency id="PDFsharpNetStandard2" version="[1.51.4845, 1.60.0)" />
+      </group>
     </dependencies>
   </metadata>
   <files>
-
-    <file src="*.dll" target="lib\net40" />
-    <file src="*.pdb" target="lib\net40" />
     
-    <file src="*.dll" target="lib\net45" />
-    <file src="*.pdb" target="lib\net45" />
+    <file src="UmbracoExamine.PDF.dll" target="lib\net472\UmbracoExamine.PDF.dll" />
+    <file src="UmbracoExamine.PDF.pdb" target="lib\net472\UmbracoExamine.PDF.pdb" />
 
     <file src="Readme.txt" target="" />
 
