@@ -19,38 +19,28 @@ namespace UmbracoExamine.PDF
     /// </summary>
     public class ExaminePdfComponent : IComponent
     {
-        private static bool _disableExamineIndexing = false;
-        private static bool _isConfigured = false;
-        private static object _configuredInit = null;
-        private static object _isConfiguredLocker = new object();
-        private static readonly object RebuildLocker = new object();
-        private static BackgroundTaskRunner<IBackgroundTask> _rebuildOnStartupRunner;
-
         private readonly IExamineManager _examineManager;
-        private readonly IndexRebuilder _indexRebuilder;
         private readonly ILogger _logger;
         private readonly PdfIndexCreator _pdfIndexCreator;
         private readonly PdfIndexPopulator _pdfIndexPopulator;
-
 
         public ExaminePdfComponent(
             IExamineManager examineManager,
             PdfIndexCreator pdfIndexCreator,
             ILogger logger,
-            PdfIndexPopulator pdfIndexPopulator,
-            IndexRebuilder indexRebuilder)
+            PdfIndexPopulator pdfIndexPopulator)
         {
             _examineManager = examineManager;
             _pdfIndexCreator = pdfIndexCreator;
             _logger = logger;
             _pdfIndexPopulator = pdfIndexPopulator;
-            _indexRebuilder = indexRebuilder;
         }
 
         public void Initialize()
         {
             foreach (var index in _pdfIndexCreator.Create())
             {
+                //TODO: This should not be needed but Umbraco needs to update itself to fix the issue
                 // ensure the index is unlocked 
                 if (index is LuceneIndex luceneIndex)
                 {

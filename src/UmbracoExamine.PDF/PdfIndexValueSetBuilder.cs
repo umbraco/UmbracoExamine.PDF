@@ -30,9 +30,7 @@ namespace UmbracoExamine.PDF
                 var fileTextContent = ExtractTextFromFile(filepath);
                 var indexValues = new Dictionary<string, object>
                 {
-                    ["fileTextContent"] = fileTextContent,
-                    ["__IndexType"] = IndexTypes.Media,
-                    ["__NodeId"] = item.Id
+                    ["fileTextContent"] = fileTextContent
                 };
 
                 var valueSet = new ValueSet(item.Id.ToString(), IndexTypes.Media, indexValues);
