@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<ExamineLuceneIndexSets xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
-  <IndexSet SetName="PDFIndexSet"
-            xdt:Locator="Match(SetName)"
-            xdt:Transform="Remove"/>/>
-</ExamineLuceneIndexSets>

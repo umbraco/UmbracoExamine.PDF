@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.539
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UmbracoExamine.PDF", "UmbracoExamine.PDF\UmbracoExamine.PDF.csproj", "{8BD4C31D-000A-4FEF-B1D6-6E1C21AE3A4D}"
 EndProject
@@ -17,16 +17,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{173B37A6
 		..\build\Build.bat = ..\build\Build.bat
 		..\build\Readme.txt = ..\build\Readme.txt
 		..\build\UmbracoCms.UmbracoExamine.PDF.nuspec = ..\build\UmbracoCms.UmbracoExamine.PDF.nuspec
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget-transforms", "Nuget-transforms", "{14031853-41E8-4EC4-80C2-FB7521A861DF}"
-	ProjectSection(SolutionItems) = preProject
-		..\build\nuget-transforms\ExamineIndex.config.install.xdt = ..\build\nuget-transforms\ExamineIndex.config.install.xdt
-		..\build\nuget-transforms\ExamineIndex.config.uninstall.xdt = ..\build\nuget-transforms\ExamineIndex.config.uninstall.xdt
-		..\build\nuget-transforms\ExamineSettings.config.install.xdt = ..\build\nuget-transforms\ExamineSettings.config.install.xdt
-		..\build\nuget-transforms\ExamineSettings.config.uninstall.xdt = ..\build\nuget-transforms\ExamineSettings.config.uninstall.xdt
-		..\build\nuget-transforms\web.config.install.xdt = ..\build\nuget-transforms\web.config.install.xdt
-		..\build\nuget-transforms\web.config.uninstall.xdt = ..\build\nuget-transforms\web.config.uninstall.xdt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UmbracoExamine.PDF.Tests", "UmbracoExamine.PDF.Tests\UmbracoExamine.PDF.Tests.csproj", "{A9F33E19-00B2-4B98-A68E-C3377ABAFDF3}"
@@ -51,6 +41,8 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{173B37A6-24BD-441E-94B9-6AE6A8ACC975} = {CFE8E9DE-BA15-464B-B127-7662DF99D42A}
-		{14031853-41E8-4EC4-80C2-FB7521A861DF} = {173B37A6-24BD-441E-94B9-6AE6A8ACC975}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {67B66C2E-BC14-4BBD-8D85-8BF343A3EE92}
 	EndGlobalSection
 EndGlobal

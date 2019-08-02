@@ -1,40 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package>
-  <metadata>
-    <id>UmbracoCms.UmbracoExamine.PDF</id>
-    <title>Umbraco indexing for PDF files using UmbracoExamine</title>
-    <version>0.0.0.0</version>
-    <authors>Umbraco HQ</authors>
-    <owners>Umbraco HQ</owners>
-    <description>Umbraco indexing for PDF files using UmbracoExamine</description>
-    <summary>Umbraco indexing for PDF files using UmbracoExamine</summary>
-    <language>en-US</language>
-    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
-    <projectUrl>http://umbraco.com/</projectUrl>
-    <iconUrl>http://umbraco.com/media/357769/100px_transparent.png</iconUrl>
-    <tags>Umbraco Examine Lucene PDF UmbracoExamine</tags>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <dependencies>
-      <dependency id="UmbracoCms.Core" version="[6.0.0, 8.0.0)" />
-      <dependency id="iTextSharp" version="[5.5.5, 6.0.0)" />
-    </dependencies>
-  </metadata>
-  <files>
+    <metadata>
+        <id>UmbracoCms.UmbracoExamine.PDF</id>
+        <title>Umbraco indexing for PDF files using UmbracoExamine</title>
+        <version>0.0.0.0</version>
+        <authors>Umbraco HQ</authors>
+        <owners>Umbraco HQ</owners>
+        <description>Umbraco indexing for PDF files using UmbracoExamine</description>
+        <summary>Umbraco indexing for PDF files using UmbracoExamine</summary>
+        <language>en-US</language>
+        <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+        <projectUrl>http://umbraco.com/</projectUrl>
+        <iconUrl>http://umbraco.com/media/357769/100px_transparent.png</iconUrl>
+        <tags>Umbraco Examine Lucene PDF UmbracoExamine</tags>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <dependencies>
+            <group targetFramework="net472">
+                <dependency id="UmbracoCms.Core" version="[8.0.0, 9.0.0)" />
+                <dependency id="UmbracoCms.Web" version="[8.0.0, 9.0.0)" />
+                <dependency id="Examine" version="[1.0.1, 2.0.0)" />
+                <dependency id="PDFsharpNetStandard2" version="[1.51.4845, 1.60.0)" />
+            </group>
+        </dependencies>
+    </metadata>
+    <files>
 
-    <file src="*.dll" target="lib\net40" />
-    <file src="*.pdb" target="lib\net40" />
-    
-    <file src="*.dll" target="lib\net45" />
-    <file src="*.pdb" target="lib\net45" />
+        <file src="UmbracoExamine.PDF.dll" target="lib\net472\UmbracoExamine.PDF.dll" />
+        <file src="UmbracoExamine.PDF.pdb" target="lib\net472\UmbracoExamine.PDF.pdb" />
 
-    <file src="nuget-transforms\ExamineIndex.config.install.xdt" target="Content\config\ExamineIndex.config.install.xdt" />
-    <file src="nuget-transforms\ExamineIndex.config.uninstall.xdt" target="Content\config\ExamineIndex.config.uninstall.xdt" />
-    <file src="nuget-transforms\ExamineSettings.config.install.xdt" target="Content\config\ExamineSettings.config.install.xdt" />
-    <file src="nuget-transforms\ExamineSettings.config.uninstall.xdt" target="Content\config\ExamineSettings.config.uninstall.xdt" />
-    <file src="nuget-transforms\web.config.install.xdt" target="Content" />
-    <file src="nuget-transforms\web.config.uninstall.xdt" target="Content" />
+        <file src="Readme.txt" target="" />
 
-    <file src="Readme.txt" target="" />
-
-  </files>
+    </files>
 </package>
