@@ -68,8 +68,10 @@ if (_examineManager.TryGetSearcher("MultiSearcher", out var searcher))
 
 ## Known issues
 
-The implementation of `IPdfTextExtractor` in this library is using PDFSharp and some custom logic and does not deal with Unicode text and therefore some PDF texts cannot be read and will result in 'junk' strings
-being read. It is certainly possible to replace the `IPdfTextExtractor` using your own composer like
+The implementation of `IPdfTextExtractor` is `PdfSharpTextExtractor` in this library which uses PDFSharp to extract the bytes to convert to text but
+that implementation doesn't deal well with Unicode text which means when some PDF files are read, the result will be 'junk' strings.
+
+It is certainly possible to replace the `IPdfTextExtractor` using your own composer like
 
 ```cs
 composition.RegisterUnique<IPdfTextExtractor, MyCustomSharpTextExtractor>();
@@ -77,6 +79,12 @@ composition.RegisterUnique<IPdfTextExtractor, MyCustomSharpTextExtractor>();
 
 The iTextSharp library deals with Unicode in a better way but is a paid for license. If you wish to use iTextSharp or another PDF library you can easily swap out the
 `IPdfTextExtractor` with your own implementation.
+
+### Help wanted
+
+If anyone knows how to update the `PdfSharpTextExtractor` implementation to better handle Unicode texts, please get in touch on the issue tracker or by submitting a PR.
+
+Thanks!
 
 ## License
 
