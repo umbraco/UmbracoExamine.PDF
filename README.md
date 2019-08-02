@@ -45,7 +45,7 @@ public class MyComponent : IComponent
     {
         //Get both the external and pdf index
         if (_examineManager.TryGetIndex(Constants.UmbracoIndexes.ExternalIndexName, out var externalIndex)
-            && _examineManager.TryGetIndex(PdfIndexCreator.PdfIndexName, out var pdfIndex))
+            && _examineManager.TryGetIndex(PdfIndexConstants.PdfIndexName, out var pdfIndex))
         {
             //register a multi searcher for both of them
             var multiSearcher = new MultiIndexSearcher("MultiSearcher", new IIndex[] { externalIndex, pdfIndex });
