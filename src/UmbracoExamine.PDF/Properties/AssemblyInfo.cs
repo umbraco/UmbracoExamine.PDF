@@ -25,5 +25,5 @@ using System.Security;
 
 [assembly: AssemblyVersion("0.8.*")]
 
-[assembly: AssemblyFileVersion("2.0.0")]
-[assembly: AssemblyInformationalVersion("2.0.0")]
+[assembly: AssemblyFileVersion("2.0.1")]
+[assembly: AssemblyInformationalVersion("2.0.1")]
