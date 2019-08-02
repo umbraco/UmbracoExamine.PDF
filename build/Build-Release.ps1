@@ -16,8 +16,6 @@ $SolutionRoot = Join-Path -Path $RepoRoot "src";
 #trace
 "Solution Root: $SolutionRoot"
 
-$MSBuild = "$Env:SYSTEMROOT\Microsoft.NET\Framework\v4.0.30319\msbuild.exe";
-
 # Make sure we don't have a release folder for this version already
 $BuildFolder = Join-Path -Path $RepoRoot -ChildPath "build";
 $ReleaseFolder = Join-Path -Path $BuildFolder -ChildPath "Release";
