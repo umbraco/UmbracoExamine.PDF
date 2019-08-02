@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using NUnit.Framework;
 
@@ -7,12 +8,19 @@ namespace UmbracoExamine.PDF.Tests
     public class PdfTextServiceTest
     {
         private PdfTextService _sut;
-        
+        private DirectoryInfo _testFilesDir;
+
         [SetUp]
         public void Setup()
         {
             _sut = new PdfTextService(new PdfSharpTextExtractor());
+            _testFilesDir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+            while(!_testFilesDir.Name.Equals("UmbracoExamine.PDF.Tests", StringComparison.InvariantCultureIgnoreCase))
+            {
+                _testFilesDir = _testFilesDir.Parent;
+            }
         }
+
 
         [Test]
         [TestCase("Converting_file_to_PDF.pdf", "Converting", "http://r.office.microsoft.com/r/rlidMSAddinPDFXPS", "Microsoft Word 2008")]
@@ -23,7 +31,7 @@ namespace UmbracoExamine.PDF.Tests
         public void ExtractText__must_return_the_text_from_the_file_on_the_path(string pdfFileName,
             params string[] expectedSentences)
         {
-            var absolutePath = Path.GetFullPath(Path.Combine("../../TestFiles/", pdfFileName));
+            var absolutePath = Path.GetFullPath(Path.Combine(_testFilesDir.FullName, "TestFiles/", pdfFileName));
             var text = _sut.ExtractText(absolutePath).ToLower();
 
             foreach (var expectedSentence in expectedSentences)
@@ -37,7 +45,7 @@ namespace UmbracoExamine.PDF.Tests
         public void ExtractText__it_is_a_known_issue_we_cant_handle_some_files(string pdfFileName,
             params string[] expectedSentences)
         {
-            var absolutePath = Path.GetFullPath(Path.Combine("../../TestFiles/", pdfFileName));
+            var absolutePath = Path.GetFullPath(Path.Combine(_testFilesDir.FullName, "TestFiles/", pdfFileName));
             var text = _sut.ExtractText(absolutePath).ToLower();
 
             foreach (var expectedSentence in expectedSentences)
