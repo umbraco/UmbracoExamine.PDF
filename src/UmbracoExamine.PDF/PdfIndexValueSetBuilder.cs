@@ -32,7 +32,16 @@ namespace UmbracoExamine.PDF
                 var umbracoFile = item.GetValue<string>(Constants.Conventions.Media.File);
                 if (string.IsNullOrWhiteSpace(umbracoFile)) continue;
 
-                var fileTextContent = ExtractTextFromFile(umbracoFile);
+                string fileTextContent;
+                try
+                {
+                    fileTextContent = ExtractTextFromFile(umbracoFile);
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error<PdfIndexValueSetBuilder>(ex, "Could not read the file {MediaFile}", umbracoFile);
+                    continue;
+                }
                 var indexValues = new Dictionary<string, object>
                 {
                     ["nodeName"] = item.Name,
