@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Globalization;
-using System.Linq;
 using Examine;
 using Examine.LuceneEngine.Providers;
 using Lucene.Net.Index;
 using Umbraco.Core;
 using Umbraco.Core.Cache;
 using Umbraco.Core.Composing;
-using Umbraco.Core.Events;
-using Umbraco.Core.Models;
 using Umbraco.Core.Services;
 using Umbraco.Core.Services.Changes;
-using Umbraco.Core.Services.Implement;
 using Umbraco.Core.Logging;
 using Umbraco.Core.Sync;
 using Umbraco.Web.Cache;

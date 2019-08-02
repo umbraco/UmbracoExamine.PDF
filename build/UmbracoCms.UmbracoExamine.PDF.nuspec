@@ -11,7 +11,7 @@
         <language>en-US</language>
         <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
         <projectUrl>http://umbraco.com/</projectUrl>
-        <iconUrl>http://umbraco.com/media/357769/100px_transparent.png</iconUrl>
+        <iconUrl>https://umbraco.com/dist/nuget/logo-small.png</iconUrl>
         <tags>Umbraco Examine Lucene PDF UmbracoExamine</tags>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <dependencies>
