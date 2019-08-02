@@ -111,9 +111,8 @@ namespace UmbracoExamine.PDF
 
                     if (media.Trashed)
                         _pdfIndexPopulator.RemoveFromIndex(payload.Id);
-
-                    // just that media
-                    _pdfIndexPopulator.AddToIndex(media);
+                    else
+                        _pdfIndexPopulator.AddToIndex(media);
 
                     // branch
                     if (payload.ChangeTypes.HasType(TreeChangeTypes.RefreshBranch))
@@ -126,7 +125,10 @@ namespace UmbracoExamine.PDF
                             var descendants = _mediaService.GetPagedDescendants(media.Id, page++, pageSize, out total);
                             foreach (var descendant in descendants)
                             {
-                                _pdfIndexPopulator.AddToIndex(descendant);
+                                if (descendant.Trashed)
+                                    _pdfIndexPopulator.RemoveFromIndex(descendant);
+                                else
+                                    _pdfIndexPopulator.AddToIndex(descendant);
                             }
                         }
                     }
