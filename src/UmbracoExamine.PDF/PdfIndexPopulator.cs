@@ -14,7 +14,6 @@ namespace UmbracoExamine.PDF
     /// </summary>
     public class PdfIndexPopulator : IndexPopulator
     {
-        private const string PdfFileExtension = "pdf";
         private readonly IExamineManager _examineManager;
         private readonly IMediaService _mediaService;
         private readonly IPdfIndexValueSetBuilder _mediaValueSetBuilder;
@@ -44,7 +43,7 @@ namespace UmbracoExamine.PDF
             _mediaService = mediaService;
             _mediaValueSetBuilder = mediaValueSetBuilder;
             _examineManager = examineManager;
-            RegisterIndex(PdfIndexCreator.PdfIndexName);
+            RegisterIndex(PdfIndexConstants.PdfIndexName);
         }
 
 
@@ -54,7 +53,7 @@ namespace UmbracoExamine.PDF
         /// <param name="media"></param>
         public void RemoveFromIndex(params IMedia[] media)
         {
-            if (!_examineManager.TryGetIndex(PdfIndexCreator.PdfIndexName, out var index)) return;
+            if (!_examineManager.TryGetIndex(PdfIndexConstants.PdfIndexName, out var index)) return;
             var ids = media.Select(m => m.Id.ToInvariantString());
             index.DeleteFromIndex(ids);
         }
@@ -65,7 +64,7 @@ namespace UmbracoExamine.PDF
         /// <param name="mediaIds"></param>
         public void RemoveFromIndex(params int[] mediaIds)
         {
-            if (!_examineManager.TryGetIndex(PdfIndexCreator.PdfIndexName, out var index)) return;
+            if (!_examineManager.TryGetIndex(PdfIndexConstants.PdfIndexName, out var index)) return;
             var ids = mediaIds.Select(m => m.ToInvariantString());
             index.DeleteFromIndex(ids);
         }
@@ -76,8 +75,8 @@ namespace UmbracoExamine.PDF
         /// <param name="media"></param>
         public void AddToIndex(params IMedia[] media)
         {
-            if (!_examineManager.TryGetIndex(PdfIndexCreator.PdfIndexName, out var index)) return;
-            var mediaToIndex = media.Where(m => m.GetValue<string>("umbracoExtension") == PdfFileExtension).ToArray();
+            if (!_examineManager.TryGetIndex(PdfIndexConstants.PdfIndexName, out var index)) return;
+            var mediaToIndex = media.Where(m => m.GetValue<string>(PdfIndexConstants.UmbracoMediaExtensionPropertyAlias) == PdfIndexConstants.PdfFileExtension).ToArray();
             if (mediaToIndex.Length > 0)
                 index.IndexItems(_mediaValueSetBuilder.GetValueSets(mediaToIndex));
         }
@@ -108,7 +107,7 @@ namespace UmbracoExamine.PDF
             do
             {
                 media = _mediaService.GetPagedDescendants(mediaParentId, pageIndex, pageSize, out _)
-                    .Where(m => m.GetValue<string>("umbracoExtension") == PdfFileExtension)
+                    .Where(m => m.GetValue<string>(PdfIndexConstants.UmbracoMediaExtensionPropertyAlias) == PdfIndexConstants.PdfFileExtension)
                     .ToArray();
 
                 if (media.Length > 0)

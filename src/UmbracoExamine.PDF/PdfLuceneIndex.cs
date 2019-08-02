@@ -11,6 +11,7 @@ using Umbraco.Web.Search;
 
 namespace UmbracoExamine.PDF
 {
+
     public class PdfLuceneIndex : LuceneIndex, IIndexDiagnostics
     {
         public PdfLuceneIndex(string name, Directory luceneDirectory, FieldDefinitionCollection fieldDefinitions,
@@ -19,7 +20,7 @@ namespace UmbracoExamine.PDF
             IReadOnlyDictionary<string, IFieldValueTypeFactory> indexValueTypesFactory = null)
             : base(name, luceneDirectory, fieldDefinitions, analyzer, validator, indexValueTypesFactory)
         {
-            _diagnostics = new GenericIndexDiagnostics(this); //TODO: new LuceneIndexDiagnostics(this, logger);
+            _diagnostics = new PdfIndexDiagnostics(this, logger);
         }
 
         #region IIndexDiagnostics

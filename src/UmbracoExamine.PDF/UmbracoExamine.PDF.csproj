@@ -265,7 +265,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IPdfTextExtractor.cs" />
-    <Compile Include="IPdfValueSetValidator.cs" />
+    <Compile Include="PdfIndexConstants.cs" />
+    <Compile Include="PdfIndexDiagnostics.cs" />
+    <Compile Include="PdfValueSetValidator.cs" />
+    <Compile Include="LuceneIndexDiagnostics.cs" />
     <Compile Include="PdfLuceneIndex.cs" />
     <Compile Include="PdfSharpTextExtractor.cs" />
     <Compile Include="PdfIndexCreator.cs" />

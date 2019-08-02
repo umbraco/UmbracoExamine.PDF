@@ -18,15 +18,14 @@ namespace UmbracoExamine.PDF
             _logger = logger;
         }
 
-        public const string PdfIndexName = "PDFIndex";
         private readonly IProfilingLogger _logger;
 
         public override IEnumerable<IIndex> Create()
         {
-            var index = new PdfLuceneIndex(PdfIndexName,
-                CreateFileSystemLuceneDirectory(PdfIndexName),
+            var index = new PdfLuceneIndex(PdfIndexConstants.PdfIndexName,
+                CreateFileSystemLuceneDirectory(PdfIndexConstants.PdfIndexName),
                 new FieldDefinitionCollection(
-                    new FieldDefinition("fileTextContent", FieldDefinitionTypes.FullTextSortable)
+                    new FieldDefinition(PdfIndexConstants.PdfContentFieldName, FieldDefinitionTypes.FullText)
                 ),
                 new StandardAnalyzer(Version.LUCENE_30),
                 new PdfValueSetValidator(null),

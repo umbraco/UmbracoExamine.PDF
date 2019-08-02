@@ -1,18 +1,22 @@
-﻿using Examine;
+﻿using System.Collections.Generic;
+using Examine;
 using Umbraco.Core;
+using Umbraco.Examine;
 
 namespace UmbracoExamine.PDF
 {
-    public class PdfValueSetValidator : IValueSetValidator
+    public class PdfValueSetValidator : ValueSetValidator
     {
-        public PdfValueSetValidator(int? parentId)
-        {
-            ParentId = parentId;
-        }
-
         public int? ParentId { get; }
 
         private const string PathKey = "path";
+
+        public PdfValueSetValidator(int? parentId,
+            IEnumerable<string> includeItemTypes = null, IEnumerable<string> excludeItemTypes = null)
+            : base(includeItemTypes, excludeItemTypes, null, null)
+        {
+            ParentId = parentId;
+        }
 
         public bool ValidatePath(string path)
         {
@@ -28,8 +32,12 @@ namespace UmbracoExamine.PDF
             return true;
         }
 
-        public ValueSetValidationResult Validate(ValueSet valueSet)
+        public override ValueSetValidationResult Validate(ValueSet valueSet)
         {
+            var baseValidate = base.Validate(valueSet);
+            if (baseValidate == ValueSetValidationResult.Failed)
+                return ValueSetValidationResult.Failed;
+
             //must have a 'path'
             if (!valueSet.Values.TryGetValue(PathKey, out var pathValues)) return ValueSetValidationResult.Failed;
             if (pathValues.Count == 0) return ValueSetValidationResult.Failed;
