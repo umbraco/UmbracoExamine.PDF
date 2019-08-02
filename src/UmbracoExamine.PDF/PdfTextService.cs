@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Umbraco.Core.IO;
 
 namespace UmbracoExamine.PDF
 {
@@ -11,15 +12,18 @@ namespace UmbracoExamine.PDF
     public class PdfTextService
     {
         private readonly IPdfTextExtractor _pdfTextExtractor;
+        private readonly IMediaFileSystem _mediaFileSystem;
 
-        public PdfTextService(IPdfTextExtractor pdfTextExtractor)
+        public PdfTextService(IPdfTextExtractor pdfTextExtractor, IMediaFileSystem mediaFileSystem)
         {
             _pdfTextExtractor = pdfTextExtractor;
+            _mediaFileSystem = mediaFileSystem;
         }
 
         public string ExtractText(string filePath)
         {
-            return ExceptChars(_pdfTextExtractor.GetTextFromPdf(filePath), UnsupportedRange.Value, ReplaceWithSpace);
+            using (var fs = _mediaFileSystem.OpenFile(filePath))
+                return ExceptChars(_pdfTextExtractor.GetTextFromPdf(fs), UnsupportedRange.Value, ReplaceWithSpace);
         }
 
         /// <summary>

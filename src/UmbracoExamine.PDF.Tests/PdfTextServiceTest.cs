@@ -1,6 +1,8 @@
 using System;
 using System.IO;
+using Moq;
 using NUnit.Framework;
+using Umbraco.Core.IO;
 
 namespace UmbracoExamine.PDF.Tests
 {
@@ -13,7 +15,8 @@ namespace UmbracoExamine.PDF.Tests
         [SetUp]
         public void Setup()
         {
-            _sut = new PdfTextService(new PdfSharpTextExtractor());
+            var fs = new Mock<IMediaFileSystem>();
+            _sut = new PdfTextService(new PdfSharpTextExtractor(), fs.Object);
             _testFilesDir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
             while(!_testFilesDir.Name.Equals("UmbracoExamine.PDF.Tests", StringComparison.InvariantCultureIgnoreCase))
             {

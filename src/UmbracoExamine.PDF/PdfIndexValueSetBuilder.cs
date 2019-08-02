@@ -31,8 +31,8 @@ namespace UmbracoExamine.PDF
             {
                 var umbracoFile = item.GetValue<string>(Constants.Conventions.Media.File);
                 if (string.IsNullOrWhiteSpace(umbracoFile)) continue;
-                var filepath = IOHelper.MapPath(umbracoFile);
-                var fileTextContent = ExtractTextFromFile(filepath);
+
+                var fileTextContent = ExtractTextFromFile(umbracoFile);
                 var indexValues = new Dictionary<string, object>
                 {
                     ["nodeName"] = item.Name,

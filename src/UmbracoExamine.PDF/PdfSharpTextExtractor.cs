@@ -1,8 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Text;
 using PdfSharp.Pdf.Content;
 using PdfSharp.Pdf.Content.Objects;
 using PdfSharp.Pdf.IO;
+using Umbraco.Core.IO;
 
 namespace UmbracoExamine.PDF
 {
@@ -19,9 +21,9 @@ namespace UmbracoExamine.PDF
     /// </remarks>
     public class PdfSharpTextExtractor : IPdfTextExtractor
     {
-        public string GetTextFromPdf(string pdfFileName)
+        public string GetTextFromPdf(Stream pdfFileStream)
         {
-            using (var document = PdfReader.Open(pdfFileName, PdfDocumentOpenMode.ReadOnly))
+            using (var document = PdfReader.Open(pdfFileStream, PdfDocumentOpenMode.ReadOnly))
             {
                 var result = new StringBuilder();
                 foreach (var page in document.Pages)

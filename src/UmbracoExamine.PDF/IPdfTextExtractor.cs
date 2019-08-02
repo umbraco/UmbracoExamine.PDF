@@ -1,7 +1,9 @@
+using System.IO;
+
 namespace UmbracoExamine.PDF
 {
     public interface IPdfTextExtractor
     {
-        string GetTextFromPdf(string pdfFileName);
+        string GetTextFromPdf(Stream pdfFileStream);
     }
 }
