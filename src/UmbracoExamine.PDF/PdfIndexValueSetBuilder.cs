@@ -41,7 +41,7 @@ namespace UmbracoExamine.PDF
                     [PdfIndexConstants.PdfContentFieldName] = fileTextContent
                 };
 
-                var valueSet = new ValueSet(item.Id.ToString(), IndexTypes.Media, PdfIndexConstants.PdfItemType, indexValues);
+                var valueSet = new ValueSet(item.Id.ToString(), PdfIndexConstants.PdfCategory, item.ContentType.Alias, indexValues);
 
                 yield return valueSet;
             }

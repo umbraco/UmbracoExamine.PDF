@@ -6,6 +6,6 @@
         public const string PdfContentFieldName = "fileTextContent";
         public const string UmbracoMediaExtensionPropertyAlias = "umbracoExtension";
         public const string PdfFileExtension = "pdf";
-        public const string PdfItemType = "pdf";
+        public const string PdfCategory = "pdf";
     }
 }
