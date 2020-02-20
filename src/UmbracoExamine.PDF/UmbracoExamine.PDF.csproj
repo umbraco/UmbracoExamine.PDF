@@ -267,6 +267,10 @@
     <Compile Include="IPdfTextExtractor.cs" />
     <Compile Include="PdfIndexConstants.cs" />
     <Compile Include="PdfIndexDiagnostics.cs" />
+    <Compile Include="PdfSharp\AdobeGlyfList.cs" />
+    <Compile Include="PdfSharp\CMap.cs" />
+    <Compile Include="PdfSharp\CodeSpaceRange.cs" />
+    <Compile Include="PdfSharp\FontResource.cs" />
     <Compile Include="PdfValueSetValidator.cs" />
     <Compile Include="LuceneIndexDiagnostics.cs" />
     <Compile Include="PdfLuceneIndex.cs" />
