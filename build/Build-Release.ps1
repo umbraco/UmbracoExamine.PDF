@@ -26,9 +26,6 @@ if ((Get-Item $ReleaseFolder -ErrorAction SilentlyContinue) -ne $null)
 }
 New-Item $ReleaseFolder -Type directory
 
-#trace
-"Release path: $ReleaseFolder"
-
 # Go get nuget.exe if we don't hae it
 $NuGet = "$BuildFolder\nuget.exe"
 $FileExists = Test-Path $NuGet 
@@ -65,7 +62,7 @@ $AssemblyInfoPath = Join-Path -Path $SolutionRoot -ChildPath "UmbracoExamine.PDF
 	-replace "(?<=AssemblyInformationalVersion\(`")[.\w-]*(?=`"\))", "$ReleaseVersionNumber$PreReleaseName" |
 	sc -Path $AssemblyInfoPath -Encoding UTF8;
 # Set the copyright
-$Copyright = "Copyright " + [char]0x00A9 + " Umbraco ".(Get-Date).year
+$Copyright = "Copyright " + [char]0x00A9 + " Umbraco " + (Get-Date).year
 (gc -Path $AssemblyInfoPath) `
 	-replace "(?<=AssemblyCopyright\(`")[.\w-]*(?=`"\))", $Copyright |
 	sc -Path $AssemblyInfoPath -Encoding UTF8;

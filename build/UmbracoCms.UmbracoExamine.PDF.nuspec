@@ -16,8 +16,7 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <dependencies>
             <group targetFramework="net472">
-                <dependency id="UmbracoCms.Core" version="[8.0.0, 9.0.0)" />
-                <dependency id="UmbracoCms.Web" version="[8.0.0, 9.0.0)" />
+                <dependency id="UmbracoCms.Web" version="[8.1.0, 9.0.0)" />
                 <dependency id="Examine" version="[1.0.1, 2.0.0)" />
                 <dependency id="PDFsharpNetStandard2" version="[1.51.4845, 1.60.0)" />
             </group>
