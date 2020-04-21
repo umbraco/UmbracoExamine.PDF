@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
+using Umbraco.Core.IO;
 
 namespace UmbracoExamine.PDF
 {
@@ -43,7 +44,36 @@ namespace UmbracoExamine.PDF
 
         private static readonly HashSet<char> ReplaceWithSpace = new HashSet<char> {'\r', '\n'};
 
+        public string GetTextFromAllPages(string pdfPath, MediaFileSystem mediaFileSystem, Action<Exception> onError)
+        {
+            var output = new StringWriter();
 
+            try
+            {
+                using (var stream = mediaFileSystem.OpenFile(pdfPath))
+                using (var reader = new PdfReader(stream))
+                {
+                    for (int i = 1; i <= reader.NumberOfPages; i++)
+                    {
+                        var result =
+                            ExceptChars(
+                                PdfTextExtractor.GetTextFromPage(reader, i, new SimpleTextExtractionStrategy()),
+                                UnsupportedRange.Value,
+                                ReplaceWithSpace);
+                        output.Write(result + " ");
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                onError(ex);
+            }
+
+            return output.ToString();
+        }
+
+        [Obsolete("Use the other overload instead")]
         public string GetTextFromAllPages(string pdfPath, Action<Exception> onError)
         {
             var output = new StringWriter();
