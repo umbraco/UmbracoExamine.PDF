@@ -7,7 +7,7 @@ using static PdfSharp.Pdf.PdfDictionary;
 
 namespace UmbracoExamine.PDF.PdfSharp
 {
-    ///
+    /// <summary>
     /// Parse a CMap file.
     /// This is not a complete CMAP parser. There are many parts of the CMAP spec that this doesn't
     /// yet implement. This parser aims to catch the most common features necessary for text extraction
@@ -16,7 +16,9 @@ namespace UmbracoExamine.PDF.PdfSharp
     /// to do a proper job of this.
     /// TODO - Include referenced CMAPs
     /// TODO - Support standard CMAPs
-    ///
+    /// See https://blog.idrsolutions.com/2012/05/understanding-the-pdf-file-format-embedded-cmap-tables/
+    /// for a good primer on CMAP files. After that, check out the Adobe SPEC.
+    /// </summary>
     public class CMap
     {
         private readonly string CMapStr;
@@ -110,7 +112,6 @@ namespace UmbracoExamine.PDF.PdfSharp
                     }
                 }
 
-
                 //Fallback on using the cid... I don't think this is supposed to be done.
                 cid = chars[chrIdx];
                 Debug.WriteLine($"Failed to encode {cid:X}");
@@ -171,9 +172,15 @@ namespace UmbracoExamine.PDF.PdfSharp
 
         }
 
+        /// <summary>
+        /// Parse the mappings in the CMAP. We use recursion, popping data off the CMAP until there is
+        /// nothing left to process.
+        /// </summary>
+        /// <param name="cMap"></param>
         public void ParseMappings(string cMap)
         {
-            //TODO check for usecmap -- we can refer to other CMAPs including built-in ones...
+            // TODO check for usecmap -- we can refer to other CMAPs including built-in ones. I don't
+            // have any example of a PDF that does this so I'm leving this TODO for a future issue
             int beginbfcharIdx = cMap.IndexOf("beginbfchar");
             int beginbfrangeIdx = cMap.IndexOf("beginbfrange");
             int bfCharLen = cMap.IndexOf("endbfchar") - beginbfcharIdx;
@@ -184,22 +191,26 @@ namespace UmbracoExamine.PDF.PdfSharp
             {
                 if (beginbfcharIdx < beginbfrangeIdx)
                 {
+                    // parse the BFChar record and remove it from the CMAP
                     ParseBFChar(cMap.Substring(beginbfcharIdx + 11, bfCharLen - 11));
                     cMap = cMap.Substring(beginbfcharIdx + 11 + bfCharLen + 9 - 11);
                 }
                 else
                 {
+                    // parse the ParseBFRange record and remove it from the CMAP
                     ParseBFRange(cMap.Substring(beginbfrangeIdx + 12, bfRangeLen - 12));
                     cMap = cMap.Substring(beginbfrangeIdx + 12 + bfRangeLen + 10 - 12);
                 }
             }
             else if (beginbfcharIdx >= 0)
             {
+                // parse the BFChar record and remove it from the CMAP
                 ParseBFChar(cMap.Substring(beginbfcharIdx + 11, bfCharLen - 11));
                 cMap = cMap.Substring(beginbfcharIdx = 11 + bfCharLen + 9 - 11);
             }
             else if (beginbfrangeIdx >= 0)
             {
+                // parse the ParseBFRange record and remove it from the CMAP
                 ParseBFRange(cMap.Substring(beginbfrangeIdx + 12, bfRangeLen - 12));
                 cMap = cMap.Substring(beginbfrangeIdx + 12 + bfRangeLen + 10 - 12);
             }
@@ -208,7 +219,8 @@ namespace UmbracoExamine.PDF.PdfSharp
                 //There is nothing left to parse
                 return;
             }
-            //Recurse until there is nothing left to parse
+
+            // Recurse until there is nothing left to parse
             ParseMappings(cMap);
         }
 
@@ -226,6 +238,11 @@ namespace UmbracoExamine.PDF.PdfSharp
             }
         }
 
+        /// <summary>
+        /// The dst code is a hex string which should be multiples of 4. Convert it to a unicode character
+        /// </summary>
+        /// <param name="dstCode"></param>
+        /// <returns></returns>
         private string ConvertDstCode(string dstCode)
         {
             string ucode = null;
@@ -248,12 +265,15 @@ namespace UmbracoExamine.PDF.PdfSharp
             return ucode;
         }
 
-        ///
-        /// Pase the contents of a CMAP table from beginbfchar to endbfchar
-        ///
+        /// <summary>
+        /// Parse the contents of a CMAP table from beginbfchar to endbfchar.
+        /// </summary>
+        /// <param name="bfChar"></param>
         private void ParseBFChar(string bfChar)
         {
-            //TODO - this assumes src and dst are both in hex format; however dst can be dstCharname 
+            // TODO - this assumes src and dst are both in hex format; however dst can be dstCharname
+            // This is parsing lines of the CMAP that look like <srcCode> <dstCode> ie <07> <03C0>
+            // where integer 7 maps to unicode character 0x03c0
             string pattern = @"\s?<([a-fA-F0-9]+)>\s?<([a-fA-F0-9]+)>";
             Match match;
             while ((match = Regex.Match(bfChar, pattern)).Success)
@@ -295,10 +315,17 @@ namespace UmbracoExamine.PDF.PdfSharp
             }
         }
 
+        /// <summary>
         ///
         /// Parse the contents of a CMAP file from beginbfrange to endbfrange
         /// This will generate a mapping for each character in each range
-        ///
+        /// A bfRange should look like <srcCodeLow> <srcCodeHigh> <dstCodeLow>
+        /// Example the following range <27> <29> <0010> will generate 3 mappings:
+        /// 27 to 0x10
+        /// 28 to 0x11
+        /// 29 to 0x12
+        /// </summary>
+        /// <param name="fbRange"></param>
         private void ParseBFRange(string fbRange)
         {
             Debug.WriteLine("ParseRange");

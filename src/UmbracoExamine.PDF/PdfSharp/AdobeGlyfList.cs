@@ -5,6 +5,10 @@ using System.Text.RegularExpressions;
 
 namespace UmbracoExamine.PDF.PdfSharp
 {
+    /// <summary>
+    /// The standard Adobe Glyf List for converting standard Glyf characters to Unicode.
+    /// To prevent continual parsing of the file, this uses a singleton pattern
+    /// </summary>
     public class AdobeGlyfList
     {
         private static AdobeGlyfList _instance = null;

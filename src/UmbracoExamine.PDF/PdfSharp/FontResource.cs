@@ -32,22 +32,34 @@ namespace UmbracoExamine.PDF.PdfSharp
         private readonly CMap _cmap;
         private PdfArray _differences;
 
+        /// <summary>
+        /// Encodes the given pdf text string into unicode
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         public string Encode(string text)
         {
-
-            // convert any characters that fall in the /Encoding /Differences array
+            // if a pdf has a differences array we use it primarily to convert to unicode chars
+            // the differences array can contain a map of indexes to characters, or to glyph names
+            // if it is a glyph name we lookup the unicode value of the glyph, otherwise we convert
+            // it to a character.
             if (_differences != null && _differences.Elements.Count > 0)
             {
                 var glyphMap = AdobeGlyfList.Instance;
+                // generate an enumerable of converted characters
                 var chars = text.ToCharArray().Select(ch =>
                 {
+                    // if the character falls within the bounds of the differences array we convert it
+                    // otherwise we return it
                     if (_differences.Elements.Count > ch)
                     {
                         var item = _differences.Elements[ch];
+                        // if we get a PdfName rather than a number look it up in the glyphMap
                         if (item is PdfName name)
                         {
                             return glyphMap.Lookup(name.Value);
                         }
+                        // if we got a number, convert it to a character
                         if (item is PdfInteger number)
                         {
                             return ((char)number.Value).ToString();
@@ -58,7 +70,7 @@ namespace UmbracoExamine.PDF.PdfSharp
                 return string.Concat(chars);
             }
 
-            // if this font has a /ToUnciode CMAP then we will first resolve the text through it
+            // if this font has a /ToUnciode CMAP then we will tyr to resolve the text through it
             if (_cmap != null)
             {
                 return _cmap.Encode(text);
