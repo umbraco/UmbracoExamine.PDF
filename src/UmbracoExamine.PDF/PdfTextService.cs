@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Umbraco.Core.IO;
+using Umbraco.Core.Logging;
 
 namespace UmbracoExamine.PDF
 {
@@ -13,17 +14,32 @@ namespace UmbracoExamine.PDF
     {
         private readonly IPdfTextExtractor _pdfTextExtractor;
         private readonly IMediaFileSystem _mediaFileSystem;
+        private readonly ILogger _logger;
 
-        public PdfTextService(IPdfTextExtractor pdfTextExtractor, IMediaFileSystem mediaFileSystem)
+        public PdfTextService(
+            IPdfTextExtractor pdfTextExtractor,
+            IMediaFileSystem mediaFileSystem,
+            ILogger logger)
         {
             _pdfTextExtractor = pdfTextExtractor;
             _mediaFileSystem = mediaFileSystem;
+            _logger = logger;
         }
 
         public string ExtractText(string filePath)
         {
             using (var fs = _mediaFileSystem.OpenFile(filePath))
-                return ExceptChars(_pdfTextExtractor.GetTextFromPdf(fs), UnsupportedRange.Value, ReplaceWithSpace);
+            {
+                if (fs != null)
+                {
+                    return ExceptChars(_pdfTextExtractor.GetTextFromPdf(fs), UnsupportedRange.Value, ReplaceWithSpace);
+                }
+                else
+                {
+                    _logger.Error(this.GetType(), new Exception($"Unable to open PDF file {filePath}"));
+                    return null;
+                }
+            }
         }
 
         /// <summary>
@@ -45,6 +61,10 @@ namespace UmbracoExamine.PDF
                 unsupportedRange.Add((char)c);
             }
             unsupportedRange.Add((char)0x1F);
+
+            //Allow tabs
+            unsupportedRange.Remove((char)0x9);
+
             // Remove replace chars from collection
             foreach (var c in ReplaceWithSpace)
             {
@@ -67,7 +87,6 @@ namespace UmbracoExamine.PDF
             var sb = new StringBuilder(str.Length);
             foreach (var c in str)
             {
-                
                 if (toExclude.Contains(c) == false)
                 {
                     if (replaceWithSpace.Contains(c))
