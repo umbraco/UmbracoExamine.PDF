@@ -3,6 +3,7 @@ using System.IO;
 using Moq;
 using NUnit.Framework;
 using Umbraco.Core.IO;
+using Umbraco.Core.Logging;
 
 namespace UmbracoExamine.PDF.Tests
 {
@@ -16,7 +17,9 @@ namespace UmbracoExamine.PDF.Tests
         public void Setup()
         {
             var fs = new Mock<IMediaFileSystem>();
-            _sut = new PdfTextService(new PdfSharpTextExtractor(), fs.Object);
+            fs.Setup<System.IO.Stream>(m => m.OpenFile(It.IsAny<string>())).Returns<string>(path => System.IO.File.OpenRead(path));
+            var logger = new Mock<ILogger>();
+            _sut = new PdfTextService(new PdfSharpTextExtractor(), fs.Object, logger.Object);
             _testFilesDir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
             while(!_testFilesDir.Name.Equals("UmbracoExamine.PDF.Tests", StringComparison.InvariantCultureIgnoreCase))
             {
@@ -31,6 +34,7 @@ namespace UmbracoExamine.PDF.Tests
         [TestCase("PDFStandards.PDF", "standardization", "implementation")]
         [TestCase("SurviorFlipCup.pdf", "Drink the beer", "game", "following")]
         [TestCase("Office16Word.pdf", "this", "is", "simple", "word")]
+        [TestCase("windows-vista.pdf", "WINDOWS", "VISTA", "ULTIMATE", "supplements", "Anytime Upgrade", "it is invalid")]
         public void ExtractText__must_return_the_text_from_the_file_on_the_path(string pdfFileName,
             params string[] expectedSentences)
         {
@@ -43,18 +47,18 @@ namespace UmbracoExamine.PDF.Tests
             }
         }
         
-        [Test]
-        [TestCase("windows-vista.pdf", "WINDOWS", "VISTA", "ULTIMATE", "supplements", "Anytime Upgrade","it is invalid")]
-        public void ExtractText__it_is_a_known_issue_we_cant_handle_some_files(string pdfFileName,
-            params string[] expectedSentences)
-        {
-            var absolutePath = Path.GetFullPath(Path.Combine(_testFilesDir.FullName, "TestFiles/", pdfFileName));
-            var text = _sut.ExtractText(absolutePath).ToLower();
+        //[Test]
+        //[TestCase("windows-vista.pdf", "WINDOWS", "VISTA", "ULTIMATE", "supplements", "Anytime Upgrade","it is invalid")]
+        //public void ExtractText__it_is_a_known_issue_we_cant_handle_some_files(string pdfFileName,
+        //    params string[] expectedSentences)
+        //{
+        //    var absolutePath = Path.GetFullPath(Path.Combine(_testFilesDir.FullName, "TestFiles/", pdfFileName));
+        //    var text = _sut.ExtractText(absolutePath).ToLower();
 
-            foreach (var expectedSentence in expectedSentences)
-            {
-                StringAssert.DoesNotContain(expectedSentence.ToLower(), text, "If this test fails, it is actually a success. Then we can suddenly handle a pdf file, that was known not to be handled.");
-            }
-        }
+        //    foreach (var expectedSentence in expectedSentences)
+        //    {
+        //        StringAssert.DoesNotContain(expectedSentence.ToLower(), text, "If this test fails, it is actually a success. Then we can suddenly handle a pdf file, that was known not to be handled.");
+        //    }
+        //}
     }
 }
