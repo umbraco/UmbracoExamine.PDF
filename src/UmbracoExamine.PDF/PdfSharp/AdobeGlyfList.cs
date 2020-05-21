@@ -11,7 +11,7 @@ namespace UmbracoExamine.PDF.PdfSharp
     /// </summary>
     public class AdobeGlyfList
     {
-        private static AdobeGlyfList _instance = null;
+        private static AdobeGlyfList _instance;
         private Dictionary<string, string> Dictionary { get; set; }
 
         private AdobeGlyfList()
@@ -64,11 +64,10 @@ namespace UmbracoExamine.PDF.PdfSharp
                         Dictionary[glyphName] = unicode;
                     }
                 }
-                file.Close();
             }
         }
 
-        private static string glyfListTxt =
+        private const string glyfListTxt =
 @"# -----------------------------------------------------------
 # Copyright 2002-2019 Adobe (http://www.adobe.com/).
 #

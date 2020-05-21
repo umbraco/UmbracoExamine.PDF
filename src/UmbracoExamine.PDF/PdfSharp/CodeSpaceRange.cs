@@ -30,7 +30,7 @@ namespace UmbracoExamine.PDF.PdfSharp
         /// <summary>
         /// The map for a given CID, used to lookup values from the PDF doc and return unicode chars
         /// </summary>
-        public Dictionary<int, Map> Mapping { get; set; }
+        public Dictionary<int, Map> Mapping { get; }
 
         /// <summary>
         /// Add a value to our code space range

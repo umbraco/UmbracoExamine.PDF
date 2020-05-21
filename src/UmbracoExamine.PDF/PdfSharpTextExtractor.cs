@@ -126,10 +126,9 @@ namespace UmbracoExamine.PDF
         {
             string text = obj.Value;
 
-            if (!string.IsNullOrEmpty(CurrentFont) && FontLookup.ContainsKey(CurrentFont))
+            if (!string.IsNullOrEmpty(CurrentFont) && FontLookup.TryGetValue(CurrentFont, out var font))
             {
                 //Do character sub with the current fontMap
-                var font = FontLookup[CurrentFont];
                 text = font.Encode(text);
             }
 

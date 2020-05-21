@@ -24,7 +24,7 @@ namespace UmbracoExamine.PDF.PdfSharp
         private readonly string CMapStr;
         private readonly string FontName;
 
-        public List<CodeSpaceRange> CodeSpaceRanges { get; set; }
+        private List<CodeSpaceRange> CodeSpaceRanges { get; }
 
         public CMap(PdfStream stream, string fontName)
         {
@@ -99,7 +99,7 @@ namespace UmbracoExamine.PDF.PdfSharp
                 if (chrIdx + 3 < charLength)
                 {
                     // 4-byte cid
-                    cid = (chars[chrIdx] << 32) | (chars[chrIdx + 1] << 16) | (chars[chrIdx + 2] << 8) | chars[chrIdx + 3];
+                    cid = (chars[chrIdx] << 24) | (chars[chrIdx + 1] << 16) | (chars[chrIdx + 2] << 8) | chars[chrIdx + 3];
                     range = CodeSpaceRanges.FirstOrDefault(r => r.Low <= cid && r.High >= cid);
                     if (range != null)
                     {
@@ -234,7 +234,7 @@ namespace UmbracoExamine.PDF.PdfSharp
             }
             else
             {
-                Debug.WriteLine($"Can't find char range for {cid:X}, {ucode:X} in font {FontName}");
+                Debug.WriteLine($"Can't find char range for {cid:X}, {ucode} in font {FontName}");
             }
         }
 
@@ -350,7 +350,7 @@ namespace UmbracoExamine.PDF.PdfSharp
                     for (int i = 0; srcCodeLow + i <= srcCodeHigh; i++)
                     {
                         int glyf = srcCodeLow + i;
-                        char dstCode = (char)(((int)dstCodeLow) + i);
+                        char dstCode = (char)(dstCodeLow + i);
                         AddMapping(glyf, dstCode.ToString(), match.Groups[1].Value.Length / 2);
                     }
                 }
