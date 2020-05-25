@@ -188,9 +188,8 @@ namespace UmbracoExamine.PDF
                     {
                         try
                         {
-                        var fileExtension = mediaFileSystem.GetExtension(filePath);
-
-                            if (!SupportedExtensions.Select(x => x.ToUpper()).Contains(fileExtension.ToUpper()))
+                            var fileExtension = mediaFileSystem.GetExtension(filePath);
+                            if (!SupportedExtensions.Contains(fileExtension, StringComparer.InvariantCultureIgnoreCase))
                             {
                                 DataService.LogService.AddInfoLog((int)node.Attribute("id"), "UmbracoExamine.FileIndexer: Extension '" + fileExtension + "' is not supported at this time");
                             }
