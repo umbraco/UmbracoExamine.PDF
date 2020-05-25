@@ -60,17 +60,10 @@ namespace UmbracoExamine.PDF.PdfSharp
                     if (match.Success)
                     {
                         string glyphName = match.Groups["glyph"].Value;
-
-                        //This only works in core. Will keep this around for when we migrate to core.
-                        //var chars = match.Groups["unicode"].Captures
-                        //    .Select(c => (char)Convert.ToInt32(c.Value, 16));
-                        //string unicode = string.Concat(chars);
-
-                        string unicode = "";
-                        foreach (Capture capture in match.Groups["unicode"].Captures)
-                        {
-                            unicode += (char)Convert.ToInt16(capture.Value, 16);
-                        }                        
+                        
+                        var chars = match.Groups["unicode"].Captures.OfType<Capture>().Select(c => (char)Convert.ToInt32(c.Value, 16));
+                        string unicode = string.Concat(chars);
+ 
                         Dictionary[glyphName] = unicode;
                     }
                 }
