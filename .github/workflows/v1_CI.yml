@@ -16,21 +16,9 @@ jobs:
   build:
     runs-on: windows-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v2
-    - name: Setup Nuget.exe
-      uses: warrenbuckley/Setup-Nuget@v1
-    - name: Setup MSBuild.exe
-      uses: warrenbuckley/Setup-MSBuild@v1
-# We don't need this beacuse the Powershell script does that
-#    - name: Restore packages
-#      run: nuget restore src\Umbraco.SampleSite.sln
-#    - name: Build Solution
-#      run: msbuild src\Umbraco.SampleSite.sln -p:Configuration=Release
-      run: |
-      echo "GITHUB_RUN_NUMBER=$GITHUB_RUN_NUMBER"
+    - name: Show details
+      run: echo "GITHUB_RUN_NUMBER=$GITHUB_RUN_NUMBER"
     - name: Build Umbraco package
       run: .\build\Build-Release.ps1 -ReleaseVersionNumber "1.0.4" -PreReleaseName "-alpha.$GITHUB_RUN_NUMBER"
       shell: powershell
