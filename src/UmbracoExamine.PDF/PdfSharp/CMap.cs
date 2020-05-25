@@ -115,8 +115,7 @@ namespace UmbracoExamine.PDF.PdfSharp
                 //Fallback on using the cid... I don't think this is supposed to be done.
                 cid = chars[chrIdx];
                 Debug.WriteLine($"Failed to encode {cid:X}");
-                result.Append((char)cid);
-
+                result += (char)cid;
             }
 
             return result;
