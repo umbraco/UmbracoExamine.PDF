@@ -16,8 +16,12 @@ jobs:
   build:
     runs-on: windows-latest
 
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - name: Show details
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+    # TODO: $GITHUB_RUN_NUMBER resolves to nothing! even though the docs say this should work
+    - name: Show Details
       run: echo "GITHUB_RUN_NUMBER=$GITHUB_RUN_NUMBER"
     - name: Build Umbraco package
       run: .\build\Build-Release.ps1 -ReleaseVersionNumber "1.0.4" -PreReleaseName "-alpha.$GITHUB_RUN_NUMBER"
