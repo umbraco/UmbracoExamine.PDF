@@ -29,6 +29,8 @@ jobs:
 #      run: nuget restore src\Umbraco.SampleSite.sln
 #    - name: Build Solution
 #      run: msbuild src\Umbraco.SampleSite.sln -p:Configuration=Release
+      run: |
+      echo "GITHUB_RUN_NUMBER=$GITHUB_RUN_NUMBER"
     - name: Build Umbraco package
       run: .\build\Build-Release.ps1 -ReleaseVersionNumber "1.0.4" -PreReleaseName "-alpha.$GITHUB_RUN_NUMBER"
       shell: powershell
