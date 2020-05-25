@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -16,7 +17,11 @@ namespace UmbracoExamine.PDF.PdfSharp
 
         private AdobeGlyfList()
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             Init();
+            sw.Stop();
+            Debug.WriteLine($"Processed Adobe Glyph List in {sw.Elapsed.TotalMilliseconds}ms");
         }
 
         public static AdobeGlyfList Instance
@@ -55,12 +60,17 @@ namespace UmbracoExamine.PDF.PdfSharp
                     if (match.Success)
                     {
                         string glyphName = match.Groups["glyph"].Value;
-                        var chars = match.Groups["unicode"].Captures.OfType<string>()
-                            .Select(c => (char)Convert.ToInt16(c, 16));
+
                         //This only works in core. Will keep this around for when we migrate to core.
                         //var chars = match.Groups["unicode"].Captures
-                        //    .Select(c => (char)Convert.ToInt16(c.Value, 16));
-                        string unicode = string.Concat(chars);
+                        //    .Select(c => (char)Convert.ToInt32(c.Value, 16));
+                        //string unicode = string.Concat(chars);
+
+                        string unicode = "";
+                        foreach (Capture capture in match.Groups["unicode"].Captures)
+                        {
+                            unicode += (char)Convert.ToInt16(capture.Value, 16);
+                        }                        
                         Dictionary[glyphName] = unicode;
                     }
                 }
