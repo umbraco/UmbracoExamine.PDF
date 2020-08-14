@@ -58,14 +58,23 @@ namespace UmbracoExamine.PDF
         ///
         private void ParseFonts(PdfPage page)
         {
-            var fontResource = page.Resources.Elements.GetDictionary("/Font")?.Elements;
-            if (fontResource == null) return;
-            //All that above isn't going to do, but it's close...
+            // try to extract the font resource
+            var fontResource = page?.Resources?.Elements?.GetDictionary("/Font")?.Elements;
+            if (fontResource == null || fontResource.Keys == null) return;
+
+            // process each font in the font resource
             foreach (var fontName in fontResource.Keys)
             {
+                // create a font object and add it to our dictionary
                 var resource = fontResource[fontName] as PdfReference;
+
+                // make sure we aren't processing nothing
+                if (resource == null) continue;
+
+                // make a font resource object
                 var font = new FontResource(fontName, resource);
 
+                // add it to our dictionary
                 FontLookup[fontName] = font;
             }
         }

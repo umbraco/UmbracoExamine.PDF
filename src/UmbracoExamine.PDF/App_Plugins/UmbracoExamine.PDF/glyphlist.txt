@@ -1,77 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text.RegularExpressions;
-
-namespace UmbracoExamine.PDF.PdfSharp
-{
-    /// <summary>
-    /// The standard Adobe Glyf List for converting standard Glyf characters to Unicode.
-    /// To prevent continual parsing of the file, this uses a singleton pattern
-    /// </summary>
-    public class AdobeGlyfList
-    {
-        private static AdobeGlyfList _instance;
-        private Dictionary<string, string> Dictionary { get; set; }
-
-        private AdobeGlyfList()
-        {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-            Init();
-            sw.Stop();
-            Debug.WriteLine($"Processed Adobe Glyph List in {sw.Elapsed.TotalMilliseconds}ms");
-        }
-
-        public static AdobeGlyfList Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new AdobeGlyfList();
-                }
-                return _instance;
-            }
-        }
-
-        public string Lookup(string glyph)
-        {
-            if (glyph.StartsWith(@"/")) glyph = glyph.Substring(1);
-            Dictionary.TryGetValue(glyph, out string unicode);
-            return unicode;
-        }
-
-        private void Init()
-        {
-            Dictionary = new Dictionary<string, string>();
-            string line;
-
-            // Read the file and display it line by line.
-            // Okay, this was originally reading a file from Adobe, but handling the file in a nuget package was a pain
-            // so I embeded the file at the bottom of this class.
-            using (var file = new System.IO.StringReader(glyfListTxt))
-            {
-                while ((line = file.ReadLine()) != null)
-                {
-                    if (line.StartsWith("#")) continue;
-                    var match = Regex.Match(line, @"(?<glyph>^.*);((?<unicode>[0-9A-F]{4})\s*)+");
-                    if (match.Success)
-                    {
-                        string glyphName = match.Groups["glyph"].Value;
-                        
-                        var chars = match.Groups["unicode"].Captures.OfType<Capture>().Select(c => (char)Convert.ToInt32(c.Value, 16));
-                        string unicode = string.Concat(chars);
- 
-                        Dictionary[glyphName] = unicode;
-                    }
-                }
-            }
-        }
-
-        private const string glyfListTxt =
-@"# -----------------------------------------------------------
+# -----------------------------------------------------------
 # Copyright 2002-2019 Adobe (http://www.adobe.com/).
 #
 # Redistribution and use in source and binary forms, with or
@@ -92,7 +19,7 @@ namespace UmbracoExamine.PDF.PdfSharp
 # software without specific prior written permission.
 #
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
-# CONTRIBUTORS AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES,
+# CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
 # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 # MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 # DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
@@ -4395,6 +4322,4 @@ zretroflexhook;0290
 zstroke;01B6
 zuhiragana;305A
 zukatakana;30BA
-# END";
-    }
-}
+# END

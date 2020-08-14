@@ -45,7 +45,7 @@ namespace UmbracoExamine.PDF.PdfSharp
             // it to a character.
             if (_differences != null && _differences.Elements.Count > 0)
             {
-                var glyphMap = AdobeGlyfList.Instance;
+                var glyphMap = AdobeGlyphList.Instance;
                 // generate an enumerable of converted characters
                 var chars = text.ToCharArray().Select(ch =>
                 {
