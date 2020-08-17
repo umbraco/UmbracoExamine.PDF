@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Umbraco.Core.Logging;
 using static PdfSharp.Pdf.PdfDictionary;
 
 namespace UmbracoExamine.PDF.PdfSharp
@@ -11,23 +12,31 @@ namespace UmbracoExamine.PDF.PdfSharp
     /// Parse a CMap file.
     /// This is not a complete CMAP parser. There are many parts of the CMAP spec that this doesn't
     /// yet implement. This parser aims to catch the most common features necessary for text extraction
-    /// of pdf documents. This is also probably completely wrong. I've read bits and pieces of the 
+    /// of pdf documents. This is also possibly completely wrong. I've read bits and pieces of the 
     /// Adobe PDF spec to piece this together, but I am certainly not the domain expert one should be
     /// to do a proper job of this.
     /// TODO - Include referenced CMAPs
     /// TODO - Support standard CMAPs
     /// See https://blog.idrsolutions.com/2012/05/understanding-the-pdf-file-format-embedded-cmap-tables/
-    /// for a good primer on CMAP files. After that, check out the Adobe SPEC.
+    /// for a good primer on CMAP files. After that, check out the Adobe SPEC (the spec is in the TestFiles
+    /// directory in the Tests project).
     /// </summary>
     public class CMap
     {
         private readonly string CMapStr;
         private readonly string FontName;
+        private readonly ILogger _logger;
 
         private List<CodeSpaceRange> CodeSpaceRanges { get; }
 
-        public CMap(PdfStream stream, string fontName)
+        /// <summary>
+        /// Create a CMap from a /ToUnicode stream
+        /// </summary>
+        /// <param name="stream">The /ToUnicode stream</param>
+        /// <param name="fontName">The name of the font, only used for debugging</param>
+        public CMap(PdfStream stream, string fontName, ILogger logger)
         {
+            _logger = logger;
             CodeSpaceRanges = new List<CodeSpaceRange>();
             CMapStr = stream.ToString();
             FontName = fontName;
@@ -48,9 +57,9 @@ namespace UmbracoExamine.PDF.PdfSharp
             //find a substitution for every char in the text
             for (int chrIdx = 0; chrIdx < charLength; chrIdx++)
             {
-                //Ranges should not overlap, but the spec and the real world...
-                //Start with 1 byte, see if we find a 1 byte match. If not try 2 bytes etc.
-                //CodeSpaceRange.NumberOfBytes should indicate how many bytes we map, but it doesn't in real life
+                // Ranges should not overlap, but the spec and the real world don't always align
+                // Start with 1 byte, see if we find a 1 byte match. If not try 2 bytes etc.
+                // CodeSpaceRange.NumberOfBytes should indicate how many bytes we map, but it doesn't in real life
                 CodeSpaceRange.Map map;
                 int cid = chars[chrIdx];
                 var range = CodeSpaceRanges.FirstOrDefault(r => r.Low <= cid && r.High >= cid);
@@ -114,7 +123,6 @@ namespace UmbracoExamine.PDF.PdfSharp
 
                 //Fallback on using the cid... I don't think this is supposed to be done.
                 cid = chars[chrIdx];
-                Debug.WriteLine($"Failed to encode {cid:X}");
                 result += (char)cid;
             }
 
@@ -147,7 +155,7 @@ namespace UmbracoExamine.PDF.PdfSharp
                     //each range must be representable by an int
                     if (match.Groups[1].Value.Length > 8)
                     {
-                        Debug.WriteLine("codespacerange contains low value that is too large");
+                        _logger.Debug<CMap>($"CMap Parsing Error - codespacerange contains low value that is too large");
                         continue;
                     }
                     int strLength = match.Groups[1].Length;
@@ -162,7 +170,7 @@ namespace UmbracoExamine.PDF.PdfSharp
                 }
                 else
                 {
-                    Debug.WriteLine("codespacerange contains unexpected number of matches");
+                    _logger.Debug<CMap>($"CMap Parsing Error - codespacerange contains unexpected number of matches");
                 }
             }
 
@@ -233,7 +241,7 @@ namespace UmbracoExamine.PDF.PdfSharp
             }
             else
             {
-                Debug.WriteLine($"Can't find char range for {cid:X}, {ucode} in font {FontName}");
+                _logger.Debug<CMap>($"Can't find char range for {cid:X}, {ucode} in font {FontName}");
             }
         }
 
@@ -293,22 +301,22 @@ namespace UmbracoExamine.PDF.PdfSharp
                         string ucode = ConvertDstCode(match.Groups[2].Value);
                         if (ucode == null)
                         {
-                            Debug.WriteLine("dstCode length wasn't a multiple of 4");
+                            _logger.Debug<CMap>("dstCode length wasn't a multiple of 4");
                             continue;
                         }
                         AddMapping(srcCode, ucode, srcCodeByteLength);
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         //TODO -- I think this happens when multiple cids match one ucode
                         //They are all crammed into 1 big number. We need to know how many bytes
                         //the map uses, and loop over the cids.
-                        Debug.WriteLine($"Oops.. we still need to handle this. <{match.Groups[1]}> <{match.Groups[2]}>");
+                        _logger.Debug<CMap>($"CMap Parsing Error - {ex.Message}" );
                     }
                 }
                 else
                 {
-                    Debug.WriteLine("Ummm... well that's awkward, we didn't match a pair of numbers.");
+                    _logger.Debug<CMap>($"CMap Parsing Error - didn't match number pail");
                     break;
                 }
             }
@@ -327,7 +335,6 @@ namespace UmbracoExamine.PDF.PdfSharp
         /// <param name="fbRange"></param>
         private void ParseBFRange(string fbRange)
         {
-            Debug.WriteLine("ParseRange");
             string pattern = @"\s?<([a-fA-F0-9]+)>\s?<([a-fA-F0-9]+)>\s?<([a-fA-F0-9]+)>";
             Match match;
             while ((match = Regex.Match(fbRange, pattern)).Success)
@@ -357,7 +364,7 @@ namespace UmbracoExamine.PDF.PdfSharp
                 {
                     //The format may have been srcCodeLo srcCodeHi [/dstCharName1../dstCharNamen]
                     //where dstCharName is a postscript language name object ie. /quotesingle
-                    Debug.WriteLine("Oops, this isn't handled yet");
+                    _logger.Debug<CMap>($"CMap Parsing Error - parsing of this CMAP format not yet supported.");
                 }
             }
         }

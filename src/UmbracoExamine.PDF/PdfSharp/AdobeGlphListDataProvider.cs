@@ -1,4 +1,27 @@
-# -----------------------------------------------------------
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace UmbracoExamine.PDF.PdfSharp
+{
+    /// <summary>
+    /// Concrete implementation of the Adobe Glyph List. This is just one of many official Adobe Glyph List files.
+    /// If you require the others, you can inject your own provider to read them in. The Adobe Glyph Listst can be
+    /// found at https://github.com/adobe-type-tools/agl-aglfn.
+    /// </summary>
+    public class AdobeGlphListDataProvider : IAdobeGlphListDataProvider
+    {
+
+        public TextReader GetStream()
+        {
+            return new System.IO.StringReader(glyfListTxt);
+        }
+
+        private const string glyfListTxt =
+@"# -----------------------------------------------------------
 # Copyright 2002-2019 Adobe (http://www.adobe.com/).
 #
 # Redistribution and use in source and binary forms, with or
@@ -19,7 +42,7 @@
 # software without specific prior written permission.
 #
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
-# CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+# CONTRIBUTORS AS IS AND ANY EXPRESS OR IMPLIED WARRANTIES,
 # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 # MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 # DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
@@ -4322,4 +4345,6 @@ zretroflexhook;0290
 zstroke;01B6
 zuhiragana;305A
 zukatakana;30BA
-# END
+# END";
+    }
+}

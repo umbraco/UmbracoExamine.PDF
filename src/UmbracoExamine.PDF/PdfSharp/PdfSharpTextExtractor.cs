@@ -8,10 +8,9 @@ using PdfSharp.Pdf.Advanced;
 using PdfSharp.Pdf.Content;
 using PdfSharp.Pdf.Content.Objects;
 using PdfSharp.Pdf.IO;
-using Umbraco.Core.IO;
-using UmbracoExamine.PDF.PdfSharp;
+using Umbraco.Core.Logging;
 
-namespace UmbracoExamine.PDF
+namespace UmbracoExamine.PDF.PdfSharp
 {
     /// <summary>
     /// Extracts text from a PDF
@@ -23,18 +22,28 @@ namespace UmbracoExamine.PDF
     /// </remarks>
     public class PdfSharpTextExtractor : IPdfTextExtractor 
     {
+        private readonly IAdobeGlyphList _adobeGlyphList;
+        private readonly ILogger _logger;
         private Dictionary<string, FontResource> FontLookup;
         private string CurrentFont;
 
-        public PdfSharpTextExtractor()
+        public PdfSharpTextExtractor(IAdobeGlyphList adobeGlyphList, ILogger logger)
         {
+            _adobeGlyphList = adobeGlyphList;
+            _logger = logger;
             FontLookup = new Dictionary<string, FontResource>();
         }
 
+        /// <summary>
+        /// Extract all text from a PDF document
+        /// </summary>
+        /// <param name="pdfFileStream"></param>
+        /// <returns></returns>
         public string GetTextFromPdf(Stream pdfFileStream)
         {
             using (var document = PdfReader.Open(pdfFileStream, PdfDocumentOpenMode.ReadOnly))
             {
+                // we collect the results of text extraction in a string builder. 
                 var result = new StringBuilder();
                 foreach (var page in document.Pages)
                 {
@@ -72,13 +81,18 @@ namespace UmbracoExamine.PDF
                 if (resource == null) continue;
 
                 // make a font resource object
-                var font = new FontResource(fontName, resource);
+                var font = new FontResource(fontName, resource, _adobeGlyphList, _logger);
 
                 // add it to our dictionary
                 FontLookup[fontName] = font;
             }
         }
 
+        /// <summary>
+        /// Recursive method to crawl a PDF object (page or some object of a page) and extract text from that object
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="target"></param>
         private void ExtractText(CObject obj, StringBuilder target)
         {
             switch (obj)
@@ -103,6 +117,11 @@ namespace UmbracoExamine.PDF
             }
         }
 
+        /// <summary>
+        /// Recursively extract text from each object in a sequence object
+        /// </summary>
+        /// <param name="sequence"></param>
+        /// <param name="target"></param>
         private void ExtractTextFromEnumable(CSequence sequence, StringBuilder target)
         {
             foreach (var obj in sequence)
@@ -111,6 +130,12 @@ namespace UmbracoExamine.PDF
             }
         }
 
+        /// <summary>
+        /// Process an operator. If this is font selection (tf) set the current font used for text extraction, if it is a text showing operator (tj)
+        /// then recursively process the object
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="target"></param>
         private void ExtractTextFromOperator(COperator obj, StringBuilder target)
         {
             if (obj.OpCode.OpCodeName == OpCodeName.Tf)
@@ -131,6 +156,11 @@ namespace UmbracoExamine.PDF
             }
         }
 
+        /// <summary>
+        /// Extract text from a cString, performing any necessary font encoding
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="target"></param>
         private void ExtractTextFromString(CString obj, StringBuilder target)
         {
             string text = obj.Value;

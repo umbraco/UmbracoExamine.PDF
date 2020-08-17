@@ -26,7 +26,6 @@
     <files>
         <file src="UmbracoExamine.PDF.dll" target="lib\net472\UmbracoExamine.PDF.dll" />
         <file src="UmbracoExamine.PDF.pdb" target="lib\net472\UmbracoExamine.PDF.pdb" />
-        <file src="UmbracoExamine.PDF\App_Plugins\UmbracoExamine.PDF\glyphlist.txt" target="content\App_Plugins\UmbracoExamine.PDF" />
         <file src="Readme.txt" target="" />
     </files>
 </package>

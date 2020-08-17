@@ -1,16 +1,23 @@
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.Advanced;
 using System.Linq;
+using Umbraco.Core.Logging;
 
 namespace UmbracoExamine.PDF.PdfSharp
 {
     public class FontResource
     {
+        private readonly IAdobeGlyphList _adobeGlyphList;
+        private readonly ILogger _logger;
         ///
         /// Parse the fonts from the page's resources structure including the encoding differences and CMAPs
         ///
-        public FontResource(string fontName, PdfReference resource)
+        public FontResource(string fontName, PdfReference resource, IAdobeGlyphList adobeGlyphList, ILogger logger)
         {
+            // store some injected services
+            _adobeGlyphList = adobeGlyphList;
+            _logger = logger;
+
             var resourceElements = (resource?.Value as PdfDictionary)?.Elements;
             //Extract the encoding differences array
             var differences = resourceElements?.GetDictionary("/Encoding")?.Elements?.GetArray("/Differences");
@@ -24,7 +31,7 @@ namespace UmbracoExamine.PDF.PdfSharp
             var stream = unicodeDictionary?.Stream;
             if (stream != null)
             {
-                _cmap = new CMap(stream, fontName);
+                _cmap = new CMap(stream, fontName, _logger);
             }
         }
 
@@ -45,7 +52,6 @@ namespace UmbracoExamine.PDF.PdfSharp
             // it to a character.
             if (_differences != null && _differences.Elements.Count > 0)
             {
-                var glyphMap = AdobeGlyphList.Instance;
                 // generate an enumerable of converted characters
                 var chars = text.ToCharArray().Select(ch =>
                 {
@@ -57,7 +63,7 @@ namespace UmbracoExamine.PDF.PdfSharp
                         // if we get a PdfName rather than a number look it up in the glyphMap
                         if (item is PdfName name)
                         {
-                            return glyphMap.Lookup(name.Value);
+                            return _adobeGlyphList.Lookup(name.Value);
                         }
                         // if we got a number, convert it to a character
                         if (item is PdfInteger number)
@@ -70,7 +76,7 @@ namespace UmbracoExamine.PDF.PdfSharp
                 return string.Concat(chars);
             }
 
-            // if this font has a /ToUnciode CMAP then we will tyr to resolve the text through it
+            // if this font has a /ToUnciode CMAP then we will try to resolve the text using the cmap
             if (_cmap != null)
             {
                 return _cmap.Encode(text);

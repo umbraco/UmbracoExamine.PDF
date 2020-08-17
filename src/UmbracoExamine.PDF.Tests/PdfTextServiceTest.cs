@@ -4,13 +4,14 @@ using Moq;
 using NUnit.Framework;
 using Umbraco.Core.IO;
 using Umbraco.Core.Logging;
+using UmbracoExamine.PDF.PdfSharp;
 
 namespace UmbracoExamine.PDF.Tests
 {
     [TestFixture]
     public class PdfTextServiceTest
     {
-        private PdfTextService _sut;
+        private PdfTextService _pdfTextService;
         private DirectoryInfo _testFilesDir;
 
         [SetUp]
@@ -19,7 +20,8 @@ namespace UmbracoExamine.PDF.Tests
             var fs = new Mock<IMediaFileSystem>();
             fs.Setup<System.IO.Stream>(m => m.OpenFile(It.IsAny<string>())).Returns<string>(path => System.IO.File.OpenRead(path));
             var logger = new Mock<ILogger>();
-            _sut = new PdfTextService(new PdfSharpTextExtractor(), fs.Object, logger.Object);
+            var glyphList = new AdobeGlyphList(new AdobeGlphListDataProvider());
+            _pdfTextService = new PdfTextService(new PdfSharpTextExtractor(glyphList, logger.Object), fs.Object, logger.Object);
             _testFilesDir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
             while(!_testFilesDir.Name.Equals("UmbracoExamine.PDF.Tests", StringComparison.InvariantCultureIgnoreCase))
             {
@@ -39,7 +41,7 @@ namespace UmbracoExamine.PDF.Tests
             params string[] expectedSentences)
         {
             var absolutePath = Path.GetFullPath(Path.Combine(_testFilesDir.FullName, "TestFiles/", pdfFileName));
-            var text = _sut.ExtractText(absolutePath).ToLower();
+            var text = _pdfTextService.ExtractText(absolutePath).ToLower();
 
             foreach (var expectedSentence in expectedSentences)
             {

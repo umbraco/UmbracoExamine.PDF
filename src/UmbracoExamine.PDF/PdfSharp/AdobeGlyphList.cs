@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Web;
 
 namespace UmbracoExamine.PDF.PdfSharp
 {
@@ -13,32 +9,18 @@ namespace UmbracoExamine.PDF.PdfSharp
     /// The standard Adobe Glyf List for converting standard Glyf characters to Unicode.
     /// To prevent continual parsing of the file, this uses a singleton pattern.
     /// </summary>
-    public class AdobeGlyphList
+    public class AdobeGlyphList : IAdobeGlyphList
     {
-        private static AdobeGlyphList _instance;
         private Dictionary<string, string> Dictionary { get; set; }
+        private readonly IAdobeGlphListDataProvider _glyphListDataProvider;
 
         /// <summary>
         /// Constructur is private so we don't have numerous copies of this around
         /// </summary>
-        private AdobeGlyphList()
+        public AdobeGlyphList(IAdobeGlphListDataProvider glyphListDataProvider)
         {
+            _glyphListDataProvider = glyphListDataProvider;
             Init();
-        }
-
-        /// <summary>
-        /// Access the Glyph List by Singleton pattern
-        /// </summary>
-        public static AdobeGlyphList Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new AdobeGlyphList();
-                }
-                return _instance;
-            }
         }
 
         /// <summary>
@@ -61,16 +43,8 @@ namespace UmbracoExamine.PDF.PdfSharp
             Dictionary = new Dictionary<string, string>();
             string line;
 
-            // get the location of the glyphlist.txt file which we will read in
-            string glyphListLocation = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Plugins/UmbracoExamine.PDF/glyphlist.txt");
-
-            if (!File.Exists(glyphListLocation))
-            {
-                throw new Exception("App_Plugins/UmbracoExamine.PDF/glyphlist.txt does not exist");
-            }
-
             // Read the file and display it line by line.
-            using (var file = new System.IO.StreamReader(glyphListLocation))
+            using (var file = _glyphListDataProvider.GetStream())
             {
                 while ((line = file.ReadLine()) != null)
                 {
@@ -83,9 +57,11 @@ namespace UmbracoExamine.PDF.PdfSharp
                     {
                         string glyphName = match.Groups["glyph"].Value;
 
+                        // convert the unicode hex string to a unicode character
                         var chars = match.Groups["unicode"].Captures.Cast<Capture>().Select(c => (char)Convert.ToInt32(c.Value, 16));
                         string unicode = string.Concat(chars);
 
+                        // add it to our map
                         Dictionary[glyphName] = unicode;
                     }
                 }
