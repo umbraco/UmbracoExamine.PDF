@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Umbraco.Core.Logging;
@@ -48,6 +47,11 @@ namespace UmbracoExamine.PDF.PdfSharp
             ParseMappings(CMapStr);
         }
 
+        /// <summary>
+        /// Given a text string, encodes it as a Unicode string
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         public string Encode(string text)
         {
             //Convert to bytes
@@ -57,10 +61,13 @@ namespace UmbracoExamine.PDF.PdfSharp
             //find a substitution for every char in the text
             for (int chrIdx = 0; chrIdx < charLength; chrIdx++)
             {
-                // Ranges should not overlap, but the spec and the real world don't always align
-                // Start with 1 byte, see if we find a 1 byte match. If not try 2 bytes etc.
+                // Ranges should not overlap, but my understanding of the spec and the real world don't always align
+                // So, we try to find a match with 1 byte, if we fail try 2 bytes etc.
                 // CodeSpaceRange.NumberOfBytes should indicate how many bytes we map, but it doesn't in real life
+                // I know this could likely be written as a loop, but I felt like 4 conditional statements was more readable
                 CodeSpaceRange.Map map;
+
+                // try a 1 byte CID
                 int cid = chars[chrIdx];
                 var range = CodeSpaceRanges.FirstOrDefault(r => r.Low <= cid && r.High >= cid);
                 if (range != null)
@@ -72,9 +79,9 @@ namespace UmbracoExamine.PDF.PdfSharp
                     }
                 }
 
+                // Try a 2 byte CID
                 if (chrIdx + 1 < charLength)
                 {
-                    // 2-byte cid
                     cid = (chars[chrIdx] << 8) | chars[chrIdx + 1];
                     range = CodeSpaceRanges.FirstOrDefault(r => r.Low <= cid && r.High >= cid);
                     if (range != null)
@@ -88,9 +95,9 @@ namespace UmbracoExamine.PDF.PdfSharp
                     }
                 }
 
+                // Process this as a 4 byte CID
                 if (chrIdx + 2 < charLength)
                 {
-                    // 3-byte cid
                     cid = (chars[chrIdx] << 16) | (chars[chrIdx + 1] << 8) | chars[chrIdx + 2];
                     range = CodeSpaceRanges.FirstOrDefault(r => r.Low <= cid && r.High >= cid);
                     if (range != null)
@@ -104,10 +111,9 @@ namespace UmbracoExamine.PDF.PdfSharp
                     }
                 }
 
-
+                // Finally, try it as a 3 bute CID
                 if (chrIdx + 3 < charLength)
                 {
-                    // 4-byte cid
                     cid = (chars[chrIdx] << 24) | (chars[chrIdx + 1] << 16) | (chars[chrIdx + 2] << 8) | chars[chrIdx + 3];
                     range = CodeSpaceRanges.FirstOrDefault(r => r.Low <= cid && r.High >= cid);
                     if (range != null)
@@ -121,7 +127,8 @@ namespace UmbracoExamine.PDF.PdfSharp
                     }
                 }
 
-                //Fallback on using the cid... I don't think this is supposed to be done.
+                // Fallback on using the cid
+                // I don't think this is supposed to be done, and in our limited tests, we never saw this happen 
                 cid = chars[chrIdx];
                 result += (char)cid;
             }

@@ -5,10 +5,18 @@ using Umbraco.Core.Logging;
 
 namespace UmbracoExamine.PDF.PdfSharp
 {
+    /// <summary>
+    /// Provides font encoding services. Text in a PDF may be encoded via a number of techniques. This class provides
+    /// services to decode that text into unicode text. This may include mapping text from the differences array embeded
+    /// in the PDF, or an embeded CMAP file.
+    /// </summary>
     public class FontResource
     {
         private readonly IAdobeGlyphList _adobeGlyphList;
         private readonly ILogger _logger;
+        private readonly CMap _cmap;
+        private readonly PdfArray _differences;
+
         ///
         /// Parse the fonts from the page's resources structure including the encoding differences and CMAPs
         ///
@@ -36,8 +44,6 @@ namespace UmbracoExamine.PDF.PdfSharp
         }
 
 
-        private readonly CMap _cmap;
-        private PdfArray _differences;
 
         /// <summary>
         /// Encodes the given pdf text string into unicode
