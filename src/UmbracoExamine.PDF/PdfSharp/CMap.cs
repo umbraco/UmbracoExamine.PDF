@@ -220,7 +220,7 @@ namespace UmbracoExamine.PDF.PdfSharp
             {
                 // parse the BFChar record and remove it from the CMAP
                 ParseBFChar(cMap.Substring(beginbfcharIdx + 11, bfCharLen - 11));
-                cMap = cMap.Substring(beginbfcharIdx = 11 + bfCharLen + 9 - 11);
+                cMap = cMap.Substring(beginbfcharIdx + 11 + bfCharLen + 9 - 11);
             }
             else if (beginbfrangeIdx >= 0)
             {
