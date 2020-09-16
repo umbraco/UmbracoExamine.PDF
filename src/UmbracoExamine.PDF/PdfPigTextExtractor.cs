@@ -19,6 +19,8 @@ namespace UmbracoExamine.PDF
 
                 foreach (Page page in document.GetPages())
                 {
+                    // page.Text in some test cases runs words together where page.GetWords keeps them seperated
+                    // so we use page.GetWords() instead of the simpler page.Text
                     IEnumerable<Word> words = page.GetWords();
                     result.Append(string.Join(" ", words));
                     result.AppendLine();
