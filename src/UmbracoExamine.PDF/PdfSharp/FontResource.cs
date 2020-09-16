@@ -52,6 +52,11 @@ namespace UmbracoExamine.PDF.PdfSharp
         /// <returns></returns>
         public string Encode(string text)
         {
+            // interesting example 11.pdf uses kerning
+            // https://www.oreilly.com/library/view/developing-with-pdf/9781449327903/ch04.html
+            // [Sample -250 PDF -250 Document] should be Sample PDF Document
+            // [Grze 16 gorz -250 Grudzi ] should be Grzegorz Grudzi´nski (the 'nski are on other lines)
+
             // if a pdf has a differences array we use it primarily to convert to unicode chars
             // the differences array can contain a map of indexes to characters, or to glyph names
             // if it is a glyph name we lookup the unicode value of the glyph, otherwise we convert

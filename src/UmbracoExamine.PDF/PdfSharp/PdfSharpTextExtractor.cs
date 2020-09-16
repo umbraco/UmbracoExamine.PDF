@@ -149,6 +149,11 @@ namespace UmbracoExamine.PDF.PdfSharp
             }
             if (obj.OpCode.OpCodeName == OpCodeName.Tj || obj.OpCode.OpCodeName == OpCodeName.TJ)
             {
+                // from https://www.oreilly.com/library/view/developing-with-pdf/9781449327903/ch04.html
+                // The TJ operator, instead of taking a string as an operand, takes an array.
+                // The array consists of one or more strings interspersed with numbers, where the numbers serve to adjust the
+                // text position (Tm).
+                // But I think PDFSharp takes care f this for us
                 foreach (var element in obj.Operands)
                 {
                     ExtractText(element, target);
