@@ -1,7 +1,6 @@
 ﻿using Umbraco.Core;
 using Umbraco.Core.Composing;
 using Umbraco.Examine;
-using UmbracoExamine.PDF.PdfSharp;
 
 namespace UmbracoExamine.PDF
 {
@@ -16,9 +15,7 @@ namespace UmbracoExamine.PDF
             base.Compose(composition);
 
             //Register the services used to make this all work
-            composition.RegisterUnique<IAdobeGlphListDataProvider, AdobeGlphListDataProvider>();
-            composition.RegisterUnique<IAdobeGlyphList, AdobeGlyphList>();
-            composition.RegisterUnique<IPdfTextExtractor, PdfSharpTextExtractor>();
+            composition.RegisterUnique<IPdfTextExtractor, PdfPigTextExtractor>();
             composition.Register<PdfTextService>(Lifetime.Singleton);
             composition.RegisterUnique<IPdfIndexValueSetBuilder, PdfIndexValueSetBuilder>();
             composition.Register<IIndexPopulator, PdfIndexPopulator>(Lifetime.Singleton);

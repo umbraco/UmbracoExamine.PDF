@@ -246,6 +246,27 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="UglyToad.PdfPig, Version=0.1.2.0, Culture=neutral, PublicKeyToken=605d367334e74123, processorArchitecture=MSIL">
+      <HintPath>..\packages\PdfPig.0.1.2\lib\net47\UglyToad.PdfPig.dll</HintPath>
+    </Reference>
+    <Reference Include="UglyToad.PdfPig.Core, Version=0.1.2.0, Culture=neutral, PublicKeyToken=605d367334e74123, processorArchitecture=MSIL">
+      <HintPath>..\packages\PdfPig.0.1.2\lib\net47\UglyToad.PdfPig.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="UglyToad.PdfPig.DocumentLayoutAnalysis, Version=0.1.2.0, Culture=neutral, PublicKeyToken=605d367334e74123, processorArchitecture=MSIL">
+      <HintPath>..\packages\PdfPig.0.1.2\lib\net47\UglyToad.PdfPig.DocumentLayoutAnalysis.dll</HintPath>
+    </Reference>
+    <Reference Include="UglyToad.PdfPig.Fonts, Version=0.1.2.0, Culture=neutral, PublicKeyToken=605d367334e74123, processorArchitecture=MSIL">
+      <HintPath>..\packages\PdfPig.0.1.2\lib\net47\UglyToad.PdfPig.Fonts.dll</HintPath>
+    </Reference>
+    <Reference Include="UglyToad.PdfPig.Package, Version=0.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\PdfPig.0.1.2\lib\net47\UglyToad.PdfPig.Package.dll</HintPath>
+    </Reference>
+    <Reference Include="UglyToad.PdfPig.Tokenization, Version=0.1.2.0, Culture=neutral, PublicKeyToken=605d367334e74123, processorArchitecture=MSIL">
+      <HintPath>..\packages\PdfPig.0.1.2\lib\net47\UglyToad.PdfPig.Tokenization.dll</HintPath>
+    </Reference>
+    <Reference Include="UglyToad.PdfPig.Tokens, Version=0.1.2.0, Culture=neutral, PublicKeyToken=605d367334e74123, processorArchitecture=MSIL">
+      <HintPath>..\packages\PdfPig.0.1.2\lib\net47\UglyToad.PdfPig.Tokens.dll</HintPath>
+    </Reference>
     <Reference Include="Umbraco.Core, Version=8.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\UmbracoCms.Core.8.1.0\lib\net472\Umbraco.Core.dll</HintPath>
       <Private>True</Private>
@@ -267,16 +288,10 @@
     <Compile Include="IPdfTextExtractor.cs" />
     <Compile Include="PdfIndexConstants.cs" />
     <Compile Include="PdfIndexDiagnostics.cs" />
-    <Compile Include="PdfSharp\AdobeGlyphList.cs" />
-    <Compile Include="PdfSharp\CMap.cs" />
-    <Compile Include="PdfSharp\CodeSpaceRange.cs" />
-    <Compile Include="PdfSharp\FontResource.cs" />
-    <Compile Include="PdfSharp\IAdobeGlphListDataProvider.cs" />
-    <Compile Include="PdfSharp\IAdobeGlyphList.cs" />
+    <Compile Include="PdfPigTextExtractor.cs" />
     <Compile Include="PdfValueSetValidator.cs" />
     <Compile Include="LuceneIndexDiagnostics.cs" />
     <Compile Include="PdfLuceneIndex.cs" />
-    <Compile Include="PdfSharp\PdfSharpTextExtractor.cs" />
     <Compile Include="PdfIndexCreator.cs" />
     <Compile Include="ExaminePdfComponent.cs" />
     <Compile Include="ExaminePdfComposer.cs" />
@@ -288,7 +303,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <Compile Include="PdfSharp\AdobeGlphListDataProvider.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Umbraco.SqlServerCE.4.0.0.1\build\Umbraco.SqlServerCE.targets" Condition="Exists('..\packages\Umbraco.SqlServerCE.4.0.0.1\build\Umbraco.SqlServerCE.targets')" />

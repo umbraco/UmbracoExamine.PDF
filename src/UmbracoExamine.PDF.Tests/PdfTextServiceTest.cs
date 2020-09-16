@@ -4,7 +4,6 @@ using Moq;
 using NUnit.Framework;
 using Umbraco.Core.IO;
 using Umbraco.Core.Logging;
-using UmbracoExamine.PDF.PdfSharp;
 
 namespace UmbracoExamine.PDF.Tests
 {
@@ -20,8 +19,7 @@ namespace UmbracoExamine.PDF.Tests
             var fs = new Mock<IMediaFileSystem>();
             fs.Setup<System.IO.Stream>(m => m.OpenFile(It.IsAny<string>())).Returns<string>(path => System.IO.File.OpenRead(path));
             var logger = new Mock<ILogger>();
-            var glyphList = new AdobeGlyphList(new AdobeGlphListDataProvider());
-            _pdfTextService = new PdfTextService(new PdfSharpTextExtractor(glyphList, logger.Object), fs.Object, logger.Object);
+            _pdfTextService = new PdfTextService(new PdfPigTextExtractor(), fs.Object, logger.Object);
             _testFilesDir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
             while(!_testFilesDir.Name.Equals("UmbracoExamine.PDF.Tests", StringComparison.InvariantCultureIgnoreCase))
             {
