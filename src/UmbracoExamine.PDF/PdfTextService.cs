@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Umbraco.Core.Composing;
 using Umbraco.Core.IO;
 using Umbraco.Core.Logging;
 
@@ -16,6 +17,16 @@ namespace UmbracoExamine.PDF
         private readonly IMediaFileSystem _mediaFileSystem;
         private readonly ILogger _logger;
 
+        [Obsolete]
+        public PdfTextService(
+            IPdfTextExtractor pdfTextExtractor,
+            IMediaFileSystem mediaFileSystem)
+        {
+            _pdfTextExtractor = pdfTextExtractor;
+            _mediaFileSystem = mediaFileSystem;
+            _logger = Current.Logger;
+        }
+
         public PdfTextService(
             IPdfTextExtractor pdfTextExtractor,
             IMediaFileSystem mediaFileSystem,
@@ -26,6 +37,11 @@ namespace UmbracoExamine.PDF
             _logger = logger;
         }
 
+        /// <summary>
+        /// Extract text from a PDF file at the given path
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
         public string ExtractText(string filePath)
         {
             using (var fs = _mediaFileSystem.OpenFile(filePath))
