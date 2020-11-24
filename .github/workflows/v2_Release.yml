@@ -18,7 +18,7 @@ jobs:
         Write-Verbose "The git branch is $tag" -Verbose
         $version = $tag.Substring($tag.IndexOf("release-v") + "release-v".Length)
         Write-Verbose "The tag version is $version" -Verbose
-        Write-Output "::set-env name=nugetVersion::$version"
+        Write-Output "name=$version" >> $GITHUB_ENV
       shell: powershell
     - run: |
         # create the copyright text
