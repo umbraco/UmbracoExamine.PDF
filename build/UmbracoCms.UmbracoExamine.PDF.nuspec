@@ -18,7 +18,7 @@
             <group targetFramework="net472">
                 <dependency id="UmbracoCms.Web" version="[8.1.0, 9.0.0)" />
                 <dependency id="Examine" version="[1.0.1, 2.0.0)" />
-                <dependency id="PdfPig" version="[0.1.2, 1.0.0)" />
+                <dependency id="PdfPig" version="[0.1.3, 1.0.0)" />
             </group>
         </dependencies>
     </metadata>

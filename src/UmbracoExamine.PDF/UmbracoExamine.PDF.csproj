@@ -135,9 +135,8 @@
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
-    <Reference Include="PDFsharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="PDFsharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\PDFsharpNetStandard2.1.51.4845\lib\netstandard2.0\PDFsharp.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Semver, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Semver.2.0.4\lib\net452\Semver.dll</HintPath>
@@ -192,9 +191,8 @@
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.4.1\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Drawing.Common, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+    <Reference Include="System.Drawing.Common, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Drawing.Common.4.5.0\lib\net461\System.Drawing.Common.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System.IO" />
     <Reference Include="System.Linq.Expressions" />
@@ -246,26 +244,26 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="UglyToad.PdfPig, Version=0.1.2.0, Culture=neutral, PublicKeyToken=605d367334e74123, processorArchitecture=MSIL">
-      <HintPath>..\packages\PdfPig.0.1.2\lib\net47\UglyToad.PdfPig.dll</HintPath>
+    <Reference Include="UglyToad.PdfPig, Version=0.1.3.0, Culture=neutral, PublicKeyToken=605d367334e74123, processorArchitecture=MSIL">
+      <HintPath>..\packages\PdfPig.0.1.3\lib\net47\UglyToad.PdfPig.dll</HintPath>
     </Reference>
-    <Reference Include="UglyToad.PdfPig.Core, Version=0.1.2.0, Culture=neutral, PublicKeyToken=605d367334e74123, processorArchitecture=MSIL">
-      <HintPath>..\packages\PdfPig.0.1.2\lib\net47\UglyToad.PdfPig.Core.dll</HintPath>
+    <Reference Include="UglyToad.PdfPig.Core, Version=0.1.3.0, Culture=neutral, PublicKeyToken=605d367334e74123, processorArchitecture=MSIL">
+      <HintPath>..\packages\PdfPig.0.1.3\lib\net47\UglyToad.PdfPig.Core.dll</HintPath>
     </Reference>
-    <Reference Include="UglyToad.PdfPig.DocumentLayoutAnalysis, Version=0.1.2.0, Culture=neutral, PublicKeyToken=605d367334e74123, processorArchitecture=MSIL">
-      <HintPath>..\packages\PdfPig.0.1.2\lib\net47\UglyToad.PdfPig.DocumentLayoutAnalysis.dll</HintPath>
+    <Reference Include="UglyToad.PdfPig.DocumentLayoutAnalysis, Version=0.1.3.0, Culture=neutral, PublicKeyToken=605d367334e74123, processorArchitecture=MSIL">
+      <HintPath>..\packages\PdfPig.0.1.3\lib\net47\UglyToad.PdfPig.DocumentLayoutAnalysis.dll</HintPath>
     </Reference>
-    <Reference Include="UglyToad.PdfPig.Fonts, Version=0.1.2.0, Culture=neutral, PublicKeyToken=605d367334e74123, processorArchitecture=MSIL">
-      <HintPath>..\packages\PdfPig.0.1.2\lib\net47\UglyToad.PdfPig.Fonts.dll</HintPath>
+    <Reference Include="UglyToad.PdfPig.Fonts, Version=0.1.3.0, Culture=neutral, PublicKeyToken=605d367334e74123, processorArchitecture=MSIL">
+      <HintPath>..\packages\PdfPig.0.1.3\lib\net47\UglyToad.PdfPig.Fonts.dll</HintPath>
     </Reference>
     <Reference Include="UglyToad.PdfPig.Package, Version=0.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\PdfPig.0.1.2\lib\net47\UglyToad.PdfPig.Package.dll</HintPath>
+      <HintPath>..\packages\PdfPig.0.1.3\lib\net47\UglyToad.PdfPig.Package.dll</HintPath>
     </Reference>
-    <Reference Include="UglyToad.PdfPig.Tokenization, Version=0.1.2.0, Culture=neutral, PublicKeyToken=605d367334e74123, processorArchitecture=MSIL">
-      <HintPath>..\packages\PdfPig.0.1.2\lib\net47\UglyToad.PdfPig.Tokenization.dll</HintPath>
+    <Reference Include="UglyToad.PdfPig.Tokenization, Version=0.1.3.0, Culture=neutral, PublicKeyToken=605d367334e74123, processorArchitecture=MSIL">
+      <HintPath>..\packages\PdfPig.0.1.3\lib\net47\UglyToad.PdfPig.Tokenization.dll</HintPath>
     </Reference>
-    <Reference Include="UglyToad.PdfPig.Tokens, Version=0.1.2.0, Culture=neutral, PublicKeyToken=605d367334e74123, processorArchitecture=MSIL">
-      <HintPath>..\packages\PdfPig.0.1.2\lib\net47\UglyToad.PdfPig.Tokens.dll</HintPath>
+    <Reference Include="UglyToad.PdfPig.Tokens, Version=0.1.3.0, Culture=neutral, PublicKeyToken=605d367334e74123, processorArchitecture=MSIL">
+      <HintPath>..\packages\PdfPig.0.1.3\lib\net47\UglyToad.PdfPig.Tokens.dll</HintPath>
     </Reference>
     <Reference Include="Umbraco.Core, Version=8.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\UmbracoCms.Core.8.1.0\lib\net472\Umbraco.Core.dll</HintPath>
@@ -289,6 +287,7 @@
     <Compile Include="PdfIndexConstants.cs" />
     <Compile Include="PdfIndexDiagnostics.cs" />
     <Compile Include="PdfPigTextExtractor.cs" />
+    <Compile Include="PdfSharpTextTextExtractor.cs" />
     <Compile Include="PdfValueSetValidator.cs" />
     <Compile Include="LuceneIndexDiagnostics.cs" />
     <Compile Include="PdfLuceneIndex.cs" />
