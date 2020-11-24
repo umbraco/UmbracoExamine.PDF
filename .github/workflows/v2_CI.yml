@@ -11,8 +11,6 @@ on:
   pull_request:
     branches:
       - 'master'
-env:
-  buildNumber: ${{ github.run_number }}
 
 jobs:
   build:
@@ -23,9 +21,9 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
     - name: Show Details
-      run: echo "GITHUB_RUN_NUMBER=${{ env.buildNumber }}"
+      run: echo "GITHUB_RUN_NUMBER=${{ github.run_number }}"
     - name: Build Umbraco package
-      run: ./build/Build-Release.ps1 -ReleaseVersionNumber "2.1.0" -PreReleaseName "-alpha.${{ env.buildNumber }}"
+      run: ./build/Build-Release.ps1 -ReleaseVersionNumber "2.1.0" -PreReleaseName "-alpha.${{ github.run_number }}"
       shell: powershell
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2
@@ -33,4 +31,4 @@ jobs:
         # Artifact name
         name: NugetPackages
         # A file, directory or wildcard pattern that describes what to upload
-        path: ./build/Release/*.nupgk
+        path: ${{ github.workspace }}/build/Release/*.nupgk
