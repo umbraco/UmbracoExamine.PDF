@@ -20,11 +20,8 @@ jobs:
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
-    # TODO: $GITHUB_RUN_NUMBER resolves to nothing! even though the docs say this should work
-    - name: Show Details
-      run: echo "GITHUB_RUN_NUMBER=$GITHUB_RUN_NUMBER"
     - name: Build Umbraco package
-      run: .\build\Build-Release.ps1 -ReleaseVersionNumber "2.0.2" -PreReleaseName "-alpha.$GITHUB_RUN_NUMBER"
+      run: .\build\Build-Release.ps1 -ReleaseVersionNumber "2.1.0" -PreReleaseName "-alpha.${GITHUB_RUN_NUMBER}"
       shell: powershell
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2
