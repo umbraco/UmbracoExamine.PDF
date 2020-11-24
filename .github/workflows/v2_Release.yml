@@ -1,0 +1,54 @@
+name: v2_Release
+
+on:
+  push:
+    tags:
+    - 'release-v*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:    
+    - uses: actions/checkout@v2
+    - run: |
+        # This sets the nuget version to the release tag version if one is found
+        Write-Verbose "Setting the release version to the tag name..." -Verbose
+        $tag = $Env:BUILD_SOURCEBRANCH
+        Write-Verbose "The git branch is $tag" -Verbose
+        $version = $tag.Substring($tag.IndexOf("release-v") + "release-v".Length)
+        Write-Verbose "The tag version is $version" -Verbose
+        Write-Output "::set-env name=nugetVersion::$version"
+      shell: powershell
+    - run: |
+        # create the copyright text
+        $copyright = "Copyright " + [char]0x00A9 + " Umbraco " + (Get-Date).year
+        Write-Verbose "Copyright set to $copyright" -Verbose
+        # set global var
+        Write-Output "::set-env name=copyright::$copyright"
+        $AssemblyInfoPath = Join-Path -Path $Env:GITHUB_WORKSPACE -ChildPath "src\UmbracoExamine.PDF\Properties\AssemblyInfo.cs"
+        # Set the copyright
+        (gc -Path $AssemblyInfoPath) `
+          -replace "(?<=AssemblyCopyright\(`").*(?=`"\))", $copyright |
+          sc -Path $AssemblyInfoPath -Encoding UTF8      
+        # Set the assembly version
+        $projectVersion = $Env:NUGETVERSION.Split("-")[0];
+        Write-Verbose "Setting build version to $projectVersion" -Verbose
+        (gc -Path $AssemblyInfoPath) `
+          -replace "(?<=Version\(`")[.\d]*(?=`"\))", "$projectVersion.0" |
+          sc -Path $AssemblyInfoPath -Encoding UTF8
+        Write-Verbose "Setting info version to $Env:NUGETVERSION" -Verbose
+        (gc -Path $AssemblyInfoPath) `
+          -replace "(?<=AssemblyInformationalVersion\(`")[.\w-]*(?=`"\))", $Env:NUGETVERSION |
+          sc -Path $AssemblyInfoPath -Encoding UTF8        
+      shell: powershell
+    - name: Build Umbraco package
+      run: .\build\Build-Release.ps1 -ReleaseVersionNumber "${{ nugetVersion }}"
+      shell: powershell
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        # Artifact name
+        name: NugetPackages
+        # A file, directory or wildcard pattern that describes what to upload
+        path: ${{ github.workspace }}\build\Release\**\*.nupkg
