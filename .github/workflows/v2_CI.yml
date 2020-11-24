@@ -11,6 +11,8 @@ on:
   pull_request:
     branches:
       - 'master'
+env:
+  buildNumber: ${{ github.run_number }}
 
 jobs:
   build:
@@ -21,9 +23,9 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
     - name: Show Details
-      run: echo "GITHUB_RUN_NUMBER=${{GITHUB_RUN_NUMBER}}"
+      run: echo "GITHUB_RUN_NUMBER=${{ env.buildNumber }}"
     - name: Build Umbraco package
-      run: .\build\Build-Release.ps1 -ReleaseVersionNumber "2.1.0" -PreReleaseName "-alpha.${{GITHUB_RUN_NUMBER}}"
+      run: .\build\Build-Release.ps1 -ReleaseVersionNumber "2.1.0" -PreReleaseName "-alpha.${{ env.buildNumber }}"
       shell: powershell
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2
