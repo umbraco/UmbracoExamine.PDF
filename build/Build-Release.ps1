@@ -92,6 +92,7 @@ Copy-Item "$CoreBinFolder\*.*" -Destination $ReleaseFolder -Include $include
 
 # COPY THE README OVER
 Copy-Item "$BuildFolder\Readme.txt" -Destination $ReleaseFolder
+New-Item "$ReleaseFolder\UmbracoExamine.PDF" -Type directory
 
 # COPY OVER THE CORE NUSPEC AND BUILD THE NUGET PACKAGE
 $nuSpec = Join-Path -Path $BuildFolder -ChildPath "UmbracoCms.UmbracoExamine.PDF.nuspec";
