@@ -44,7 +44,7 @@ jobs:
           sc -Path $AssemblyInfoPath -Encoding UTF8        
       shell: powershell
     - name: Build Umbraco package
-      run: .\build\Build-Release.ps1 -ReleaseVersionNumber "${{ nugetVersion }}"
+      run: .\build\Build-Release.ps1 -ReleaseVersionNumber "${{ env.nugetVersion }}"
       shell: powershell
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2
