@@ -25,8 +25,8 @@ jobs:
         # create the copyright text
         $copyright = "Copyright " + [char]0x00A9 + " Umbraco " + (Get-Date).year
         Write-Verbose "Copyright set to $copyright" -Verbose
-        # set global var
-        Write-Output "::set-env name=copyright::$copyright"
+        # Write env var
+        echo "copyright=$copyright" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
         $AssemblyInfoPath = Join-Path -Path $Env:GITHUB_WORKSPACE -ChildPath "src\UmbracoExamine.PDF\Properties\AssemblyInfo.cs"
         # Set the copyright
         (gc -Path $AssemblyInfoPath) `
