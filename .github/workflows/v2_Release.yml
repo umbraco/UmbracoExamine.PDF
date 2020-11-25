@@ -14,7 +14,7 @@ jobs:
     - run: |
         # This sets the nuget version to the release tag version if one is found
         Write-Verbose "Setting the release version to the tag name..." -Verbose
-        $tag = $Env:BUILD_SOURCEBRANCH
+        $tag = $Env:GITHUB_REF
         Write-Verbose "The git branch is $tag" -Verbose
         $version = $tag.Substring($tag.IndexOf("release-v") + "release-v".Length)
         Write-Verbose "The tag version is $version" -Verbose
