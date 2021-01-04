@@ -12,7 +12,7 @@ namespace UmbracoExamine.PDF
     /// <summary>
     ///     Performs the data lookups required to rebuild a PDF index
     /// </summary>
-    public class PdfIndexPopulator : IndexPopulator
+    public class PdfIndexPopulator : IndexPopulator<IUmbracoPdfIndex>
     {
         private readonly IExamineManager _examineManager;
         private readonly IMediaService _mediaService;
@@ -43,7 +43,7 @@ namespace UmbracoExamine.PDF
             _mediaService = mediaService;
             _mediaValueSetBuilder = mediaValueSetBuilder;
             _examineManager = examineManager;
-            RegisterIndex(PdfIndexConstants.PdfIndexName);
+           // RegisterIndex(PdfIndexConstants.PdfIndexName);
         }
 
 
@@ -68,7 +68,7 @@ namespace UmbracoExamine.PDF
             var ids = mediaIds.Select(m => m.ToInvariantString());
             index.DeleteFromIndex(ids);
         }
-        
+
         /// <summary>
         /// Add any media that is a pdf to the PDFIndex
         /// </summary>

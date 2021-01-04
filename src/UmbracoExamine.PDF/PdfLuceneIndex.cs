@@ -12,7 +12,7 @@ using Umbraco.Web.Search;
 namespace UmbracoExamine.PDF
 {
 
-    public class PdfLuceneIndex : LuceneIndex, IIndexDiagnostics
+    public class PdfLuceneIndex : LuceneIndex, IIndexDiagnostics, IUmbracoPdfIndex
     {
         public PdfLuceneIndex(string name, Directory luceneDirectory, FieldDefinitionCollection fieldDefinitions,
             Analyzer analyzer, PdfValueSetValidator validator,
