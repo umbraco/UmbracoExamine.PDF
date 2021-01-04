@@ -284,6 +284,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IPdfTextExtractor.cs" />
+    <Compile Include="IUmbracoPdfIndex.cs" />
     <Compile Include="PdfIndexConstants.cs" />
     <Compile Include="PdfIndexDiagnostics.cs" />
     <Compile Include="PdfPigTextExtractor.cs" />
