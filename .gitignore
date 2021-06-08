@@ -198,3 +198,6 @@ src/.UmbracoExamine.PDF.boltdata/*
 /build/tmp/*
 /build/vswhere.exe
 .idea
+src/UmbracoExamine-PDF.TestSite/wwwroot/umbraco
+src/UmbracoExamine-PDF.TestSite/umbraco/
+src/UmbracoExamine-PDF.TestSite/App_Plugins/UmbracoExamine-PDF
