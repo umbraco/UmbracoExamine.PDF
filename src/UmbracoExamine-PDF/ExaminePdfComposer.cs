@@ -2,16 +2,15 @@
 using Microsoft.Extensions.DependencyInjection;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
+using Umbraco.Cms.Core.Notifications;
 using Umbraco.Cms.Infrastructure.Examine;
 using Umbraco.Extensions;
 
 namespace UmbracoExamine.PDF
 {
     /// <summary>
-    ///     Registers the ExaminePDFComponent and all of it's injected dependencies
+    /// Registers the ExaminePDF index, and dependencies.
     /// </summary>
-    // TODO (V9): Replace with check elsewhere
-    //[RuntimeLevel(MinLevel = RuntimeLevel.Run)]
     public class ExaminePdfComposer : IUserComposer
     {
         public void Compose(IUmbracoBuilder builder)
@@ -26,6 +25,8 @@ namespace UmbracoExamine.PDF
             builder.Services
                 .AddExamineLuceneIndex<PdfLuceneIndex, ConfigurationEnabledDirectoryFactory>(PdfIndexConstants.PdfIndexName)
                 .ConfigureOptions<ConfigurePdfIndexOptions>();
+
+            builder.AddNotificationHandler<MediaCacheRefresherNotification, PdfCacheNotificationHandler>();
         }
     }
 }
