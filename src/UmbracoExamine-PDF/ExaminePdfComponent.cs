@@ -13,20 +13,20 @@ namespace UmbracoExamine.PDF
     public class ExaminePdfComponent : IComponent //TODO: Change to ExamineUserComponent for 8.1.2
     {
         private readonly IExamineManager _examineManager;
-        private readonly PdfIndexCreator _pdfIndexCreator;
+        // private readonly PdfIndexCreator _pdfIndexCreator;
         private readonly PdfIndexPopulator _pdfIndexPopulator;
         private readonly IMediaService _mediaService;
         private readonly ILogger<ExaminePdfComponent> _logger;
 
         public ExaminePdfComponent(
             IExamineManager examineManager,
-            PdfIndexCreator pdfIndexCreator,
+            // PdfIndexCreator pdfIndexCreator,
             PdfIndexPopulator pdfIndexPopulator,
             IMediaService mediaService,
             ILogger<ExaminePdfComponent> logger)
         {
             _examineManager = examineManager;
-            _pdfIndexCreator = pdfIndexCreator;
+            // _pdfIndexCreator = pdfIndexCreator;
             _pdfIndexPopulator = pdfIndexPopulator;
             _mediaService = mediaService;
             _logger = logger;
@@ -34,29 +34,29 @@ namespace UmbracoExamine.PDF
 
         public void Initialize()
         {
-            // TODO (V9) Replace this check if necessary.
+            // TODO (V9): This should no longer be needed at all.
             // //TODO: Remove this entire check for 8.1.2
             // var examineEnabled = _mainDom.Register(() => {});
             // if (!examineEnabled) return;
 
-            foreach (var index in _pdfIndexCreator.Create())
-            {
-                //TODO: Remove this block for 8.1.2 since Umbraco will ensure the locks are removed
-                if (index is LuceneIndex luceneIndex)
-                {
-                    var dir = luceneIndex.GetLuceneDirectory();
-                    if (IndexWriter.IsLocked(dir))
-                    {
-                        _logger.LogInformation(
-                            "Forcing index {IndexerName} to be unlocked since it was left in a locked state",
-                            luceneIndex.Name);
-                        IndexWriter.Unlock(dir);
-                    }
-                }
-
-                // TODO (V9): Figure out the alternative to this
-                // _examineManager.AddIndex(index);
-            }
+            // foreach (var index in _pdfIndexCreator.Create())
+            // {
+            //     //TODO: Remove this block for 8.1.2 since Umbraco will ensure the locks are removed
+            //     if (index is LuceneIndex luceneIndex)
+            //     {
+            //         var dir = luceneIndex.GetLuceneDirectory();
+            //         if (IndexWriter.IsLocked(dir))
+            //         {
+            //             _logger.LogInformation(
+            //                 "Forcing index {IndexerName} to be unlocked since it was left in a locked state",
+            //                 luceneIndex.Name);
+            //             IndexWriter.Unlock(dir);
+            //         }
+            //     }
+            //
+            //     // TODO (V9): Figure out the alternative to this
+            //     // _examineManager.AddIndex(index);
+            // }
 
             // TODO(V9) replace with notification handler
             //MediaCacheRefresher.CacheUpdated += MediaCacheRefresherUpdated;
