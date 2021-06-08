@@ -16,17 +16,6 @@ namespace UmbracoExamine.PDF
         private readonly MediaFileManager _mediaFileSystem;
         private readonly ILogger<PdfTextService> _logger;
 
-        // TODO (V9): Current.Logger is no longer an option, just delete since it's obsolete?
-        // [Obsolete]
-        // public PdfTextService(
-        //     IPdfTextExtractor pdfTextExtractor,
-        //     MediaFileManager mediaFileSystem)
-        // {
-        //     _pdfTextExtractor = pdfTextExtractor;
-        //     _mediaFileSystem = mediaFileSystem;
-        //     _logger = Current.Logger;
-        // }
-
         public PdfTextService(
             IPdfTextExtractor pdfTextExtractor,
             MediaFileManager mediaFileSystem,
