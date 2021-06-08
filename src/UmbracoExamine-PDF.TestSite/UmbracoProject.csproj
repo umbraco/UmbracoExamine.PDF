@@ -8,7 +8,6 @@
         <PackageReference Include="Umbraco.Cms" Version="9.0.0-preview20210607.65117" />
     </ItemGroup>
 
-    <Import Project="..\UmbracoExamine-PDF\build\UmbracoExamine-PDF.targets"/>
     <ItemGroup>
         <ProjectReference Include="..\UmbracoExamine-PDF\UmbracoExamine-PDF.csproj"/>
     </ItemGroup>
