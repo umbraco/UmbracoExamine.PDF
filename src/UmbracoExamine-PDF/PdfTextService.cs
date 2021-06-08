@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Umbraco.Core.Composing;
-using Umbraco.Core.IO;
-using Umbraco.Core.Logging;
+using Microsoft.Extensions.Logging;
+using Umbraco.Cms.Core.IO;
 
 namespace UmbracoExamine.PDF
 {
@@ -14,23 +13,24 @@ namespace UmbracoExamine.PDF
     public class PdfTextService
     {
         private readonly IPdfTextExtractor _pdfTextExtractor;
-        private readonly IMediaFileSystem _mediaFileSystem;
-        private readonly ILogger _logger;
+        private readonly MediaFileManager _mediaFileSystem;
+        private readonly ILogger<PdfTextService> _logger;
 
-        [Obsolete]
+        // TODO (V9): Current.Logger is no longer an option, just delete since it's obsolete?
+        // [Obsolete]
+        // public PdfTextService(
+        //     IPdfTextExtractor pdfTextExtractor,
+        //     MediaFileManager mediaFileSystem)
+        // {
+        //     _pdfTextExtractor = pdfTextExtractor;
+        //     _mediaFileSystem = mediaFileSystem;
+        //     _logger = Current.Logger;
+        // }
+
         public PdfTextService(
             IPdfTextExtractor pdfTextExtractor,
-            IMediaFileSystem mediaFileSystem)
-        {
-            _pdfTextExtractor = pdfTextExtractor;
-            _mediaFileSystem = mediaFileSystem;
-            _logger = Current.Logger;
-        }
-
-        public PdfTextService(
-            IPdfTextExtractor pdfTextExtractor,
-            IMediaFileSystem mediaFileSystem,
-            ILogger logger)
+            MediaFileManager mediaFileSystem,
+            ILogger<PdfTextService> logger)
         {
             _pdfTextExtractor = pdfTextExtractor;
             _mediaFileSystem = mediaFileSystem;
@@ -44,7 +44,7 @@ namespace UmbracoExamine.PDF
         /// <returns></returns>
         public string ExtractText(string filePath)
         {
-            using (var fs = _mediaFileSystem.OpenFile(filePath))
+            using (var fs = _mediaFileSystem.FileSystem.OpenFile(filePath))
             {
                 if (fs != null)
                 {
@@ -52,7 +52,7 @@ namespace UmbracoExamine.PDF
                 }
                 else
                 {
-                    _logger.Error(this.GetType(), new Exception($"Unable to open PDF file {filePath}"));
+                    _logger.LogError(new Exception($"Unable to open PDF file {filePath}"), "Unable to Open PDF file");
                     return null;
                 }
             }

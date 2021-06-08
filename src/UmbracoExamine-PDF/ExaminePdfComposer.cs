@@ -1,26 +1,29 @@
-﻿using Umbraco.Core;
-using Umbraco.Core.Composing;
-using Umbraco.Examine;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Umbraco.Cms.Core.Composing;
+using Umbraco.Cms.Core.DependencyInjection;
+using Umbraco.Cms.Infrastructure.Examine;
+using Umbraco.Extensions;
 
 namespace UmbracoExamine.PDF
 {
     /// <summary>
     ///     Registers the ExaminePDFComponent and all of it's injected dependencies
     /// </summary>
-    [RuntimeLevel(MinLevel = RuntimeLevel.Run)]
+    // TODO (V9): Replace with check elsewhere
+    //[RuntimeLevel(MinLevel = RuntimeLevel.Run)]
     public class ExaminePdfComposer : ComponentComposer<ExaminePdfComponent>, IUserComposer
     {
-        public override void Compose(Composition composition)
+        public override void Compose(IUmbracoBuilder builder)
         {
-            base.Compose(composition);
+            base.Compose(builder);
 
             //Register the services used to make this all work
-            composition.RegisterUnique<IPdfTextExtractor, PdfPigTextExtractor>();
-            composition.Register<PdfTextService>(Lifetime.Singleton);
-            composition.RegisterUnique<IPdfIndexValueSetBuilder, PdfIndexValueSetBuilder>();
-            composition.Register<IIndexPopulator, PdfIndexPopulator>(Lifetime.Singleton);
-            composition.Register<PdfIndexPopulator>(Lifetime.Singleton);
-            composition.RegisterUnique<PdfIndexCreator>();
+            builder.Services.AddUnique<IPdfTextExtractor, PdfPigTextExtractor>();
+            builder.Services.AddSingleton<PdfTextService>();
+            builder.Services.AddUnique<IPdfIndexValueSetBuilder, PdfIndexValueSetBuilder>();
+            builder.Services.AddSingleton<IIndexPopulator, PdfIndexPopulator>();
+            builder.Services.AddSingleton<PdfIndexPopulator>();
+            builder.Services.AddUnique<PdfIndexCreator>();
         }
     }
 }

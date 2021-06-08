@@ -2,8 +2,8 @@
 using Examine;
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Util;
-using Umbraco.Core.Logging;
-using Umbraco.Examine;
+using Umbraco.Cms.Core.Logging;
+using Umbraco.Cms.Infrastructure.Examine;
 
 namespace UmbracoExamine.PDF
 {
@@ -13,6 +13,7 @@ namespace UmbracoExamine.PDF
     /// </summary>
     public class PdfIndexCreator : LuceneIndexCreator
     {
+        // TODO (V9): Find the alternative to LuceneIndexCreator
         public PdfIndexCreator(IProfilingLogger logger)
         {
             _logger = logger;

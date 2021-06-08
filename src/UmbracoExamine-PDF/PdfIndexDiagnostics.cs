@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Umbraco.Core;
-using Umbraco.Core.Logging;
-using Umbraco.Examine;
+using Microsoft.Extensions.Logging;
+using Umbraco.Cms.Core.Hosting;
+using Umbraco.Cms.Infrastructure.Examine;
 
 namespace UmbracoExamine.PDF
 {
@@ -10,7 +10,8 @@ namespace UmbracoExamine.PDF
     {
         private readonly PdfLuceneIndex _index;
 
-        public PdfIndexDiagnostics(PdfLuceneIndex index, ILogger logger) : base(index, logger)
+        public PdfIndexDiagnostics(PdfLuceneIndex index, ILoggerFactory loggerFactory, IHostingEnvironment hostingEnvironment)
+            : base(index, loggerFactory.CreateLogger<LuceneIndexDiagnostics>(), hostingEnvironment)
         {
             _index = index;
         }

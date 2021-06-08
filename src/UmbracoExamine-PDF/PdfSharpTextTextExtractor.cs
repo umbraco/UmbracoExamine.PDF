@@ -4,10 +4,10 @@ using System.Text;
 using PdfSharp.Pdf.Content;
 using PdfSharp.Pdf.Content.Objects;
 using PdfSharp.Pdf.IO;
-using Umbraco.Core.IO;
 
 namespace UmbracoExamine.PDF
 {
+    // TODO (V9): Remove this for V9 Since it's obsolete, and problem not needed, then we might be able to remove the PdfSharp dependency as well?
     [Obsolete("This does not work very well, use the default IPdfTextExtractor implemented by PdfPigTextExtractor instead")]
     public class PdfSharpTextExtractor : IPdfTextExtractor
     {

@@ -1,12 +1,10 @@
 ﻿using Examine;
 using System.Collections.Generic;
-using Umbraco.Core;
-using Umbraco.Core.Logging;
-using Umbraco.Core.IO;
-using Umbraco.Core.Models;
-using Umbraco.Examine;
+using Umbraco.Cms.Core;
+using Umbraco.Cms.Core.Models;
+using Umbraco.Cms.Infrastructure.Examine;
 using System;
-using System.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace UmbracoExamine.PDF
 {
@@ -18,9 +16,9 @@ namespace UmbracoExamine.PDF
     public class PdfIndexValueSetBuilder : IPdfIndexValueSetBuilder
     {
         private PdfTextService _pdfTextService;
-        private readonly ILogger _logger;
+        private readonly ILogger<PdfIndexValueSetBuilder> _logger;
 
-        public PdfIndexValueSetBuilder(PdfTextService pdfTextService, ILogger logger)
+        public PdfIndexValueSetBuilder(PdfTextService pdfTextService, ILogger<PdfIndexValueSetBuilder> logger)
         {
             _pdfTextService = pdfTextService;
             _logger = logger;
@@ -39,7 +37,7 @@ namespace UmbracoExamine.PDF
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error<PdfIndexValueSetBuilder>(ex, "Could not read the file {MediaFile}", umbracoFile);
+                    _logger.LogError(ex, "Could not read the file {MediaFile}", umbracoFile);
                     continue;
                 }
                 var indexValues = new Dictionary<string, object>
@@ -64,7 +62,7 @@ namespace UmbracoExamine.PDF
             }
             catch (Exception ex)
             {
-                _logger.Error<PdfIndexValueSetBuilder>(ex, "Could not extract text from PDF {PdfFilePath}", filePath);
+                _logger.LogError(ex, "Could not extract text from PDF {PdfFilePath}", filePath);
                 return string.Empty;
             }
         }
