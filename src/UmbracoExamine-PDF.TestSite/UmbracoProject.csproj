@@ -9,7 +9,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\UmbracoExamine-PDF\UmbracoExamine-PDF.csproj"/>
+        <ProjectReference Include="..\UmbracoExamine.PDF\UmbracoExamine.PDF.csproj" />
     </ItemGroup>
 
     <ItemGroup>

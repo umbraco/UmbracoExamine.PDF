@@ -2,9 +2,9 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <ContentTargetFolders>.</ContentTargetFolders>
-        <Product>UmbracoExamine-PDF</Product>
-        <PackageId>UmbracoExamine-PDF</PackageId>
-        <Title>UmbracoExamine-PDF</Title>
+        <Product>UmbracoExamine.PDF</Product>
+        <PackageId>UmbracoExamine.PDF</PackageId>
+        <Title>UmbracoExamine.PDF</Title>
         <Description>...</Description>
         <Product>...</Product>
         <PackageTags>umbraco plugin package</PackageTags>
