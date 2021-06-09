@@ -1,0 +1,57 @@
+name: $(Build.DefinitionName)-$(date:yyyyMMdd)$(rev:.r)
+
+variables:
+    buildConfiguration: 'Release'
+#  VersionNumber: $(Major).$(Minor).$(rev:.r)
+stages:
+    - stage: Windows
+      dependsOn: [] # this removes the implicit dependency on previous stage and causes this to run in parallel
+      jobs:
+
+          - job: CreateNugetPacakges
+            displayName: 'Create Nuget Packages'
+            pool:
+                vmImage: 'windows-latest'
+            steps:
+
+                - task: UseDotNet@2
+                  displayName: 'Use .Net Core sdk 5.0.x'
+                  inputs:
+                      version: 5.0.x
+
+                - task: DotNetCoreCLI@2
+                  displayName: 'dotnet restore'
+                  inputs:
+                      command: 'restore'
+                      projects: '**/UmbracoExamine.PDF.csproj'
+                      restoreArguments: '--source https://www.myget.org/F/umbraconightly/api/v3/index.json --source https://www.myget.org/F/umbracoprereleases/api/v3/index.json --source https://api.nuget.org/v3/index.json'
+
+                - task: DotNetCoreCLI@2
+                  displayName: 'dotnet build'
+                  inputs:
+                      command: 'build'
+                      projects: '**/UmbracoExamine.PDF.csproj'
+                      arguments: '--configuration $(buildConfiguration) --no-restore'
+
+                - task: PowerShell@1
+                  displayName: 'dotnet pack'
+                  inputs:
+                      scriptType: inlineScript
+                      inlineScript: >
+                          $isRelease = [regex]::matches($env:BUILD_SOURCEBRANCH,"v\d+\/\d+.\d+.*");
+
+                          if ($isRelease.Count -gt 0)
+                          {
+                             Write-Host "##vso[build.addbuildtag]Release build"
+                             dotnet pack --no-build --include-symbols --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory) ./src/UmbracoExamine.PDF/UmbracoExamine.PDF
+                          }
+                          else
+                          {
+                             Write-Host "##vso[build.addbuildtag]Continuous build"
+                             dotnet pack --no-build --include-symbols --version-suffix nightly.$(Build.BuildId) --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory) ./src/UmbracoExamine.PDF/UmbracoExamine.PDF
+                          }
+                - task: PublishBuildArtifacts@1
+                  displayName: 'Make NuGet Artifacts available for release'
+                  inputs:
+                      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+                      ArtifactName: packages
