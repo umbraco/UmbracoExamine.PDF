@@ -16,15 +16,4 @@
         <PackageReference Include="Umbraco.Cms.Web.Website" Version="9.0.0-preview20210607.65117" />
         <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="9.0.0-preview20210607.65117" />
     </ItemGroup>
-
-    <ItemGroup>
-        <Content Include="App_Plugins\UmbracoExamine-PDF\**\*.*">
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-            <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-        </Content>
-        <None Include="build\**\*.*">
-            <Pack>True</Pack>
-            <PackagePath>buildTransitive</PackagePath>
-        </None>
-    </ItemGroup>
 </Project>

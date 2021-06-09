@@ -13,7 +13,7 @@ namespace UmbracoExamine.PDF
     //TODO: Delete this for 8.1.2 since it exists there
     internal class LuceneIndexDiagnostics : IIndexDiagnostics
     {
-        private readonly ILogger _logger;
+        private readonly ILogger<LuceneIndexDiagnostics> _logger;
         private readonly IHostingEnvironment _hostingEnvironment;
 
         public LuceneIndexDiagnostics(LuceneIndex index, ILogger<LuceneIndexDiagnostics> logger, IHostingEnvironment hostingEnvironment)
