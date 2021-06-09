@@ -2,12 +2,25 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <ContentTargetFolders>.</ContentTargetFolders>
+        <Version>9.0.0</Version>
+        <AssemblyVersion>9.0.0</AssemblyVersion>
+        <InformationalVersion>9.0.0-beta001</InformationalVersion>
+        <FileVersion>9.0.0</FileVersion>
+        <Authors>Umbraco HQ</Authors>
+        <Company>Umbraco CMS</Company>
+        <Copyright>Copyright © Umbraco 2021</Copyright>
+        <PackageProjectUrl>http://umbraco.com/</PackageProjectUrl>
+        <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
         <Product>UmbracoExamine.PDF</Product>
         <PackageId>UmbracoExamine.PDF</PackageId>
         <Title>UmbracoExamine.PDF</Title>
-        <Description>...</Description>
-        <Product>...</Product>
-        <PackageTags>umbraco plugin package</PackageTags>
+        <Description>Umbraco indexing for PDF files using UmbracoExamine</Description>
+        <NeutralLanguage>en-US</NeutralLanguage>
+        <PackageTags>Umbraco Examine Lucene PDF UmbracoExamine</PackageTags>
+        <PackageIconUrl>https://umbraco.com/dist/nuget/logo-small.png</PackageIconUrl>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/umbraco/UmbracoExamine.PDF</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>
