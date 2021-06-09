@@ -29,4 +29,11 @@
         <PackageReference Include="Umbraco.Cms.Web.Website" Version="9.0.0-preview20210607.65117" />
         <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="9.0.0-preview20210607.65117" />
     </ItemGroup>
+    
+    <ItemGroup>
+        <Content Include="..\..\build\Readme.txt">
+            <Pack>true</Pack>
+            <PackagePath>Readme.txt</PackagePath>
+        </Content>
+    </ItemGroup>
 </Project>
