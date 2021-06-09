@@ -31,7 +31,7 @@
     </ItemGroup>
     
     <ItemGroup>
-        <Content Include="..\..\build\Readme.txt">
+        <Content Include="Readme.txt">
             <Pack>true</Pack>
             <PackagePath>Readme.txt</PackagePath>
         </Content>
