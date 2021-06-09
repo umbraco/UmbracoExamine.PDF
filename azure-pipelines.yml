@@ -43,12 +43,12 @@ stages:
                           if ($isRelease.Count -gt 0)
                           {
                              Write-Host "##vso[build.addbuildtag]Release build"
-                             dotnet pack --no-build --include-symbols --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory) ./src/UmbracoExamine.PDF/UmbracoExamine.PDF
+                             dotnet pack --no-build --include-symbols --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory) ./src/UmbracoExamine.PDF/UmbracoExamine.PDF.csproj
                           }
                           else
                           {
                              Write-Host "##vso[build.addbuildtag]Continuous build"
-                             dotnet pack --no-build --include-symbols --version-suffix nightly.$(Build.BuildId) --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory) ./src/UmbracoExamine.PDF/UmbracoExamine.PDF
+                             dotnet pack --no-build --include-symbols --version-suffix nightly.$(Build.BuildId) --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory) ./src/UmbracoExamine.PDF/UmbracoExamine.PDF.csproj
                           }
                 - task: PublishBuildArtifacts@1
                   displayName: 'Make NuGet Artifacts available for release'
