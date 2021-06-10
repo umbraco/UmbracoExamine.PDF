@@ -17,18 +17,21 @@ stages:
                   displayName: Use .Net Core sdk 5.x
                   inputs:
                       version: 5.x
+
                 - task: DotNetCoreCLI@2
-                      displayName: 'dotnet restore'
-                      inputs:
-                          command: 'restore'
-                          projects: '**/*.Tests.csproj'
-                          restoreArguments: '--source https://www.myget.org/F/umbraconightly/api/v3/index.json --source https://www.myget.org/F/umbracoprereleases/api/v3/index.json --source https://api.nuget.org/v3/index.json'
+                  displayName: 'dotnet restore'
+                  inputs:
+                      command: 'restore'
+                      projects: '**/*.Tests.csproj'
+                      restoreArguments: '--source https://www.myget.org/F/umbraconightly/api/v3/index.json --source https://www.myget.org/F/umbracoprereleases/api/v3/index.json --source https://api.nuget.org/v3/index.json'
+
                 - task: DotNetCoreCLI@2
                   displayName: 'dotnet build'
                   inputs:
                       command: 'build'
                       projects: '**/*.Tests.csproj'
                       arguments: '--no-restore'
+
                 - task: DotNetCoreCLI@2
                   displayName: 'dotnet test'
                   inputs:
