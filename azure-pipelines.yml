@@ -39,11 +39,42 @@ stages:
                       projects: '**/*.Tests.csproj'
                       arguments: '--no-build'
 
-    - stage: Windows
+          - job: Linux_Unit_test
+            displayName: Linux
+            pool:
+                vmImage: ubuntu-latest
+            steps:
+                - task: UseDotNet@2
+                  displayName: Use .Net Core sdk 5.x
+                  inputs:
+                      version: 5.x
+
+                - task: DotNetCoreCLI@2
+                  displayName: 'dotnet restore'
+                  inputs:
+                      command: 'restore'
+                      projects: '**/*.Tests.csproj'
+                      restoreArguments: '--source https://www.myget.org/F/umbraconightly/api/v3/index.json --source https://www.myget.org/F/umbracoprereleases/api/v3/index.json --source https://api.nuget.org/v3/index.json'
+
+                - task: DotNetCoreCLI@2
+                  displayName: 'dotnet build'
+                  inputs:
+                      command: 'build'
+                      projects: '**/*.Tests.csproj'
+                      arguments: '--no-restore'
+
+                - task: DotNetCoreCLI@2
+                  displayName: 'dotnet test'
+                  inputs:
+                      command: test
+                      projects: '**/*.Tests.csproj'
+                      arguments: '--no-build'
+
+    - stage: NugetPackages
       dependsOn: [] # this removes the implicit dependency on previous stage and causes this to run in parallel
       jobs:
 
-          - job: CreateNugetPacakges
+          - job: CreateNugetPackages
             displayName: 'Create Nuget Packages'
             pool:
                 vmImage: 'windows-latest'
