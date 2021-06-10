@@ -9,14 +9,6 @@ namespace UmbracoExamine.PDF
     /// </summary>
     public class ExaminePdfComposer : IUserComposer
     {
-        public void Compose(IUmbracoBuilder builder)
-        {
-            if (builder.Services.Any(x => x.ServiceType == typeof(IPdfTextExtractor)))
-            {
-                // Assume that Examine.Pdf is already composed if any implementation of IPdfTextExtractor is registered.
-                return;
-            }
-            builder.AddExaminePdf();
-        }
+        public void Compose(IUmbracoBuilder builder) => builder.AddExaminePdf();
     }
 }

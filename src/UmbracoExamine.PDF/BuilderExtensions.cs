@@ -1,3 +1,4 @@
+using System.Linq;
 using Examine;
 using Microsoft.Extensions.DependencyInjection;
 using Umbraco.Cms.Core.DependencyInjection;
@@ -11,6 +12,12 @@ namespace UmbracoExamine.PDF
     {
         public static IUmbracoBuilder AddExaminePdf(this IUmbracoBuilder builder)
         {
+            if (builder.Services.Any(x => x.ServiceType == typeof(IPdfTextExtractor)))
+            {
+                // Assume that Examine.Pdf is already composed if any implementation of IPdfTextExtractor is registered.
+                return builder;
+            }
+
             //Register the services used to make this all work
             builder.Services.AddUnique<IPdfTextExtractor, PdfPigTextExtractor>();
             builder.Services.AddSingleton<PdfTextService>();
