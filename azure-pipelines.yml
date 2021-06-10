@@ -70,7 +70,7 @@ stages:
                       projects: '**/*.Tests.csproj'
                       arguments: '--no-build'
 
-    - stage: NugetPackages
+    - stage: Nuget_Package
       dependsOn: [] # this removes the implicit dependency on previous stage and causes this to run in parallel
       jobs:
 
