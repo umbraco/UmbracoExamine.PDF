@@ -71,11 +71,12 @@ stages:
                       arguments: '--no-build'
 
     - stage: Nuget_Package
-      displayName: 'Create Nuget Package'
+      displayName: 'Nuget'
       dependsOn: [] # this removes the implicit dependency on previous stage and causes this to run in parallel
       jobs:
 
           - job: CreateNugetPackages
+            displayName: 'Create package'
             pool:
                 vmImage: 'windows-latest'
             steps:
