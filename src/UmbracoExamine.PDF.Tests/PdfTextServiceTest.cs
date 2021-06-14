@@ -1,9 +1,10 @@
 using System;
 using System.IO;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
-using Umbraco.Core.IO;
-using Umbraco.Core.Logging;
+using Umbraco.Cms.Core.IO;
+using Umbraco.Cms.Core.Strings;
 
 namespace UmbracoExamine.PDF.Tests
 {
@@ -16,10 +17,13 @@ namespace UmbracoExamine.PDF.Tests
         [SetUp]
         public void Setup()
         {
-            var fs = new Mock<IMediaFileSystem>();
-            fs.Setup<System.IO.Stream>(m => m.OpenFile(It.IsAny<string>())).Returns<string>(path => System.IO.File.OpenRead(path));
-            var logger = new Mock<ILogger>();
-            _pdfTextService = new PdfTextService(new PdfPigTextExtractor(), fs.Object, logger.Object);
+            var fileSystem = new Mock<IFileSystem>();
+            fileSystem.Setup<Stream>(m => m.OpenFile(It.IsAny<string>())).Returns<string>(path => File.OpenRead(path));
+            var mediaFileManager = new MediaFileManager(fileSystem.Object, Mock.Of<IMediaPathScheme>(),
+                Mock.Of<ILogger<MediaFileManager>>(), Mock.Of<IShortStringHelper>());
+
+            var logger = new Mock<ILogger<PdfTextService>>();
+            _pdfTextService = new PdfTextService(new PdfPigTextExtractor(), mediaFileManager, logger.Object);
             _testFilesDir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
             while(!_testFilesDir.Name.Equals("UmbracoExamine.PDF.Tests", StringComparison.InvariantCultureIgnoreCase))
             {

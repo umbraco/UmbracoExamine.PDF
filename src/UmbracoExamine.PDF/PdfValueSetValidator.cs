@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Examine;
-using Umbraco.Core;
-using Umbraco.Examine;
+using Umbraco.Cms.Infrastructure.Examine;
+using Umbraco.Extensions;
 
 namespace UmbracoExamine.PDF
 {

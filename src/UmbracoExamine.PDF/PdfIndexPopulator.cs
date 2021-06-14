@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Examine;
-using Umbraco.Core;
-using Umbraco.Core.Models;
-using Umbraco.Core.Services;
-using Umbraco.Examine;
+using Umbraco.Cms.Core.Models;
+using Umbraco.Cms.Core.Services;
+using Umbraco.Cms.Infrastructure.Examine;
+using Umbraco.Extensions;
 
 namespace UmbracoExamine.PDF
 {
@@ -68,7 +67,7 @@ namespace UmbracoExamine.PDF
             var ids = mediaIds.Select(m => m.ToInvariantString());
             index.DeleteFromIndex(ids);
         }
-        
+
         /// <summary>
         /// Add any media that is a pdf to the PDFIndex
         /// </summary>
