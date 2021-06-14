@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UmbracoExamine.PDF", "Umbra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UmbracoExamine.PDF.Tests", "UmbracoExamine.PDF.Tests\UmbracoExamine.PDF.Tests.csproj", "{6F8BD850-84E3-42F5-9213-9C1F5A309AAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UmbracoProject", "UmbracoExamine-PDF.TestSite\UmbracoProject.csproj", "{5526679C-9A65-4383-BEF9-EDBE356F5B8B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UmbracoExamine.PDF.Testsite", "UmbracoExamine-PDF.TestSite\UmbracoExamine.PDF.Testsite.csproj", "{5526679C-9A65-4383-BEF9-EDBE356F5B8B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
