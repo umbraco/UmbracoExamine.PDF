@@ -26,9 +26,9 @@
     <ItemGroup>
         <PackageReference Include="PdfPig" Version="0.1.4" />
         <PackageReference Include="PDFsharpNetStandard2" Version="1.51.4845" />
-        <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="9.0.0-preview20210607.65117" />
+        <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="9.0.0-preview20210706.67279" />
     </ItemGroup>
-    
+
     <ItemGroup>
         <Content Include="Readme.txt">
             <Pack>true</Pack>
