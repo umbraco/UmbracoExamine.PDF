@@ -2,7 +2,7 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <ContentTargetFolders>.</ContentTargetFolders>
-        <Version>9.0.0</Version>
+        <Version>9.0.0-beta001</Version>
         <AssemblyVersion>9.0.0</AssemblyVersion>
         <InformationalVersion>9.0.0-beta001</InformationalVersion>
         <FileVersion>9.0.0</FileVersion>
@@ -12,9 +12,9 @@
         <PackageProjectUrl>http://umbraco.com/</PackageProjectUrl>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-        <Product>UmbracoExamine.PDF</Product>
-        <PackageId>UmbracoExamine.PDF</PackageId>
-        <Title>UmbracoExamine.PDF</Title>
+        <Product>Umbraco.ExaminePDF</Product>
+        <PackageId>Umbraco.ExaminePDF</PackageId>
+        <Title>Umbraco.ExaminePDF</Title>
         <Description>Umbraco indexing for PDF files using UmbracoExamine</Description>
         <NeutralLanguage>en-US</NeutralLanguage>
         <PackageTags>Umbraco Examine Lucene PDF UmbracoExamine</PackageTags>
