@@ -41,7 +41,7 @@ namespace UmbracoExamine_PDF.TestSite
         {
 #pragma warning disable IDE0022 // Use expression body for methods
             services.AddUmbraco(_env, _config)
-                .AddBackOffice()             
+                .AddBackOffice()
                 .AddWebsite()
                 .AddComposers()
                 .Build();
@@ -62,8 +62,8 @@ namespace UmbracoExamine_PDF.TestSite
             app.UseUmbraco()
                 .WithMiddleware(u =>
                 {
-                    u.WithBackOffice();
-                    u.WithWebsite();
+                    u.UseBackOffice();
+                    u.UseWebsite();
                 })
                 .WithEndpoints(u =>
                 {

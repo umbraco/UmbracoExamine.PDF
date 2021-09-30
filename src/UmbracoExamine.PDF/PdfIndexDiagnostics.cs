@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Examine.Lucene;
+using Examine.Lucene.Providers;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Umbraco.Cms.Core.Hosting;
@@ -11,16 +12,16 @@ namespace UmbracoExamine.PDF
     internal class PdfIndexDiagnostics : LuceneIndexDiagnostics
     {
         private readonly PdfLuceneIndex _index;
-
         public PdfIndexDiagnostics(
             PdfLuceneIndex index,
-            ILoggerFactory loggerFactory,
+            ILogger<LuceneIndexDiagnostics> logger,
             IHostingEnvironment hostingEnvironment,
-            IOptionsSnapshot<LuceneDirectoryIndexOptions> indexOptions)
-            : base(index, loggerFactory.CreateLogger<LuceneIndexDiagnostics>(), hostingEnvironment, indexOptions)
+            IOptionsMonitor<LuceneDirectoryIndexOptions> indexOptions)
+            : base(index, logger, hostingEnvironment, indexOptions)
         {
             _index = index;
         }
+
 
         public override IReadOnlyDictionary<string, object> Metadata
         {
@@ -42,5 +43,7 @@ namespace UmbracoExamine.PDF
                 return d.Where(x => x.Value != null).ToDictionary(x => x.Key, x => x.Value);
             }
         }
+
+
     }
 }

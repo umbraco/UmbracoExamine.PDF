@@ -1,8 +1,10 @@
 using System;
 using System.IO;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
+using Umbraco.Cms.Core.Configuration.Models;
 using Umbraco.Cms.Core.IO;
 using Umbraco.Cms.Core.Strings;
 
@@ -20,7 +22,7 @@ namespace UmbracoExamine.PDF.Tests
             var fileSystem = new Mock<IFileSystem>();
             fileSystem.Setup<Stream>(m => m.OpenFile(It.IsAny<string>())).Returns<string>(path => File.OpenRead(path));
             var mediaFileManager = new MediaFileManager(fileSystem.Object, Mock.Of<IMediaPathScheme>(),
-                Mock.Of<ILogger<MediaFileManager>>(), Mock.Of<IShortStringHelper>());
+                Mock.Of<ILogger<MediaFileManager>>(), Mock.Of<IShortStringHelper>(), Mock.Of<IServiceProvider>(), Options.Create(new ContentSettings()));
 
             var logger = new Mock<ILogger<PdfTextService>>();
             _pdfTextService = new PdfTextService(new PdfPigTextExtractor(), mediaFileManager, logger.Object);

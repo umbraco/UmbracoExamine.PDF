@@ -12,13 +12,10 @@ namespace UmbracoExamine.PDF
 {
     public class PdfLuceneIndex : LuceneIndex, IIndexDiagnostics
     {
-        public PdfLuceneIndex(string name,
-            ILoggerFactory loggerFactory,
-            IOptionsSnapshot<LuceneDirectoryIndexOptions> indexOptions,
-            IHostingEnvironment hostingEnvironment)
+        public PdfLuceneIndex(ILoggerFactory loggerFactory, string name, IOptionsMonitor<LuceneDirectoryIndexOptions> indexOptions, IHostingEnvironment hostingEnvironment)
             : base(loggerFactory, name, indexOptions)
         {
-            _diagnostics = new PdfIndexDiagnostics(this, loggerFactory, hostingEnvironment, indexOptions);
+            _diagnostics = new PdfIndexDiagnostics(this, loggerFactory.CreateLogger<LuceneIndexDiagnostics>(), hostingEnvironment, indexOptions);
         }
 
         #region IIndexDiagnostics
@@ -33,5 +30,7 @@ namespace UmbracoExamine.PDF
         public virtual IReadOnlyDictionary<string, object> Metadata => _diagnostics.Metadata;
 
         #endregion
+
+
     }
 }
