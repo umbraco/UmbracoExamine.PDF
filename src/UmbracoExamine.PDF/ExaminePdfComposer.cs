@@ -7,7 +7,7 @@ namespace UmbracoExamine.PDF
     /// <summary>
     /// Registers the ExaminePDF index, and dependencies.
     /// </summary>
-    public class ExaminePdfComposer : IUserComposer
+    public class ExaminePdfComposer : IComposer
     {
         public void Compose(IUmbracoBuilder builder) => builder.AddExaminePdf();
     }

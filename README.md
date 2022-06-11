@@ -12,12 +12,12 @@ You will then have a new Examine index called "PDFIndex" available.
 
 ## Multi index searchers
 
-To use the MultiSearcher in V9, you can instantiate it when needed like:
+To use the MultiSearcher in V10, you can instantiate it when needed like:
 
 ```cs
 using(var multiSearcher = new MultiIndexSearcher("MultiSearcher", new IIndex[] {
-    externalIndex,
-	pdfIndex
+    Constants.UmbracoIndexes.ExternalIndexName,
+	PdfIndexConstants.PdfIndexName
 }))
 {
  ...
@@ -54,7 +54,7 @@ if (_examineManager.TryGetSearcher("MultiSearcher", out var searcher))
 ```
 ## TestSite
 
-Uses SqlCE and the db is part of git.
+Uses SQLite and the db is part of git.
 
 Username: me@mail.com
 Password: 1234567890

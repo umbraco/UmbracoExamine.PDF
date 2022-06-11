@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Examine;
 using Umbraco.Cms.Infrastructure.Examine;
 using Umbraco.Extensions;
@@ -35,20 +36,27 @@ namespace UmbracoExamine.PDF
         public override ValueSetValidationResult Validate(ValueSet valueSet)
         {
             var baseValidate = base.Validate(valueSet);
-            if (baseValidate == ValueSetValidationResult.Failed)
-                return ValueSetValidationResult.Failed;
+            if (baseValidate.Status == ValueSetValidationStatus.Failed)
+            {
+                return new ValueSetValidationResult(ValueSetValidationStatus.Failed, valueSet);
+            }
 
             //must have a 'path'
-            if (!valueSet.Values.TryGetValue(PathKey, out var pathValues)) return ValueSetValidationResult.Failed;
-            if (pathValues.Count == 0) return ValueSetValidationResult.Failed;
-            if (pathValues[0] == null) return ValueSetValidationResult.Failed;
-            if (pathValues[0].ToString().IsNullOrWhiteSpace()) return ValueSetValidationResult.Failed;
+            if (!valueSet.Values.TryGetValue(PathKey, out var pathValues)
+                || pathValues.Count == 0
+                || pathValues[0] == null
+                || pathValues[0].ToString().IsNullOrWhiteSpace())
+            {
+                return new ValueSetValidationResult(ValueSetValidationStatus.Failed, valueSet);
+            }
             var path = pathValues[0].ToString();
 
-            if (!ValidatePath(path))
-                return ValueSetValidationResult.Filtered;
+            var filteredValues = valueSet.Values.ToDictionary(x => x.Key, x => x.Value.ToList());
 
-            return ValueSetValidationResult.Valid;
+            bool isFiltered = !ValidatePath(path);
+
+            var filteredValueSet = new ValueSet(valueSet.Id, valueSet.Category, valueSet.ItemType, filteredValues.ToDictionary(x => x.Key, x => (IEnumerable<object>)x.Value));
+            return new ValueSetValidationResult(isFiltered ? ValueSetValidationStatus.Filtered : ValueSetValidationStatus.Valid, filteredValueSet);
         }
     }
 }

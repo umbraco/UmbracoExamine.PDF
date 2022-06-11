@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <ContentTargetFolders>.</ContentTargetFolders>
-        <Version>9.0.0</Version>
-        <AssemblyVersion>9.0.0</AssemblyVersion>
-        <InformationalVersion>9.0.0</InformationalVersion>
-        <FileVersion>9.0.0</FileVersion>
+        <Version>10.0.0</Version>
+        <AssemblyVersion>10.0.0</AssemblyVersion>
+        <InformationalVersion>10.0.0</InformationalVersion>
+        <FileVersion>10.0.0</FileVersion>
         <Authors>Umbraco HQ</Authors>
         <Company>Umbraco CMS</Company>
-        <Copyright>Copyright © Umbraco 2021</Copyright>
+        <Copyright>Copyright © Umbraco 2022</Copyright>
         <PackageProjectUrl>http://umbraco.com/</PackageProjectUrl>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -24,9 +24,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="PdfPig" Version="0.1.4" />
+        <PackageReference Include="PdfPig" Version="0.1.6" />
         <PackageReference Include="PDFsharpNetStandard2" Version="1.51.4845" />
-        <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="9.0.0" />
+        <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="10.0.0" />
     </ItemGroup>
 
     <ItemGroup>
