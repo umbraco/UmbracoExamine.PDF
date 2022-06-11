@@ -14,9 +14,9 @@ stages:
                 vmImage: windows-latest
             steps:
                 - task: UseDotNet@2
-                  displayName: Use .Net Core sdk 5.x
+                  displayName: Use .Net Core sdk 6.x
                   inputs:
-                      version: 5.x
+                      version: 6.x
 
                 - task: DotNetCoreCLI@2
                   displayName: 'dotnet restore'
@@ -45,9 +45,9 @@ stages:
                 vmImage: ubuntu-latest
             steps:
                 - task: UseDotNet@2
-                  displayName: Use .Net Core sdk 5.x
+                  displayName: Use .Net Core sdk 6.x
                   inputs:
-                      version: 5.x
+                      version: 6.x
 
                 - task: DotNetCoreCLI@2
                   displayName: 'dotnet restore'
