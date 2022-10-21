@@ -22,7 +22,7 @@ namespace UmbracoExamine.PDF.Tests
             var fileSystem = new Mock<IFileSystem>();
             fileSystem.Setup<Stream>(m => m.OpenFile(It.IsAny<string>())).Returns<string>(path => File.OpenRead(path));
             var mediaFileManager = new MediaFileManager(fileSystem.Object, Mock.Of<IMediaPathScheme>(),
-                Mock.Of<ILogger<MediaFileManager>>(), Mock.Of<IShortStringHelper>(), Mock.Of<IServiceProvider>(), Options.Create(new ContentSettings()));
+                Mock.Of<ILogger<MediaFileManager>>(), Mock.Of<IShortStringHelper>(), Mock.Of<IServiceProvider>());
 
             var logger = new Mock<ILogger<PdfTextService>>();
             _pdfTextService = new PdfTextService(new PdfPigTextExtractor(), mediaFileManager, logger.Object);
