@@ -8,7 +8,7 @@
         <FileVersion>11.0.0</FileVersion>
         <Authors>Umbraco HQ</Authors>
         <Company>Umbraco CMS</Company>
-        <Copyright>Copyright © Umbraco 2022</Copyright>
+        <Copyright>Copyright © Umbraco 2023</Copyright>
         <PackageProjectUrl>http://umbraco.com/</PackageProjectUrl>
         <PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -25,7 +25,6 @@
 
     <ItemGroup>
         <PackageReference Include="PdfPig" Version="0.1.7" />
-        <PackageReference Include="PDFsharpNetStandard2" Version="1.51.4845" />
         <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="11.0.0" />
     </ItemGroup>
 
