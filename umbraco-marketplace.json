@@ -1,0 +1,23 @@
+{
+  "$schema": "https://dev.marketplace.umbraco.com/umbraco-marketplace-schema.json",
+    "AuthorDetails": {
+        "Description": "Umbraco Examine PDF is a free product available from Umbraco HQ.",
+        "Url": "https://umbraco.com",
+        "ImageUrl": "https://our.umbraco.com/media/upload/0fca1f43-fdec-4067-8a0f-4c680d6f0c74/umbraco_logo_blue.png",
+    },
+    "Category": "Search",
+    "LicenseTypes": [ "Free" ],
+    "IssueTrackerUrl": "https://github.com/umbraco/UmbracoExamine.PDF/issues",
+    "PackageType": "Package",
+    "Screenshots": [
+    ],
+    "Tags": [
+        "pdf", "examine", "search"
+    ],
+    "VersionSpecificPackageIds": [
+        {
+            "UmbracoMajorVersion": 8,
+            "PackageId": "UmbracoCms.UmbracoExamine.PDF"
+        }
+    ]
+}

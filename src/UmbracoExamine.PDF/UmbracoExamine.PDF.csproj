@@ -17,7 +17,7 @@
         <Title>Umbraco.ExaminePDF</Title>
         <Description>Umbraco indexing for PDF files using UmbracoExamine</Description>
         <NeutralLanguage>en-US</NeutralLanguage>
-        <PackageTags>Umbraco Examine Lucene PDF UmbracoExamine</PackageTags>
+        <PackageTags>Umbraco Examine Lucene PDF UmbracoExamine umbraco-marketplace</PackageTags>
         <PackageIconUrl>https://umbraco.com/dist/nuget/logo-small.png</PackageIconUrl>
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/umbraco/UmbracoExamine.PDF</RepositoryUrl>
