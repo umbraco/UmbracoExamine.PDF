@@ -1,0 +1,14 @@
+{
+  "AuthorDetails": {
+    "Description":"Umbraco Forms is an open-source  product available from Umbraco HQ.",
+    "Url":"https://umbraco.com",
+    "ImageUrl":"https://our.umbraco.com/media/upload/0fca1f43-fdec-4067-8a0f-4c680d6f0c74/umbraco_logo_blue.png"
+  },
+  "Category": "Search",
+  "LicenseTypes": [ "Free" ],
+  "PackageType": "Package",
+  "Tags": [
+    "examine",
+    "pdf"
+  ],
+}
