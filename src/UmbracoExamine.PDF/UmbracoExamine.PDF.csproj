@@ -9,7 +9,7 @@
         <Authors>Umbraco HQ</Authors>
         <Company>Umbraco CMS</Company>
         <Copyright>Copyright © Umbraco 2023</Copyright>
-        <PackageProjectUrl>https://umbraco.com/</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/umbraco/UmbracoExamine.PDF</PackageProjectUrl>
         <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
         <Product>Umbraco.ExaminePDF</Product>
