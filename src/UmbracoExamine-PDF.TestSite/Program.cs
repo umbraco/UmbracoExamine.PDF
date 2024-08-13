@@ -1,18 +1,30 @@
-namespace UmbracoExamine_PDF.TestSite;
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-public class Program
-{
-    public static void Main(string[] args)
-        => CreateHostBuilder(args)
-            .Build()
-            .Run();
+builder.CreateUmbracoBuilder()
+    .AddBackOffice()
+    .AddWebsite()
+    .AddDeliveryApi()
+    .AddComposers()
+    .Build();
 
-    public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
-            .ConfigureUmbracoDefaults()
-            .ConfigureWebHostDefaults(webBuilder =>
-            {
-                webBuilder.UseStaticWebAssets();
-                webBuilder.UseStartup<Startup>();
-            });
-}
+WebApplication app = builder.Build();
+
+await app.BootUmbracoAsync();
+
+#if (UseHttpsRedirect)
+app.UseHttpsRedirection();
+#endif
+
+app.UseUmbraco()
+    .WithMiddleware(u =>
+    {
+        u.UseBackOffice();
+        u.UseWebsite();
+    })
+    .WithEndpoints(u =>
+    {
+        u.UseBackOfficeEndpoints();
+        u.UseWebsiteEndpoints();
+    });
+
+await app.RunAsync();

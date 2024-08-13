@@ -1,11 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <ContentTargetFolders>.</ContentTargetFolders>
-        <Version>11.0.0</Version>
-        <AssemblyVersion>11.0.0</AssemblyVersion>
-        <InformationalVersion>11.0.0</InformationalVersion>
-        <FileVersion>11.0.0</FileVersion>
+        <Version>14.0.0</Version>
+        <AssemblyVersion>14.0.0</AssemblyVersion>
+        <InformationalVersion>14.0.0</InformationalVersion>
+        <FileVersion>14.0.0</FileVersion>
         <Authors>Umbraco HQ</Authors>
         <Company>Umbraco CMS</Company>
         <Copyright>Copyright © Umbraco 2023</Copyright>
@@ -25,7 +25,7 @@
 
     <ItemGroup>
         <PackageReference Include="PdfPig" Version="0.1.7" />
-        <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="11.0.0" />
+        <PackageReference Include="Umbraco.Cms.Web.Common" Version="14.0.0" />
     </ItemGroup>
 
     <ItemGroup>
