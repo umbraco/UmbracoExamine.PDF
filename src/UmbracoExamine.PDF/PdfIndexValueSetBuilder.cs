@@ -31,9 +31,11 @@ namespace UmbracoExamine.PDF
                 if (string.IsNullOrWhiteSpace(umbracoFile)) continue;
 
                 string fileTextContent;
+                string fileLinks;
                 try
                 {
                     fileTextContent = ExtractTextFromFile(umbracoFile);
+                    fileLinks = ExtractLinkFromFile(umbracoFile);
                 }
                 catch (Exception ex)
                 {
@@ -45,7 +47,8 @@ namespace UmbracoExamine.PDF
                     ["nodeName"] = item.Name,
                     ["id"] = item.Id,
                     ["path"] =  item.Path,
-                    [PdfIndexConstants.PdfContentFieldName] = fileTextContent
+                    [PdfIndexConstants.PdfContentFieldName] = fileTextContent,
+                    [PdfIndexConstants.PdfLinksFieldName] = fileLinks
                 };
 
                 var valueSet = new ValueSet(item.Id.ToString(), PdfIndexConstants.PdfCategory, item.ContentType.Alias, indexValues);
@@ -59,6 +62,19 @@ namespace UmbracoExamine.PDF
             try
             {
                 return _pdfTextService.ExtractText(filePath);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Could not extract text from PDF {PdfFilePath}", filePath);
+                return string.Empty;
+            }
+        }
+
+        private string ExtractLinkFromFile(string filePath)
+        {
+            try
+            {
+                return _pdfTextService.ExtractLink(filePath);
             }
             catch (Exception ex)
             {

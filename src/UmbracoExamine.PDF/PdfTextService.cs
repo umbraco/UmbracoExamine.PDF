@@ -48,6 +48,27 @@ namespace UmbracoExamine.PDF
         }
 
         /// <summary>
+        /// Extract links from a PDF file at the given path
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public string ExtractLink(string filePath)
+        {
+            using (var fs = _mediaFileSystem.FileSystem.OpenFile(filePath))
+            {
+                if (fs != null)
+                {
+                    return ExceptChars(_pdfTextExtractor.GetLinkFromPdf(fs), UnsupportedRange.Value, ReplaceWithSpace);
+                }
+                else
+                {
+                    _logger.LogError(new Exception($"Unable to open PDF file {filePath}"), "Unable to Open PDF file");
+                    return null;
+                }
+            }
+        }
+
+        /// <summary>
         /// Stores the unsupported range of character
         /// </summary>
         /// <remarks>
