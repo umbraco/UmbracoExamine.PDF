@@ -1,3 +1,7 @@
+using Examine;
+using Umbraco.Cms.Core;
+using UmbracoExamine.PDF;
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.CreateUmbracoBuilder()
@@ -6,6 +10,11 @@ builder.CreateUmbracoBuilder()
     .AddDeliveryApi()
     .AddComposers()
     .Build();
+
+builder.Services.AddExamineLuceneMultiSearcher("MultiSearcher", [
+    Constants.UmbracoIndexes.ExternalIndexName,
+    PdfIndexConstants.PdfIndexName
+]);
 
 WebApplication app = builder.Build();
 
