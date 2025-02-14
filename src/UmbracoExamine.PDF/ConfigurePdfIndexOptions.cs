@@ -26,7 +26,7 @@ namespace UmbracoExamine.PDF
             if (name.Equals(PdfIndexConstants.PdfIndexName))
             {
                 options.Analyzer = new StandardAnalyzer(LuceneVersion.LUCENE_48);
-                options.Validator = new PdfValueSetValidator(null);
+                options.Validator = new PdfValueSetValidator(null, true);
                 options.FieldDefinitions = new FieldDefinitionCollection(
                     new FieldDefinition(PdfIndexConstants.PdfContentFieldName,FieldDefinitionTypes.FullText));
 
