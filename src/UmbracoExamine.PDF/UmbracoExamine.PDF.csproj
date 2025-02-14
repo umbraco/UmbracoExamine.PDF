@@ -2,13 +2,13 @@
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
         <ContentTargetFolders>.</ContentTargetFolders>
-        <Version>11.0.0</Version>
-        <AssemblyVersion>11.0.0</AssemblyVersion>
-        <InformationalVersion>11.0.0</InformationalVersion>
-        <FileVersion>11.0.0</FileVersion>
+        <Version>11.0.1</Version>
+        <AssemblyVersion>11.0.1</AssemblyVersion>
+        <InformationalVersion>11.0.1</InformationalVersion>
+        <FileVersion>11.0.1</FileVersion>
         <Authors>Umbraco HQ</Authors>
         <Company>Umbraco CMS</Company>
-        <Copyright>Copyright © Umbraco 2023</Copyright>
+        <Copyright>Copyright © Umbraco 2025</Copyright>
         <PackageProjectUrl>https://github.com/umbraco/UmbracoExamine.PDF</PackageProjectUrl>
         <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -25,7 +25,7 @@
 
     <ItemGroup>
         <PackageReference Include="PdfPig" Version="0.1.7" />
-        <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="11.0.0" />
+        <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="[11.0.0,14.0.0)" />
     </ItemGroup>
 
     <ItemGroup>
