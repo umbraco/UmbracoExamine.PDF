@@ -76,6 +76,8 @@ stages:
       jobs:
           - job: DependencyTrack
             displayName: Upload SBOM to DependencyTrack
+            pool:
+                vmImage: windows-latest
             steps:
             - checkout: self
               fetchDepth: 0
