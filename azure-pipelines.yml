@@ -70,11 +70,40 @@ stages:
                       projects: '**/*.Tests.csproj'
                       arguments: '--no-build'
 
+    - stage: Dependency_Track_Nuget_Sbom
+      displayName: 'Dependency Tracking'
+      dependsOn: [Unit_Tests]
+      jobs:
+          - job: DependencyTrack
+            displayName: Upload SBOM to DependencyTrack
+            steps:
+            - checkout: self
+              fetchDepth: 0
+
+            - script: dotnet tool install --global CycloneDX
+              displayName: 'Install CycloneDX .NET Tool'
+
+            - script: dotnet CycloneDX src/UmbracoExamine.PDF.sln
+              displayName: 'Generate NuGet SBOM'
+
+            - publish: bom.xml
+              artifact: sbom
+              displayName: 'Publish NuGet SBOM Artifact'
+
+            - task: upload-bom-dtrack@1
+              displayName: 'Upload SBOM to Dependency-Track'
+              inputs:
+                bomFilePath: bom.xml
+                dtrackProjName: 'Umbraco.ExaminePDF'
+                dtrackProjVersion: '14'
+                dtrackAPIKey: $(DT_APK_KEY)
+                dtrackURI: $(DT_API_URL)
+                dtrackProjAutoCreate: true
+
     - stage: Nuget_Package
       displayName: 'Nuget'
-      dependsOn: [] # this removes the implicit dependency on previous stage and causes this to run in parallel
+      dependsOn: [Unit_Tests]
       jobs:
-
           - job: CreateNugetPackages
             displayName: 'Create package'
             pool:
