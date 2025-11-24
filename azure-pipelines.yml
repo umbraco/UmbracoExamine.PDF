@@ -83,9 +83,9 @@ stages:
               fetchDepth: 0
 
             - task: UseDotNet@2
-                displayName: Use .Net Core 10.x
-                inputs:
-                    version: 10.x
+              displayName: Use .Net Core 10.x
+              inputs:
+                  version: 10.x
 
             - script: dotnet tool install --global CycloneDX
               displayName: 'Install CycloneDX .NET Tool'
