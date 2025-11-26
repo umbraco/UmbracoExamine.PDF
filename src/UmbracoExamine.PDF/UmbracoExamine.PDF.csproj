@@ -2,10 +2,10 @@
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
         <ContentTargetFolders>.</ContentTargetFolders>
-        <Version>17.0.0-rc1</Version>
+        <Version>17.0.0</Version>
         <AssemblyVersion>17.0.0</AssemblyVersion>
-        <InformationalVersion>17.0.0-rc1</InformationalVersion>
-        <FileVersion>17.0.0-rc1</FileVersion>
+        <InformationalVersion>17.0.0</InformationalVersion>
+        <FileVersion>17.0.0</FileVersion>
         <Authors>Umbraco HQ</Authors>
         <Company>Umbraco CMS</Company>
         <Copyright>Copyright © Umbraco 2025</Copyright>
@@ -25,7 +25,7 @@
 
     <ItemGroup>
         <PackageReference Include="PdfPig" Version="0.1.12" />
-        <PackageReference Include="Umbraco.Cms.Web.Common" Version="17.0.0-rc3" />
+        <PackageReference Include="Umbraco.Cms.Web.Common" Version="17.0.0" />
     </ItemGroup>
 
     <ItemGroup>
