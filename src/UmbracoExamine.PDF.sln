@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.6.30114.105
+# Visual Studio Version 18
+VisualStudioVersion = 18.3.11520.95 d18.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UmbracoExamine.PDF", "UmbracoExamine.PDF\UmbracoExamine.PDF.csproj", "{8CB1EDBC-B12C-4090-A510-F6FEA5B2EEAE}"
 EndProject
@@ -11,9 +11,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UmbracoExamine.PDF.Testsite
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{57593D6B-EB7C-4648-B448-2D04A1013BF6}"
 	ProjectSection(SolutionItems) = preProject
+		..\azure-pipelines.yml = ..\azure-pipelines.yml
 		..\README.md = ..\README.md
 		..\umbraco-marketplace.json = ..\umbraco-marketplace.json
-		..\azure-pipelines.yml = ..\azure-pipelines.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DB14CB7E-59A9-4DB5-ACAA-45EFBBD89DF7}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Packages.props = Directory.Packages.props
 	EndProjectSection
 EndProject
 Global
@@ -24,9 +29,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{8CB1EDBC-B12C-4090-A510-F6FEA5B2EEAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -65,5 +67,11 @@ Global
 		{5526679C-9A65-4383-BEF9-EDBE356F5B8B}.Release|x64.Build.0 = Release|Any CPU
 		{5526679C-9A65-4383-BEF9-EDBE356F5B8B}.Release|x86.ActiveCfg = Release|Any CPU
 		{5526679C-9A65-4383-BEF9-EDBE356F5B8B}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E342FC8B-5EF6-447F-98CA-37804D7685DB}
 	EndGlobalSection
 EndGlobal

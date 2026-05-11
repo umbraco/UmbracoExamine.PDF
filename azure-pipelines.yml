@@ -102,7 +102,7 @@ stages:
               inputs:
                 bomFilePath: bom.xml
                 dtrackProjName: 'Umbraco.ExaminePDF'
-                dtrackProjVersion: '17'
+                dtrackProjVersion: '18'
                 dtrackAPIKey: $(DT_API_KEY)
                 dtrackURI: $(DT_API_URL)
                 dtrackProjAutoCreate: true
