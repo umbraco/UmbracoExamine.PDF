@@ -23,7 +23,6 @@ stages:
                   inputs:
                       command: 'restore'
                       projects: '**/*.Tests.csproj'
-                      restoreArguments: '--source https://www.myget.org/F/umbraconightly/api/v3/index.json --source https://www.myget.org/F/umbracoprereleases/api/v3/index.json --source https://api.nuget.org/v3/index.json'
 
                 - task: DotNetCoreCLI@2
                   displayName: 'dotnet build'
@@ -54,7 +53,6 @@ stages:
                   inputs:
                       command: 'restore'
                       projects: '**/*.Tests.csproj'
-                      restoreArguments: '--source https://www.myget.org/F/umbraconightly/api/v3/index.json --source https://www.myget.org/F/umbracoprereleases/api/v3/index.json --source https://api.nuget.org/v3/index.json'
 
                 - task: DotNetCoreCLI@2
                   displayName: 'dotnet build'
@@ -86,9 +84,6 @@ stages:
               displayName: Use .Net Core 10.x
               inputs:
                   version: 10.x
-
-            - script: dotnet restore src/UmbracoExamine.PDF.sln
-              displayName: Restore NuGet packages
 
             - script: dotnet build src/UmbracoExamine.PDF.sln --configuration Release --no-restore
               displayName: Build solution
@@ -133,7 +128,6 @@ stages:
                   inputs:
                       command: 'restore'
                       projects: '**/UmbracoExamine.PDF.csproj'
-                      restoreArguments: '--source https://www.myget.org/F/umbraconightly/api/v3/index.json --source https://www.myget.org/F/umbracoprereleases/api/v3/index.json --source https://api.nuget.org/v3/index.json'
 
                 - task: DotNetCoreCLI@2
                   displayName: 'dotnet build'
