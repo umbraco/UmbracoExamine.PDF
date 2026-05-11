@@ -87,6 +87,12 @@ stages:
               inputs:
                   version: 10.x
 
+            - script: dotnet restore src/UmbracoExamine.PDF.sln
+              displayName: Restore NuGet packages
+
+            - script: dotnet build src/UmbracoExamine.PDF.sln --configuration Release --no-restore
+              displayName: Build solution
+
             - script: dotnet tool install --global CycloneDX
               displayName: 'Install CycloneDX .NET Tool'
 
