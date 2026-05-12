@@ -24,8 +24,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="PdfPig" />
-        <PackageReference Include="Umbraco.Cms.Web.Common" />
+        <PackageReference Include="PdfPig" Version="0.1.12" />
+        <PackageReference Include="Umbraco.Cms.Web.Common" Version="18.0.0-beta1" />
     </ItemGroup>
 
     <ItemGroup>
