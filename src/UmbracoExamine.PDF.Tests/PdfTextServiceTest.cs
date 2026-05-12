@@ -57,7 +57,7 @@ namespace UmbracoExamine.PDF.Tests
 
             foreach (var expectedSentence in expectedSentences)
             {
-                StringAssert.Contains(expectedSentence.ToLower(), text);
+                Assert.That(text, Does.Contain(expectedSentence.ToLower()));
             }
         }
 
@@ -76,7 +76,7 @@ namespace UmbracoExamine.PDF.Tests
 
             foreach (var expectedSentence in expectedSentences)
             {
-                StringAssert.DoesNotContain(expectedSentence.ToLower(), text, "If this test fails, it is actually a success. Then we can suddenly handle a pdf file, that was known not to be handled.");
+                Assert.That(text, Does.Not.Contain(expectedSentence.ToLower()), "If this test fails, it is actually a success. Then we can suddenly handle a pdf file, that was known not to be handled.");
             }
         }
     }
