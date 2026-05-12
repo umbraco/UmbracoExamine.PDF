@@ -90,6 +90,13 @@ stages:
             - script: dotnet tool install --global CycloneDX
               displayName: 'Install CycloneDX .NET Tool'
 
+            - task: DotNetCoreCLI@2
+            displayName: 'dotnet restore'
+            inputs:
+                command: 'restore'
+                projects: '**/UmbracoExamine.PDF.csproj'
+                restoreArguments: '--source https://www.myget.org/F/umbraconightly/api/v3/index.json --source https://www.myget.org/F/umbracoprereleases/api/v3/index.json --source https://api.nuget.org/v3/index.json'
+
             - script: dotnet CycloneDX src/UmbracoExamine.PDF.sln
               displayName: 'Generate NuGet SBOM'
 
