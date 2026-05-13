@@ -90,7 +90,7 @@ stages:
             - script: dotnet tool install --global CycloneDX
               displayName: 'Install CycloneDX .NET Tool'
 
-            - script: dotnet CycloneDX src/UmbracoExamine.PDF.sln
+            - script: dotnet CycloneDX src/UmbracoExamine.PDF.sln --spec-version 1.5
               displayName: 'Generate NuGet SBOM'
 
             - publish: bom.xml
