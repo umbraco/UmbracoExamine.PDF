@@ -1,11 +1,10 @@
-using System;
-using System.IO;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
-using Umbraco.Cms.Core.Configuration.Models;
+using System;
+using System.IO;
 using Umbraco.Cms.Core.IO;
+using Umbraco.Cms.Core.Scoping;
 using Umbraco.Cms.Core.Strings;
 
 namespace UmbracoExamine.PDF.Tests
@@ -21,8 +20,13 @@ namespace UmbracoExamine.PDF.Tests
         {
             var fileSystem = new Mock<IFileSystem>();
             fileSystem.Setup<Stream>(m => m.OpenFile(It.IsAny<string>())).Returns<string>(path => File.OpenRead(path));
-            var mediaFileManager = new MediaFileManager(fileSystem.Object, Mock.Of<IMediaPathScheme>(),
-                Mock.Of<ILogger<MediaFileManager>>(), Mock.Of<IShortStringHelper>(), Mock.Of<IServiceProvider>());
+            var mediaFileManager = new MediaFileManager(
+                fileSystem.Object,
+                Mock.Of<IMediaPathScheme>(),
+                Mock.Of<ILogger<MediaFileManager>>(),
+                Mock.Of<IShortStringHelper>(),
+                Mock.Of<IServiceProvider>(),
+                Mock.Of<Lazy<ICoreScopeProvider>>());
 
             var logger = new Mock<ILogger<PdfTextService>>();
             _pdfTextService = new PdfTextService(new PdfPigTextExtractor(), mediaFileManager, logger.Object);
@@ -51,7 +55,7 @@ namespace UmbracoExamine.PDF.Tests
 
             foreach (var expectedSentence in expectedSentences)
             {
-                StringAssert.Contains(expectedSentence.ToLower(), text);
+                Assert.That(text, Does.Contain(expectedSentence.ToLower()));
             }
         }
 
@@ -70,7 +74,7 @@ namespace UmbracoExamine.PDF.Tests
 
             foreach (var expectedSentence in expectedSentences)
             {
-                StringAssert.DoesNotContain(expectedSentence.ToLower(), text, "If this test fails, it is actually a success. Then we can suddenly handle a pdf file, that was known not to be handled.");
+                Assert.That(text, Does.Not.Contain(expectedSentence.ToLower()), "If this test fails, it is actually a success. Then we can suddenly handle a pdf file, that was known not to be handled.");
             }
         }
     }
