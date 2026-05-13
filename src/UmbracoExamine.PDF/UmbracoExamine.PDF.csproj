@@ -2,13 +2,13 @@
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
         <ContentTargetFolders>.</ContentTargetFolders>
-        <Version>18.0.0</Version>
+        <Version>18.0.0-beta1</Version>
         <AssemblyVersion>18.0.0</AssemblyVersion>
         <InformationalVersion>18.0.0-beta1</InformationalVersion>
         <FileVersion>18.0.0</FileVersion>
         <Authors>Umbraco HQ</Authors>
         <Company>Umbraco CMS</Company>
-        <Copyright>Copyright © Umbraco 2025</Copyright>
+        <Copyright>Copyright © Umbraco 2026</Copyright>
         <PackageProjectUrl>https://github.com/umbraco/UmbracoExamine.PDF</PackageProjectUrl>
         <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
