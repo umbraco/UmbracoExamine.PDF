@@ -2,10 +2,10 @@
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
         <ContentTargetFolders>.</ContentTargetFolders>
-        <Version>18.0.0</Version>
-        <AssemblyVersion>18.0.0</AssemblyVersion>
-        <InformationalVersion>18.0.0</InformationalVersion>
-        <FileVersion>18.0.0</FileVersion>
+        <Version>18.0.1</Version>
+        <AssemblyVersion>18.0.1</AssemblyVersion>
+        <InformationalVersion>18.0.1</InformationalVersion>
+        <FileVersion>18.0.1</FileVersion>
         <Authors>Umbraco HQ</Authors>
         <Company>Umbraco CMS</Company>
         <Copyright>Copyright © Umbraco 2026</Copyright>
